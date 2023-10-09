@@ -1,0 +1,122 @@
+---
+title: "Exploration des données fourniers par Promotion Santé"
+---
+
+```{r}
+library(readxl)
+library(readr)
+library(dplyr)
+library(here)
+library(janitor)
+```
+
+
+```{r}
+data_psch <- read_excel(
+  path = here("inst/PGV.xlsx"), 
+)
+# View(data_psch)
+```
+
+Retirer le premier rang qui contient certains noms de colonnes en Français
+
+```{r}
+data_psch <- data_psch[-1, ] 
+```
+
+```{r}
+head(data_psch)
+```
+Importer le dictionnaire des noms de variables (Français/Allemand)
+
+```{r}
+dic_variables <- read_csv(
+  file = here("inst/dic_variables.csv"),
+  show_col_types = FALSE
+)
+```
+
+Remplacer les noms de colonnes allemands par les noms français.
+
+```{r}
+colnames(data_psch) <- dic_variables$fr[
+  match(
+    dic_variables$de, 
+    names(data_psch)
+  )
+]
+```
+
+Simplifier les noms de colonnes (retirer majuscules et espaces)
+
+```{r}
+data_psch <- janitor::clean_names(data_psch)
+```
+
+
+
+```{r}
+head(data_psch)
+```
+
+Convertir la colonne statut en Français
+
+```{r}
+data_psch |> 
+  distinct(statut)
+```
+
+Umsetzung : mise oeuvre		
+Abschluss : terminé/validé ?
+Abbruch : annulé
+
+```{r}
+data_psch <- data_psch |> 
+  mutate(
+    statut = case_when(
+      statut == "Umsetzung" ~ "Mise en oeuvre",
+      statut == "Abschluss" ~ "Terminé/validé?",
+      statut == "Abbruch" ~ "Annulé"
+    )
+  )
+```
+
+
+Convertir les colonnes traitant du budget au format numérique
+
+```{r}
+data_psch <- data_psch |> 
+  mutate(
+    across(
+      starts_with("budget"),
+      as.numeric
+    )
+  )
+```
+
+
+
+## Cycle de soutien
+
+```{r}
+data_psch |> 
+  distinct(cycle_de_soutien)
+```
+
+Il y a plusieurs cycles de soutiens pour les années 2022 et 2023.
+
+Outre l'année, on semble distinguer deux types de cycles de soutien:
+
+- `PGV0\\d`pout toutes les années
+- `PGV_FM` uniquement pour 2022 et 2023
+
+
+## Somme totale investie sur quatre ans
+
+```{r}
+data_psch |> 
+  summarise(
+    somme_total_investie = sum(budget_total, na.rm = TRUE)
+  )
+```
+
