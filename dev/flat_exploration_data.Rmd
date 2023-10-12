@@ -54,6 +54,8 @@ library(ggplot2)
 library(gtExtras)
 library(lubridate)
 library(tidyr)
+# Only to add it  as a dependency to pass devtools::check()
+library(svglite)
 ```
 
 ```{r, include=FALSE}
