@@ -1,3 +1,6 @@
+.Rhistory
+.Rdata
 .Rproj.user
 docs
 !.gitlab/*/*
+inst/doc

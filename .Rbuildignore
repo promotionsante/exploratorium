@@ -10,3 +10,4 @@ $run_dev.*
 ^\.gitlab-ci\.yml$
 ^\.gitlab$
 ^README\.Rmd$
+^observatoire\.Rproj$
