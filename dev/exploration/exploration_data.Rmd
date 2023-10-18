@@ -54,8 +54,6 @@ library(ggplot2)
 library(gtExtras)
 library(lubridate)
 library(tidyr)
-# Only to add it  as a dependency to pass devtools::check()
-library(svglite)
 ```
 
 ```{r, include=FALSE}
@@ -135,8 +133,8 @@ data_psch <- data_psch |>
   mutate(
     statut = case_when(
       statut == "Umsetzung" ~ "Mise en oeuvre",
-      statut == "Abschluss" ~ "Terminé/validé?",
-      statut == "Abbruch" ~ "Annulé"
+      statut == "Abschluss" ~ "Finalis?",
+      statut == "Abbruch" ~ "Interrompu"
     ),
     domaine_de_soutien = case_when(
       domaine_de_soutien == "Direkte Zusammenarbeit" ~ "Collaboration directe",
@@ -181,6 +179,12 @@ data_psch |>
   select(langue, description)
 ```
 
+Vu avec Raphael, on change pour du Français (Französisch).
+
+```{r}
+data_psch[data_psch$titre_court == "RCA PGV03.085", ]$langue <- "Französisch" 
+```
+
 
 ## cycle_de_soutien
 
@@ -198,6 +202,7 @@ Outre l'année, on semble distinguer deux types de cycles de soutien:
 - `PGV0\\d`pout toutes les années
 - `PGV_FM` uniquement pour 2022 et 2023
 
+`_FM` pour "Folgemandat" (Mandat de suvi) sont des projets commencés lors d’appel d’offre antérieurs qui sont prolongés par de nouveaux financements.
 
 ## domaine_de_soutien
 
@@ -207,6 +212,14 @@ quick_summary_nominal_variable(
   column = domaine_de_soutien
 )
 ```
+
+Domaine de financement : correspond à des lancement d’appels d’offres. Les grades I à IV correspondent à des budgets financement croissants et à des durées annuelles différentes.
+
+Mandat de suivi : correpond à des mandats de suivis, .i.e des prolongations de projets déjà financés
+
+Collaboration directe : correspond à des collaborations directes entre PSCH et d’autres entités
+
+![](images/domaine_de_soutien.png)
 
 ## debut_du_projet/fin_du_projet
 
@@ -430,17 +443,26 @@ data_psch |>
 
 ## Variables commenmçant par `pi_`
 
+`pi` : Prioritärer Interventionsbereich = Domaine d'intervention prioritaire
+
+
+`pi_1_` : Critères obligatoires pour financement du projet. Doivent normalement tous êtres respectés.
+
 - pi_1_interfaces
 - pi_1_parcours_sante
 - pi_1_autogestion
+
+
+`pi_2_` : Crtères optionnel. Les porteurs de projets doivent en choisir au moins un.
+
 - pi_2_formation
 - pi_2_nouvelles_tech
 - pi_2_economicite
 
-Elle contiennent:
+Ces variables ont deux niveaux :
 
-- soit `"X"` (TRUE ?)
-- soit `NA` (FALSE ?)
+- soit `"X"` (critère sastifait)
+- soit `NA` (critère NON-satisfait)
 
 ```{r}
 data_pourcentage_presence_pi <- data_psch |> 
@@ -528,22 +550,4 @@ data_psch |>
   )
 ```
 
-
-```{r development-inflate, eval=FALSE}
-# Run but keep eval=FALSE to avoid infinite loop
-# Execute in the console directly
-fusen::inflate(
-  flat_file = "dev/flat_exploration_data.Rmd", 
-  check = FALSE,
-  overwrite = TRUE,
-  vignette_name = c(
-    "Exploration des données fournies par Promotion Santé" = "Exploration Données"
-  ),
-  open_vignette = FALSE
-)
-
-rmarkdown::render(
-  here("vignettes/exploration-donnees.Rmd")
-)
-```
 
