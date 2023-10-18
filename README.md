@@ -4,6 +4,11 @@
 # observatoire
 
 <!-- badges: start -->
+
+[![R build
+status](https://forge.thinkr.fr/promotionsante/observatoire/badges/main/pipeline.svg)](https://forge.thinkr.fr/promotionsante/observatoire/-/pipelines)
+[![Codecov test
+coverage](https://forge.thinkr.fr/promotionsante/observatoire/badges/main/coverage.svg)](https://forge.thinkr.fr/promotionsante/observatoire/commits/main)
 <!-- badges: end -->
 
 Ce projet a pour but de rendre accessible et valoriser les données

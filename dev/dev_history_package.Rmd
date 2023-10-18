@@ -10,7 +10,7 @@ output:
 knitr::opts_chunk$set(
   echo = TRUE,
   eval = FALSE
-  )
+)
 ```
 
 ```{r}
@@ -87,9 +87,9 @@ usethis::use_testthat()
 ```{r}
 # _CI (cf {gitlabr} templates) ----
 lozen::use_gitlab_ci(image = "rocker/verse",
-                              gitlab_url = Sys.getenv("GITLAB_URL"),
-                              repo_name = "https://packagemanager.rstudio.com/all/__linux__/focal/latest",
-                              type = "check-coverage-pkgdown")
+                     gitlab_url = Sys.getenv("GITLAB_URL"),
+                     repo_name = "https://packagemanager.rstudio.com/all/__linux__/focal/latest",
+                     type = "check-coverage-pkgdown")
 
 # GitHub Actions ----
 # usethis::use_github_action_check_standard()
@@ -130,6 +130,64 @@ my_desc$write(file = "DESCRIPTION")
 papillon::generate_readme_rmd()
 papillon::generate_readme_rmd(parts = "description")
 ```
+
+Use badges
+
+```{r}
+
+use_gitlab_badge <- function(badge_name, href_slug, svg_name) {
+  git_remote_url <- sub("\\.git", "", usethis::git_remotes()$origin)
+  usethis::use_badge(
+    badge_name = badge_name, 
+    href = sprintf(
+      "%s/%s", 
+      git_remote_url,
+      href_slug
+    ),
+    src = sprintf(
+      "%s/badges/%s/%s", 
+      git_remote_url,
+      usethis::git_default_branch(),
+      svg_name
+    )
+  )
+}
+
+use_gitlab_badge_build <- function() {
+  use_gitlab_badge(
+    badge_name = "R build status",
+    href_slug = "-/pipelines",
+    svg_name = "pipeline.svg"
+  )
+}
+
+
+use_gitlab_badge_coverage <- function() {
+    use_gitlab_badge(
+    badge_name = "Codecov test coverage",
+    href_slug = sprintf(
+      "commits/%s",
+      usethis::git_default_branch()
+    ),
+    svg_name = "coverage.svg"
+  )
+}
+```
+
+CI
+
+```{r}
+use_gitlab_badge_build()
+```
+
+
+Coverage
+
+```{r}
+use_gitlab_badge_coverage()
+```
+
+
 
 ### NEWS
 
