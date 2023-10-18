@@ -10,21 +10,9 @@ Imports:
     golem (>= 0.3.5),
     shiny (>= 1.7.3)
 Suggests: 
-    dplyr,
-    forcats,
-    ggbeeswarm,
-    ggplot2,
-    gtExtras,
-    here,
-    janitor,
     knitr,
-    lubridate,
-    readr,
-    readxl,
     rmarkdown,
-    svglite,
-    testthat (>= 3.0.0),
-    tidyr
+    testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
 Config/testthat/edition: 3
