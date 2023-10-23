@@ -1,5 +1,5 @@
 ---
-title: "Exploration des données fourniers par Promotion Santé"
+title: "Exploration unidimensionnelle des données fournies par Promotion Santé"
 output: html_document
 editor_options: 
   chunk_output_type: console

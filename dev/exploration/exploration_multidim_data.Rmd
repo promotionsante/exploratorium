@@ -1,0 +1,237 @@
+---
+title: "Exploration multidimensionnelle des donn\u00e9es fournies par Promotion Sant\u00e9"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  fig.width = 7
+)
+```
+
+```{r include=FALSE, message=FALSE}
+library(readxl)
+library(readr)
+library(janitor)
+library(dplyr)
+library(stringr)
+library(lubridate)
+library(FactoMineR)
+```
+
+```{r echo=FALSE, message=FALSE}
+pkgload::load_all()
+
+# Import des données brutes
+data_psch <- read_excel(
+  path = system.file("PGV.xlsx", package = "observatoire")
+)
+
+# Import du dictionnaire des variables
+dic_variables <- read_csv(
+  file = system.file("dic_variables.csv", package = "observatoire"),
+  show_col_types = FALSE
+)
+
+# Nettoyage des données
+## Retirer le premier rang qui contient certains noms de colonnes en Français
+data_psch <- data_psch[-1, ] 
+
+## Remplacer les noms de colonnes allemands par les noms français.
+colnames(data_psch) <- dic_variables$fr[
+  match(
+    dic_variables$de, 
+    names(data_psch)
+  )
+]
+
+## Simplifier les noms de colonnes (retirer majuscules et espaces)
+data_psch <- janitor::clean_names(data_psch)
+
+## Convertir les colonnes traitant du budget au format numérique
+data_psch <- data_psch |> 
+  mutate(
+    across(
+      starts_with("budget"),
+      as.numeric
+    )
+  )
+
+## Traduction de certaines colonnes en Français
+data_psch <- data_psch |> 
+  mutate(
+    statut = case_when(
+      statut == "Umsetzung" ~ "Mise en oeuvre",
+      statut == "Abschluss" ~ "Finalis\u00e9",
+      statut == "Abbruch" ~ "Interrompu"
+    ),
+    domaine_de_soutien = case_when(
+      domaine_de_soutien == "Direkte Zusammenarbeit" ~ "Collaboration directe",
+      domaine_de_soutien == "Folgemandat" ~ "Mandat de suivi",
+      domaine_de_soutien == "F\u00f6rderbereich I" ~ "Domaine de financement I",
+      domaine_de_soutien == "F\u00f6rderbereich II" ~ "Domaine de financement II",
+      domaine_de_soutien == "F\u00f6rderbereich III" ~ "Domaine de financement III",
+      domaine_de_soutien == "F\u00f6rderbereich IV" ~ "Domaine de financement IV"
+    )
+  )
+```
+
+### Contexte de l'étude
+
+Il s'agit ici d'étudier les *profils* des 62 projets menés par Promotion Santé Suisse ces 4 dernières années dans le cadre de la prévention dans le domaine des soins. 
+
+Au travers de cette étude, plusieurs questions sont sous-jacentes : 
+
+- Existe-t-il des similitudes et des différences entre les différents projets ? 
+- Sur quels critères se basent ces similitudes et ces différences ? 
+- Existe-t-il des groupes de projets homogènes *(clusters)* ? 
+
+
+### Présentation des données incluses dans l'étude
+
+```{r echo=FALSE, message=FALSE}
+data_explo <- data_psch |> 
+  mutate(
+    annee_debut = as.factor(
+      year(debut_du_projet)
+    )
+  ) |> 
+  mutate(
+    duree_annees = round(
+      as.numeric(
+        difftime(
+          fin_du_projet, 
+          debut_du_projet, 
+          units = "days"
+          ) / 365), 
+      digits = 1
+    )
+  ) |> 
+  mutate(
+    force_rayonnement = str_count(
+      etendu, 
+      ","
+      ) + 1 ) |> 
+  mutate(
+    prop_budget_psch = round(
+      budget_psch / budget_total, 
+      digits = 1
+    ),
+    prop_budget_org_resp = round(
+      budget_org_resp / budget_total, 
+      digits = 1
+    ),
+    prop_tiers = round(
+      budget_tiers / budget_total, 
+      digits = 1
+    )
+  ) |> 
+  mutate(
+    across(
+      starts_with("pi_"),
+      ~ ifelse(is.na(.x), "0", "1")
+    )
+  )
+
+data_explo <- data_explo |> 
+  select(titre_court, # Identifiant du projet
+         annee_debut, # Année de lancement du projet
+         duree_annees, # Durée du projet, en années
+         force_rayonnement, # Force de rayonnement = NB cantons
+         type_dorganisation, # Type d'organisation
+         budget_total, # Budget total du projet
+         prop_budget_psch, # Prop du budget porté par PSCH
+         prop_budget_org_resp, # Prop du budget porté par l'organisation responsable
+         prop_tiers, # Prop du budget porté par des tiers
+         starts_with("pi_"), # Domaines d'interventions obligatoires ou optionnels
+         maladies_respiratoires,
+         maladies_cardiovasculaires,
+         cancer,
+         tms,
+         maladies_psychiques,
+         addiction,
+         autres_mnt,
+         autres_themes
+         )
+```
+
+Les caractéristiques des projets analysées dans le cadre de cette études sont les suivantes : 
+
+- L'**année de lancement**
+- La **durée** du projet en années 
+- La **force de rayonnement géographique** du projet, calculée comme le nombre de total de cantons impactés par le projet
+- Le **type d'organisation** à l'initiative du projet
+- Le **budget total** du projet, en CHF
+- La **proportion du budget total portée par PSCH**
+- La **proportion du budget total portée par l'organisation responsable**
+- La **proportion du budget total portée par les tiers**
+- Le fait de **satisfaire les domaines d'intervention prioritaires obligatoires** : interfaces, parcours santé, autogestion
+- Le fait de **satisfaire les domaines d'intervention prioritaires optionnels** : formation, nouvelles technologies, économicité
+- Les **pathologies/thèmes ciblés** par le projet : maladies respiratoires, maladies cardiovasculaires, cancers, TMS, maladies psychiques, addictions, autres
+
+```{r echo=FALSE}
+DT::datatable(data_explo)
+```
+
+
+### Analyse des profils
+
+```{r echo=FALSE, include=FALSE}
+# Transformation en data.frame
+data_explo <- as.data.frame(data_explo)
+rownames(data_explo) <- data_explo$titre_court
+data_explo <- data_explo |> 
+  select(-titre_court)
+
+# ACP
+res_acp <- PCA(
+  X = data_explo, 
+  quanti.sup = 2,
+  quali.sup = c(1, 4, 9:22)
+)
+
+plot(
+  res_acp,
+  choix = "var"
+)
+
+# CAH
+res_cah <- HCPC(
+  res_acp, 
+  nb.clust = 3
+)
+
+# Description des clusters
+## Prop des projets dans les clusters
+res_cah$data.clust |> 
+  group_by(clust) |> 
+  count()
+
+res_cah$desc.var
+```
+
+##### Cluster 1
+
+*27 projets, soit 43% de l'échantillon*
+
+Les projets de ce cluster sont caractérisés par : 
+
+- Une proportion de financement par PSCH plus importante que la moyenne
+- Une force de rayonnement géographique plus faible que la moyenne
+
+##### Cluster 2
+
+*8 projets, soit 13% de l'échantillon*
+
+- Une proportion de financement par l'organisation en charge du projet plus importante que la moyenne
+- Une force de rayonnement géographique plus forte que la moyenne
+
+##### Cluster 3
+
+*27 projets, soit 43% de l'échantillon*
+
+- Une proportion de financement par les tiers plus importante que la moyenne
+- Une thématique des addictions plus importante que la moyenne
