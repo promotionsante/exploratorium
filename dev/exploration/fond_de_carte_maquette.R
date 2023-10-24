@@ -1,6 +1,6 @@
 library(sf)
 library(mapview)
-
+library(dplyr)
 
 suisse_sf <- st_read(
   dsn = "inst/gadm41_CHE_0.json"
@@ -14,8 +14,9 @@ cantons_sf <- st_read(
 
 # Suisse entière
 mapview(
-  x = suisse_sf,
-  alpha.regions = 0.1
+  x = cantons_sf,
+  alpha.regions = 0.1,
+  col.regions = "gray3"
 )
 
 
@@ -23,8 +24,8 @@ mapview(
 cantons_sf <- cantons_sf |>
   mutate(
     color = case_when(
-      HASC_1 %in%  sprintf("CH.%s", c("TI", "GR", "SG")) ~ "darkred",
-      TRUE ~ "darkblue"
+      HASC_1 %in%  sprintf("CH.%s", c("TI", "GR", "SG")) ~ "target",
+      TRUE ~ "others"
     )
 )
 
@@ -32,5 +33,5 @@ mapview(
   x = cantons_sf,
   alpha.regions = 0.1,
   zcol = "color",
-  col.regions = c("darkblue", "darkred")
+  col.regions =  c("gray3", "#ff6200")
 )
