@@ -163,7 +163,7 @@ Les caractéristiques des projets analysées dans le cadre de cette études sont
 - L'**année de lancement**
 - La **durée** du projet en années 
 - La **force de rayonnement géographique** du projet, calculée comme le nombre de total de cantons impactés par le projet
-- Le **type d'organisation** à l'initiative du projet
+- Le **type d'organisation** \u00e0 l'initiative du projet
 - Le **budget total** du projet, en CHF
 - La **proportion du budget total portée par PSCH**
 - La **proportion du budget total portée par l'organisation responsable**
@@ -176,8 +176,20 @@ Les caractéristiques des projets analysées dans le cadre de cette études sont
 DT::datatable(data_explo)
 ```
 
-
 ### Analyse des profils
+
+Une Analyse Factorielle Multiple (AFM) est réalisée, suivie par une Classification Ascendante Hiérarchique (CAF).
+
+L'AFM implique 8 groupes de variables : 
+
+- L'ann\u00e9e de lancement *(groupe suppl\u00e9mentaire, n'ayant pas d'impact sur la différenciation des projets)*
+- La durée en années *(groupe supplémentaire, n'ayant pas d'impact sur la différenciation des projets)*
+- La force de rayonnement géographique *(groupe actif, ayant impact sur la différenciation des projets)*
+- Le type d'organisation *(groupe suppl\u00e9mentaire, n'ayant pas d'impact sur la différenciation des projets)*
+- La budget total *(groupe actif, ayant impact sur la différenciation des projets)*
+- La répartition du budget tiers/PSCH/organisation *(groupe supplémentaire, n'ayant pas d'impact sur la différenciation des projets)*
+- Les domaines d'intervention *(groupe actif, ayant impact sur la différenciation des projets)*
+- Les thématiques *(groupe actif, ayant impact sur la différenciation des projets)*
 
 ```{r echo=FALSE, include=FALSE}
 # Transformation en data.frame
@@ -186,52 +198,135 @@ rownames(data_explo) <- data_explo$titre_court
 data_explo <- data_explo |> 
   select(-titre_court)
 
-# ACP
-res_acp <- PCA(
-  X = data_explo, 
-  quanti.sup = 2,
-  quali.sup = c(1, 4, 9:22)
-)
+# Noms de colonnes 
+colnames(data_explo)
 
-plot(
-  res_acp,
-  choix = "var"
+# AFM
+res_mfa <- MFA(
+  data_explo, 
+  group = c(1, 1, 1, 1, 1, 3, 6, 8),
+  type = c("n", "s", "s", "n", "s", "s", "n", "n"), 
+  name.group = c("ann\u00e9e", "dur\u00e9e", "rayonnement", "type organisation", "budget", 
+                 "r\u00e9partition budget", "domaines intervention", "th\u00e9matiques"),
+  num.group.sup = c(1, 2, 4, 6)
 )
 
 # CAH
 res_cah <- HCPC(
-  res_acp, 
-  nb.clust = 3
+  res_mfa, 
+  nb.clust = 5
 )
 
 # Description des clusters
 ## Prop des projets dans les clusters
-res_cah$data.clust |> 
+res_repart_group <- res_cah$data.clust |> 
   group_by(clust) |> 
-  count()
+  count() |> 
+  mutate(prop = round(
+    n / nrow(data_explo),
+    digits = 1
+  ) * 100)
 
 res_cah$desc.var
 ```
 
-##### Cluster 1
+### Résultats
 
-*27 projets, soit 43% de l'échantillon*
+#### Axes de variabilité des projets
+
+Le principal axe de variabilité au sein des projets est la **force de rayonnement géographique** des projets : il existe des projets qui ont une influence sur beaucoup de cantons, versus des projets qui ont une influence sur un faible nombre de cantons *(relativement à la moyenne)*.
+
+Le deuxième axe de variabilité au sein des projets est le **budget** alloué : il existe des projets avec un financement élevé, versus des projets avec un financement faible *(relativement à la moyenne)*.
+
+```{r echo=FALSE, fig.align='center'}
+plot(
+  res_mfa, 
+  choix = "group"
+)
+```
+
+#### Clustering
+
+```{r echo=FALSE, include=FALSE}
+levels(res_repart_group$clust) <- c(
+  "Projets cibl\u00e9s sur des th\u00e9matiques pr\u00e9cises, avec un rayonnement g\u00e9ographique moindre", 
+  "Projets \u00e0 long terme driv\u00e9s par les administrations cantonales, avec un financement \u00e9lev\u00e9", 
+  "Projets focalis\u00e9s sur le parcours de sant\u00e9 et les interfaces, avec un rayonnement g\u00e9ographique moindre", 
+  "Projets \u00e0 court terme", 
+  "Projets \u00e0 long terme, grandement financ\u00e9s par l\'organisation, avec une force de rayonnement g\u00e9ographique \u00e9lev\u00e9e" 
+)
+
+res_repart_group$group_n1 <- c(1, 1, 1, 2, 2)
+res_repart_group$group_n2 <- c(1, 1, 2, 3, 3)
+
+dev.new()
+png("images/treemap.png", width = 800)
+res_tree <- treemap::treemap(
+  res_repart_group,
+  index = c("group_n1", "group_n2", "clust"),
+  vSize = "n",
+  type = "index", 
+  title = "", 
+  fontsize.labels = 10,           
+  fontfamily.labels = "Calibri",
+  palette = rgb(219, 141, 50, max = 255),
+  fontcolor.labels = c("transparent", "transparent","white"),
+  bg.labels = 0,
+  fontface.labels = 2,
+  border.col = "white",
+  align.labels = list(
+    c("center", "center")
+    )   
+)
+dev.off()
+```
+
+```{r echo=FALSE, fig.align='center', out.width='100%'}
+knitr::include_graphics("images/treemap.png")
+```
+
+L'analyse met en évidence 5 grands groupes de projets, dont voici les traits saillants : 
+
+##### Des projets ciblés sur des thématiques précises, avec un rayonnement géographique moindre *(sous-entendu : par rapport à la moyenne)*
+
+*15 projets, soit 20 % de l'échantillon*
 
 Les projets de ce cluster sont caractérisés par : 
 
-- Une proportion de financement par PSCH plus importante que la moyenne
+- Une sur-représentation de la thématique des Maladies respiratoires
+- Une sur-représentation de la thématique des Cancers
+- Une sur-représentation de la thématique des Maladies cardiovasculaires
+- Une sur-représentation de la thématique des TMS
+- Une sous-représentation du domaine d'intervention optionnel de la formation
 - Une force de rayonnement géographique plus faible que la moyenne
 
-##### Cluster 2
+##### Des projets à long terme drivés par les administrations cantonales, avec un financement élevé *(sous-entendu : par rapport à la moyenne)*
 
-*8 projets, soit 13% de l'échantillon*
+*6 projets, soit 10 % de l'échantillon*
 
-- Une proportion de financement par l'organisation en charge du projet plus importante que la moyenne
-- Une force de rayonnement géographique plus forte que la moyenne
+- Une sous-représentation du domaine d'intervention obligatoire d'autogestion
+- Une sur-représentation des projets portés par une administration cantonale
+- Un budget total plus important que la moyenne
+- Une durée plus importante que la moyenne
 
-##### Cluster 3
+##### Des projets focalisés sur le parcours de santé et les interfaces, avec un rayonnement géographique moindre *(sous-entendu : par rapport à la moyenne)*
 
-*27 projets, soit 43% de l'échantillon*
+*24 projets, soit 40 % de l'échantillon*
 
-- Une proportion de financement par les tiers plus importante que la moyenne
-- Une thématique des addictions plus importante que la moyenne
+- Une sur-représentation du domaine d'intervention obligatoire de parcours santé
+- Une sur-représentation du domaine d'intervention obligatoire d'interfaces
+- Une force de rayonnement géographique plus faible que la moyenne
+
+##### Des projets à court terme *(sous-entendu : par rapport à la moyenne)*
+
+*7 projets, soit 10 % de l'échantillon*
+
+- Une durée plus faible que la moyenne
+
+##### Des projets à long terme, avec une force de rayonnement géographique plus élevée que la moyenne, avec proportion de financement par l'organisation en charge du projet élevée *(sous-entendu : par rapport à la moyenne)*
+
+*10 projets, soit 20 % de l'échantillon*
+
+- Une force de rayonnement géographique plus élevée que la moyenne
+- Une proportion de financement par l'organisation en charge du projet plus élevée que la moyenne
+- Une durée plus élevée que la moyenne
