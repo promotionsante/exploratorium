@@ -13,6 +13,19 @@ knitr::opts_chunk$set(
 )
 ```
 
+
+# Everyday
+
+
+## Update dependencies
+
+```{r}
+attachment::att_amend_desc( 
+  path = here::here(),
+  extra.suggests = c("rsconnect", "cli")
+)
+```
+
 ```{r}
 # install.packages("remotes")
 remotes::install_github(repo = "Thinkr-open/papillon")

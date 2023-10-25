@@ -1,20 +1,24 @@
 Package: observatoire
-Title: Observatoire De La Promotion De La Santé et La Prévention Des Maladies en Suisse
-Version: 0.0.0.9001
+Title: Observatoire De La Promotion De La Santé et La Prévention Des
+    Maladies en Suisse
+Version: 0.0.0.9002
 Authors@R: c(
-      person("Margot", "Brard", , "margot@thinkr.fr", role = c("aut", "cre")),
-      person("Antoine", "Languillaume", , "antoine@thinkr.fr", role = c("aut"))
-    )
-Description: Rendre accessible et valoriser les données d’investissement dans la promotion 
-    de la santé et de la prévention des maladies en Suisse.
+    person("Margot", "Brard", , "margot@thinkr.fr", role = c("aut", "cre")),
+    person("Antoine", "Languillaume", , "antoine@thinkr.fr", role = "aut")
+  )
+Description: Rendre accessible et valoriser les données d’investissement
+    dans la promotion de la santé et de la prévention des maladies en
+    Suisse.
 License: file LICENSE
 Imports: 
     config (>= 0.3.1),
     golem (>= 0.3.5),
     shiny (>= 1.7.3)
 Suggests: 
+    cli,
     knitr,
     rmarkdown,
+    rsconnect,
     testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
