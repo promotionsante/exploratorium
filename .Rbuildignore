@@ -11,3 +11,5 @@ $run_dev.*
 ^\.gitlab$
 ^README\.Rmd$
 ^observatoire\.Rproj$
+^app\.R$
+^rsconnect$
