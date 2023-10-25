@@ -31,7 +31,11 @@ appFiles <- appFiles[!grepl(
 # Define app name based on current git branch
 
 get_current_git_branch <- function() {
+  if (interactive()) {
   system("git rev-parse --abbrev-ref HEAD", intern = TRUE)
+  } else {
+    Sys.getenv("CI_COMMIT_REF_NAME")
+  }
 }
 
 app_name_base <- basename(normalizePath("."))
