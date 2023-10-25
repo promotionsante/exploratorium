@@ -32,8 +32,10 @@ appFiles <- appFiles[!grepl(
 
 get_current_git_branch <- function() {
   if (interactive()) {
-  system("git rev-parse --abbrev-ref HEAD", intern = TRUE)
+    # On dev computer
+    system("git rev-parse --abbrev-ref HEAD", intern = TRUE)
   } else {
+    # On gitlba CI
     Sys.getenv("CI_COMMIT_REF_NAME")
   }
 }
