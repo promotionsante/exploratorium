@@ -70,7 +70,7 @@ Importer les données brutes
 
 ```{r echo = TRUE}
 data_psch <- read_excel(
-  path = here("inst/Liste des projets_PGV.xlsx"), 
+  path = here("inst/PGV.xlsx"), 
 )
 ```
 
