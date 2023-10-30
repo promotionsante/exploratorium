@@ -15,8 +15,8 @@ cantons_sf <- st_read(
 # Suisse entière
 mapview(
   x = cantons_sf,
-  alpha.regions = 0.1,
-  col.regions = "gray3"
+  alpha.regions = 0.4,
+  col.regions = "#578397"
 )
 
 
@@ -31,7 +31,7 @@ cantons_sf <- cantons_sf |>
 
 mapview(
   x = cantons_sf,
-  alpha.regions = 0.1,
+  alpha.regions = 0.4,
   zcol = "color",
-  col.regions =  c("gray3", "#ff6200")
+  col.regions =  c("#578397", "#f59300")
 )
