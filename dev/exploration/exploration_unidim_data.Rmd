@@ -112,6 +112,44 @@ data_psch <- janitor::clean_names(data_psch)
 
 ## Convertion au format numérique
 
+Les séparateurs de milliers ne sont pas uniformes dans les colonnes traitant du budget.
+
+```{r}
+data_psch |> 
+  filter(
+    if_any(
+      starts_with("budget"), 
+      ~ !grepl("^\\d", .x)
+    )
+  ) |> 
+  select(titre_court, starts_with("budget")) |> pull(budget_psch)
+```
+
+Supprimer les mentions à la devise et les séparateurs de milliers non parsés dans les colonnes budget.
+
+```{r}
+data_psch <- data_psch |> 
+  mutate(
+    across(
+      starts_with("budget"),
+      ~ gsub("^CHF\\s+|\\'", "", .x)
+    )
+  ) 
+```
+
+```{r}
+data_without_CHF_or_quote_as_grouping_mark <- data_psch |>
+  filter(
+    if_any(
+      starts_with("budget"), 
+      ~ grepl("^CHF|\\'", .x)
+    )
+  ) |> 
+  nrow() == 0
+stopifnot(data_without_CHF_or_quote_as_grouping_mark)
+```
+
+
 Convertir les colonnes traitant du budget au format numérique
 
 ```{r echo = TRUE}
@@ -284,10 +322,10 @@ data_psch |>
     na.rm = TRUE,
     fill =  "#28A7B4"
   ) +
-  ggbeeswarm::geom_quasirandom(
-    orientation = 'y',
+  geom_jitter(
     alpha = 0.55,
-    na.rm = TRUE
+    na.rm = TRUE,
+    width = 0
   ) +
   labs(
     y = "",
@@ -296,7 +334,7 @@ data_psch |>
   theme(
     axis.text.y = element_blank(),
     axis.ticks = element_blank()
-  )
+  ) 
 ```
 
 
@@ -317,10 +355,10 @@ data_psch |>
     na.rm = TRUE,
     fill =  "#28A7B4"
   ) +
-  ggbeeswarm::geom_quasirandom(
-    orientation = 'y',
+  geom_jitter(
     alpha = 0.55,
-    na.rm = TRUE
+    na.rm = TRUE,
+    width = 0
   ) +
   labs(
     y = "",
@@ -550,4 +588,192 @@ data_psch |>
   )
 ```
 
+
+## Facteurs de risque comportementaux
+
+Correspondant à un risque accru de déclencher une maladie non transmissible
+
+```{r}
+facteurs_de_risque_par_projet <- data_psch |> 
+  select(
+    titre_court, 
+    facteurs_de_risque
+  ) |> 
+  tidyr::separate_rows(
+    facteurs_de_risque,
+    sep = ", "
+  ) 
+
+facteurs_de_risque_par_projet |> 
+  distinct(facteurs_de_risque) |> 
+  pull()
+```
+
+
+```{r}
+facteurs_de_risque_par_projet |> 
+  count(titre_court) |> 
+  ggplot()+
+  aes(x = n, y = 1) +
+  geom_violin(
+    alpha = 0.4,
+    na.rm = TRUE,
+    fill =  "#28A7B4"
+  ) +
+  geom_jitter(
+    alpha = 0.55,
+    na.rm = TRUE,
+    width = 0
+  ) +
+  labs(
+    y = "",
+    title = "Nombre de facteurs de risque ciblés par projet"
+  )+
+  theme(
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank()
+  ) 
+```
+
+
+## Groupe cible
+
+
+```{r}
+groupe_cible_par_projet <- data_psch |> 
+  select(
+    titre_court, 
+    groupe_cible
+  ) |> 
+  tidyr::separate_rows(
+    groupe_cible,
+    sep = ", "
+  ) 
+
+groupe_cible_par_projet |> 
+  distinct(groupe_cible) |> 
+  pull()
+```
+
+
+```{r}
+groupe_cible_par_projet |> 
+  count(titre_court) |> 
+  ggplot()+
+  aes(x = n, y = 1) +
+  geom_violin(
+    alpha = 0.4,
+    na.rm = TRUE,
+    fill =  "#28A7B4"
+  ) +
+  geom_jitter(
+    alpha = 0.55,
+    na.rm = TRUE,
+    width = 0
+  ) +
+  labs(
+    y = "",
+    title = "Nombre de groupe cibles par projet"
+  )+
+  theme(
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank()
+  ) 
+```
+
+
+
+## Multiplicateurs
+
+Catégories cibles de personnels soignants, population et qui vont participer à “multiplier” le projet, à le diffuser (des médecins, des secrétaires médicales, etc.)
+
+```{r}
+multiplicateurs_par_projet <-  data_psch |> 
+  select(
+    titre_court, 
+    multiplicateurs
+  ) |> 
+  tidyr::separate_rows(
+    multiplicateurs,
+    sep = ", "
+  ) 
+
+multiplicateurs_par_projet |> 
+  distinct(multiplicateurs) |> 
+  pull()
+```
+
+
+```{r}
+multiplicateurs_par_projet |> 
+  count(titre_court) |> 
+  ggplot()+
+  aes(x = n, y = 1) +
+  geom_violin(
+    alpha = 0.4,
+    na.rm = TRUE,
+    fill =  "#28A7B4"
+  ) +
+  geom_jitter(
+    alpha = 0.55,
+    na.rm = TRUE,
+    width = 0
+  ) +
+  labs(
+    y = "",
+    title = "Type(s) de multiplicateurs ciblés par projet"
+  )+
+  theme(
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank()
+  ) 
+```
+
+
+## Setting
+
+Lieux où se déroulent les interventions
+
+
+```{r}
+settings_par_projet <-  data_psch |> 
+  select(
+    titre_court, 
+    settings
+  ) |> 
+  tidyr::separate_rows(
+    settings,
+    sep = ", "
+  ) 
+
+settings_par_projet |> 
+  distinct(settings) |> 
+  pull()
+```
+
+
+```{r}
+settings_par_projet |> 
+  count(titre_court) |> 
+  ggplot()+
+  aes(x = n, y = 1) +
+  geom_violin(
+    alpha = 0.4,
+    na.rm = TRUE,
+    fill =  "#28A7B4"
+  ) +
+  geom_jitter(
+    alpha = 0.55,
+    na.rm = TRUE,
+    width = 0
+  ) +
+  labs(
+    y = "",
+    title = "Type(s) de settings ciblés par projet"
+  )+
+  theme(
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank()
+  ) 
+```
 
