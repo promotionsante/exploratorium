@@ -1,0 +1,151 @@
+---
+title: "Prepare data"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  eval=FALSE,
+  echo=TRUE
+)
+```
+
+```{r development, include=FALSE}
+```
+
+```{r development-load}
+# Load already included functions if relevant
+pkgload::load_all(export_all = FALSE)
+```
+
+*The aim of this article is to show you how to update the data used by the app.*
+
+The data preparation workflow is shown below. **This data preparation process must be repeated each time the raw data is updated or each time a modification is required to the data dictionaries.**
+
+```{r echo=FALSE, eval=TRUE}
+knitr::include_graphics("../man/figures/data_prep_workflow.png")
+```
+
+# Update the data concerning the projects
+
+You must upload the new version of the file `PGV.xlsx` in the `data-raw` folder.
+
+Then, to update the data concerning the projects used by the application, you can use the `prepare_projects_data()` function as follows:
+
+```{r function-prepare_projects_data}
+#' Prepare the projects data in FR and DE to be included in the app as .rds files
+#' 
+#' @param name_raw_file Character. Name of the raw data file.
+#' @param pkg_dir Character. Path to the package (must contain a data-raw folder).
+#' 
+#' @importFrom glue glue
+#' @importFrom here here
+#' 
+#' @return Nothing to return, used for side effect. A message is displayed in the console.
+#' 
+#' @export
+prepare_projects_data <- function(
+    name_raw_file = "PGV.xlsx",
+    pkg_dir = system.file(package = "observatoire")
+  ){
+  
+  time_start <- Sys.time()
+  
+  # Prepare the data and save them
+  import_raw_data(
+    name_raw_file = name_raw_file,
+    pkg_dir = pkg_dir
+  ) |> 
+  add_col_raw_data() |> 
+  clean_raw_data() # |>
+  # get_coord_main_resp_orga() |> 
+  # get_canton_main_resp_orga() |> 
+  # get_nb_cantons_influenced() |> 
+  # get_prop_budget() |> 
+  # translate_values_in_data() |> 
+  # save_projects_data()
+
+  # Print a message in the console
+  path_to_prepared_data_fr <- here("inst", "projects_fr.rds")
+
+  # if (file.exists(path_to_prepared_data_fr)) {
+  #   message(
+  #     glue("The file projects_fr.rds hase been successfully updated at {file.info(path_to_prepared_data_fr$mtime)}")
+  #   )
+  # }
+
+  path_to_prepared_data_de <- here("inst", "projects_de.rds")
+
+  # if (file.exists(path_to_prepared_data_de)) {
+  #   message(
+  #     glue("The file projects_de.rds hase been successfully updated at {file.info(path_to_prepared_data_de$mtime)}")
+  #   )
+  # }
+    
+}
+```
+  
+```{r example-prepare_projects_data}
+prepare_projects_data()
+```
+
+```{r tests-prepare_projects_data}
+#TODO
+```
+
+```{r}
+prepare_projects_data()
+```
+
+# Update the data concerning the translations
+
+You must modify directly the dictionaries used for the translations. They are saved in the `inst` folder, in a `.csv` format. 
+
+```{r echo=FALSE, eval=TRUE}
+fs::dir_tree(
+  file.path(
+    system.file(package = "observatoire")
+  ), 
+  regexp = "dic_"
+)
+```
+
+The content of **"dic_variables.csv"** is the following one:
+
+```{r echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE}
+DT::datatable(
+  readr::read_csv2(
+    system.file("dic_variables.csv", package = "observatoire")
+  )
+)
+```
+
+The content of **"dic_cantons.csv"** is the following one:
+
+```{r echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE}
+DT::datatable(
+  readr::read_csv(
+    system.file("dic_cantons.csv", package = "observatoire")
+  )
+)
+```
+  
+The content of **"dic_values.csv"** is the following one:
+
+```{r echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE}
+#TODO
+```
+
+```{r development-inflate, eval=FALSE}
+# Run but keep eval=FALSE to avoid infinite loop
+# Execute in the console directly
+fusen::inflate(
+  flat_file = "dev/flat_prepare_data.Rmd", 
+  vignette_name = "Prepare/update data used by the app",
+  check = FALSE, 
+  overwrite = TRUE
+)
+```
+

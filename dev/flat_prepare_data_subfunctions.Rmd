@@ -1,0 +1,346 @@
+---
+title: "Prepare data - subfunctions"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r development, include=FALSE}
+library(testthat)
+library(readxl)
+library(here)
+library(tools)
+library(readr)
+library(dplyr)
+```
+
+```{r development-load}
+# Load already included functions if relevant
+pkgload::load_all(export_all = FALSE)
+```
+
+# Import the raw projects data with `import_raw_data()`
+    
+```{r function-import_raw_data}
+#' Import the raw data
+#' 
+#' @param name_raw_file Character. Name of the raw data file.
+#' @param pkg_dir Character. Path to the package (must contain a data-raw folder).
+#' 
+#' @importFrom readxl read_excel
+#' @importFrom tools file_ext
+#' @importFrom glue glue
+#' 
+#' @return A tibble corresponding to raw data
+#' 
+#' @noRd
+import_raw_data <- function(
+    name_raw_file = "PGV.xlsx",
+    pkg_dir = system.file(package = "observatoire")
+  ) {
+  
+  raw_data_path <- file.path(
+    pkg_dir,
+    "data-raw", 
+    name_raw_file
+  )
+  
+  if (isFALSE(file.exists(raw_data_path))) {
+    stop(glue("There is no file called {name_raw_file} in /data-raw"))
+  }
+    
+  if (isFALSE(file_ext(name_raw_file) == "xlsx")) {
+    stop("The raw file must be an xlsx file")
+  }
+  
+  read_excel(
+    path = raw_data_path
+  )
+    
+}
+```
+  
+```{r example-import_raw_data}
+# Import the raw data
+import_raw_data()
+```
+  
+```{r tests-import_raw_data}
+test_that("Test that the import of the raw data is ok", {
+  
+  # Create a temp folder with data-raw subfolder and save a toy object inside
+  my_temp_dir <- tempfile("test-import-data")
+  dir.create(my_temp_dir)
+  dir.create(file.path(my_temp_dir, "data-raw"))
+
+  writexl::write_xlsx(
+    x = iris[1:2, ], 
+    path = file.path(my_temp_dir, "data-raw", "iris.xlsx")
+  )
+  
+  write.csv(
+    x = iris[1:2, ], 
+    file = file.path(my_temp_dir, "data-raw", "iris.csv")
+  )
+  
+  #' @description Testing that there is no error if the xlsx data exists
+  expect_error(
+    res_iris_import <- import_raw_data(
+      name_raw_file = "iris.xlsx",
+      pkg_dir = my_temp_dir
+    ), regexp = NA
+  )
+
+  #' @description Testing that the object is the expected one
+  expect_equal(
+    object = res_iris_import |> 
+      dplyr::mutate(
+        dplyr::across(
+        everything(),
+        as.character
+      )),
+    expected = tibble::as_tibble(iris[1:2, ]) |> 
+      dplyr::mutate(
+        dplyr::across(
+        everything(),
+        as.character
+      ))
+  )
+  
+  #' @description Testing that there is an error if the data does not exist
+  expect_error(
+      import_raw_data(
+        name_raw_file = "notexists.xlsx",
+        pkg_dir = my_temp_dir
+      )
+  )
+  
+  #' @description Testing that there is an error if the data is not a xlsx file
+  expect_error(
+      import_raw_data(
+        name_raw_file = "iris.csv",
+        pkg_dir = my_temp_dir
+      )
+  )
+  
+  unlink(
+    my_temp_dir, 
+    recursive = TRUE
+  )
+  
+})
+```
+ 
+# Add the proper colums names to the projects data with `add_col_raw_data()`
+
+```{r function-add_col_raw_data}
+#' Add the proper colums names to the projects data
+#' 
+#' @param data Tibble. Raw data about projects.
+#' 
+#' @importFrom readr read_csv2
+#' 
+#' @return The raw data about the projects with the good columns names.
+#'
+#' @noRd
+add_col_raw_data <- function(
+    data
+    ){
+  
+  # Import the variables dictionary saved in the package
+  dic_variables <- read_csv2(
+    system.file("dic_variables.csv", package = "observatoire"),
+    show_col_types = FALSE
+  )
+  
+  # Check if all columns are present
+  if (isFALSE(all(sort(colnames(data)) == sort(dic_variables$de)))) {
+    stop("The columns in the raw projects data file are not the expected ones. Please, make sure that the columns are those described in the file dic_variables.csv.")
+  }
+  
+  # Replace german column names with the names of the variables
+  colnames(data) <- dic_variables$name_variable[
+    match(
+      dic_variables$de, 
+      names(data)
+      )
+    ]
+
+  return(data)
+  
+}
+```
+  
+```{r example-add_col_raw_data}
+# Import the raw data
+raw_projetcs_data <- import_raw_data()
+
+# Add the good columns names
+raw_projetcs_data |> 
+  add_col_raw_data()
+```
+  
+```{r tests-add_col_raw_data}
+test_that("Test that the addition of the variables names is ok", {
+  
+  raw_projects_data <- import_raw_data()
+  
+  # Add colnames
+  raw_data_with_colnames <- add_col_raw_data(
+    data = raw_projects_data
+  )
+  
+  # Import the variables dictionary saved in the package
+  dic_variables <- read_csv2(
+    system.file("dic_variables.csv", package = "observatoire"),
+    show_col_types = FALSE
+  )
+  
+  #' @description Testing that the colnames are the expected ones
+  expect_equal(
+    object = sort(colnames(raw_data_with_colnames)), 
+    expect = sort(dic_variables$name_variable)
+  )
+  
+  colnames(raw_data_with_colnames) <- colnames(raw_projects_data)
+  
+  #' @description Testing that the data is not modified
+  expect_equal(
+    object = raw_data_with_colnames, 
+    expect = raw_projects_data
+  )
+  
+  colnames(raw_projects_data)[1] <- "mistake"
+  #' @description Testing that there is an error if columns are not the expected ones
+  expect_error(
+    add_col_raw_data(
+      data = raw_projects_data
+      )
+  )
+  
+})
+```
+  
+# Clean the raw projects data with `clean_raw_data()`
+ 
+```{r function-clean_raw_data}
+#' Clean the raw projects data
+#' 
+#' @param data Tibble. Raw data about projects, with the good columns names.
+#' 
+#' @importFrom dplyr mutate across
+#' @importFrom tidyselect starts_with
+#' 
+#' @return A tibble with clean data.
+#' 
+#' @noRd
+clean_raw_data <- function(
+    data
+    ){
+    
+  # Remove the first row containing some French column names
+  if (data[1, 1] == "Titre") {
+    data <- data[-1, ] 
+  }
+  
+  # Convert to digital format
+  ## Standardize thousand separators in budget columns
+  data_standardized_thousand_sep <- data |> 
+  mutate(
+    across(
+      starts_with("budget"),
+      ~ gsub("^CHF\\s+|\\'", "", .x)
+    )
+  ) 
+  
+  ## Convert to digital format
+  clean_data <- data_standardized_thousand_sep |>
+    mutate(
+      across(
+        starts_with("budget"),
+        as.numeric
+      )
+    )
+  
+  return(clean_data)
+  
+}
+```
+  
+```{r example-clean_raw_data}
+# Import the raw data and add the good columns names
+raw_data <- import_raw_data() |> 
+  add_col_raw_data()
+
+# Clean the data
+raw_data |> 
+  clean_raw_data()
+```
+  
+```{r tests-clean_raw_data}
+test_that("Test that the cleaning of the raw data is ok", {
+ 
+  raw_data <- import_raw_data()
+  
+  clean_data <- raw_data |>
+    add_col_raw_data() |>
+    clean_raw_data()
+  
+  #' @description Testing that there is not more issue with French word in the first line
+  expect_false(
+    object = (clean_data[1, 1] == "Titre")
+  )
+  
+  #' @description Testing that there is not more issue with the thousand sep
+  expect_equal(
+    object = clean_data |>
+      dplyr::filter(
+        dplyr::if_any(
+          tidyselect::starts_with("budget"),
+                    ~ grepl("^CHF|\\'", .x))) |>
+      nrow(), 
+    expected = 0
+  )
+  
+  
+  
+
+  
+  
+})
+```
+  
+# Get the coordinates of the principale organization with `get_coord_main_resp_orga()`
+
+TODO
+
+# Get the canton of the principale organization with `get_canton_main_resp_orga()`
+
+TODO
+
+# Get the number of cantons influenced with `get_nb_cantons_influenced()`
+
+TODO
+
+# Get the proportion of the budget for GFCH, principale organization and third party with `get_prop_budget()`
+
+TODO
+
+# Translate the data (values in the table) in FR and DE with `translate_values_in_data()`
+
+TODO
+
+# Save the prepared data (FR and DE versions) with `save_projects_data()`
+
+TODO
+
+```{r development-inflate, eval=FALSE}
+# Run but keep eval=FALSE to avoid infinite loop
+# Execute in the console directly
+fusen::inflate(
+  flat_file = "dev/flat_prepare_data_subfunctions.Rmd", 
+  vignette_name = NA,
+  check = FALSE
+)
+```
+

@@ -1,0 +1,14 @@
+articles:
+- title: Articles
+  navbar: ~
+  contents:
+  - prepare-update-data-used-by-the-app
+
+reference:
+- title: Data used by the app
+  desc: Prepare and update the data used by the app
+- contents:
+  - prepare_projects_data
+- title: Shiny app
+- contents:
+  - run_app

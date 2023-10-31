@@ -13,3 +13,4 @@ $run_dev.*
 ^observatoire\.Rproj$
 ^app\.R$
 ^rsconnect$
+^docs$
