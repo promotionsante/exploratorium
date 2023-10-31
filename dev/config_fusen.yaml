@@ -1,0 +1,32 @@
+flat_prepare_data.Rmd:
+  path: dev/flat_prepare_data.Rmd
+  state: active
+  R: R/prepare_projects_data.R
+  tests: tests/testthat/test-prepare_projects_data.R
+  vignettes: vignettes/prepare-update-data-used-by-the-app.Rmd
+  inflate:
+    flat_file: dev/flat_prepare_data.Rmd
+    vignette_name: Prepare/update data used by the app
+    open_vignette: true
+    check: false
+    document: true
+    overwrite: 'yes'
+flat_prepare_data_subfunctions.Rmd:
+  path: dev/flat_prepare_data_subfunctions.Rmd
+  state: active
+  R:
+  - R/add_col_raw_data.R
+  - R/clean_raw_data.R
+  - R/import_raw_data.R
+  tests:
+  - tests/testthat/test-import_raw_data.R
+  - tests/testthat/test-add_col_raw_data.R
+  - tests/testthat/test-clean_raw_data.R
+  vignettes: []
+  inflate:
+    flat_file: dev/flat_prepare_data_subfunctions.Rmd
+    vignette_name: .na
+    open_vignette: true
+    check: false
+    document: true
+    overwrite: ask
