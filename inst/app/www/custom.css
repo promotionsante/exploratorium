@@ -1,0 +1,14 @@
+  div.ch-map {
+     position: fixed;
+     top: 0;
+     left: 0;
+     right: 300px;
+     bottom: 0;
+     overflow: hidden;
+     padding: 0;
+ }
+
+ /* If not using map tiles, show a white background */
+ .leaflet-container {
+     background-color: white !important;
+ }
