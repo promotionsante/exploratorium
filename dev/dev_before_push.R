@@ -9,14 +9,9 @@ fusen::inflate_all_no_check()
 #   extra.suggests = ""
 # )
 
-## Run the examples
-devtools::run_examples()
-
-## Run the unit tests
-devtools::test()
 
 ## Check the package
-devtools::check(args = c("--no-examples", "--no-tests"))
+devtools::check()
 
 ## Build the pkgdown
 pkgdown::build_site()

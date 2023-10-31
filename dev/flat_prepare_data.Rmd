@@ -95,10 +95,6 @@ prepare_projects_data()
 #TODO
 ```
 
-```{r}
-prepare_projects_data()
-```
-
 # Update the data concerning the translations
 
 You must modify directly the dictionaries used for the translations. They are saved in the `inst` folder, in a `.csv` format. 

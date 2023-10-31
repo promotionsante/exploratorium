@@ -49,10 +49,6 @@ Then, to update the data concerning the projects used by the application, you ca
 prepare_projects_data()
 ```
 
-```{r}
-prepare_projects_data()
-```
-
 # Update the data concerning the translations
 
 You must modify directly the dictionaries used for the translations. They are saved in the `inst` folder, in a `.csv` format. 
