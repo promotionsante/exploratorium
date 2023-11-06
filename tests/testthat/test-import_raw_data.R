@@ -6,7 +6,7 @@ test_that("Test that the import of the raw data is ok", {
   my_temp_dir <- tempfile("test-import-data")
   dir.create(my_temp_dir)
   dir.create(file.path(my_temp_dir, "data-raw"))
-
+  
   writexl::write_xlsx(
     x = iris[1:2, ], 
     path = file.path(my_temp_dir, "data-raw", "iris.xlsx")
@@ -24,37 +24,37 @@ test_that("Test that the import of the raw data is ok", {
       pkg_dir = my_temp_dir
     ), regexp = NA
   )
-
+  
   #' @description Testing that the object is the expected one
   expect_equal(
     object = res_iris_import |> 
       dplyr::mutate(
         dplyr::across(
-        everything(),
-        as.character
-      )),
+          everything(),
+          as.character
+        )),
     expected = tibble::as_tibble(iris[1:2, ]) |> 
       dplyr::mutate(
         dplyr::across(
-        everything(),
-        as.character
-      ))
+          everything(),
+          as.character
+        ))
   )
   
   #' @description Testing that there is an error if the data does not exist
   expect_error(
-      import_raw_data(
-        name_raw_file = "notexists.xlsx",
-        pkg_dir = my_temp_dir
-      )
+    import_raw_data(
+      name_raw_file = "notexists.xlsx",
+      pkg_dir = my_temp_dir
+    )
   )
   
   #' @description Testing that there is an error if the data is not a xlsx file
   expect_error(
-      import_raw_data(
-        name_raw_file = "iris.csv",
-        pkg_dir = my_temp_dir
-      )
+    import_raw_data(
+      name_raw_file = "iris.csv",
+      pkg_dir = my_temp_dir
+    )
   )
   
   unlink(

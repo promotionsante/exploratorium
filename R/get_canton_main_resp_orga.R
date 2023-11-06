@@ -4,9 +4,9 @@
 #' 
 #' @param data Tibble. Raw data about projects, with the good columns names.
 #' 
-#' @importFrom dplyr filter mutate select left_join
+#' @importFrom dplyr filter mutate select left_join rename
 #' @importFrom glue glue
-#' @importFrom sf st_read st_intersects st_point
+#' @importFrom sf st_read st_intersects st_as_sf st_join
 #' @importFrom purrr map_df 
 #' @importFrom tibble as_tibble tibble
 #' 
@@ -26,7 +26,7 @@
 #'   get_canton_main_resp_orga()
 get_canton_main_resp_orga <- function(
     data
-    ){
+){
   
   # Check if some GPS points are missing
   nb_missing_gps_points <- data |> 
@@ -34,7 +34,14 @@ get_canton_main_resp_orga <- function(
     nrow()
   
   if (nb_missing_gps_points > 0) {
-    message(glue("{nb_missing_gps_points} project.s is.are not associated to a GPS point. Please correct the problem before restarting the data preparation workflow, or this.these project.s will not be displayed on the observatory map."))
+    message(
+      glue(
+        "{nb_missing_gps_points} project.s is.are not associated to a GPS point.",
+        "Please correct the problem before restarting the data preparation workflow,",
+        "or this.these project.s will not be displayed on the observatory map.",
+        .sep = "\n"
+      )
+    )
   }
   
   # Detect the id of the cantons
@@ -42,66 +49,50 @@ get_canton_main_resp_orga <- function(
     dsn = system.file(
       "gadm41_CHE_1.json", 
       package = "observatoire"
-    )
+    ),
+    quiet = TRUE
   )
-    
+  
   data_with_coord <- data |>
     filter(!is.na(longitude) & !is.na(latitude)) |> 
-    select(short_title, longitude, latitude) 
-  
-  data_with_id_canton <- data_with_coord |> 
-    t() |> 
-    as.data.frame() |> 
-    map_df(
-      ~ which(
-        st_intersects(
-          x = st_point(
-            as.numeric(c(.x[2], .x[3]))
-          ),
-          y = cantons_sf, 
-          sparse = FALSE
-        )
-      )
-    ) |> 
-    t() |> 
-    as_tibble() |> 
-    mutate(
-      short_title = data_with_coord$short_title
+    select(short_title, longitude, latitude) |> 
+    st_as_sf(
+      coords = c("longitude", "latitude"),
+      crs = 4326
     )
   
-  colnames(data_with_id_canton)[1] <- "id_canton"
-    
-  
-  # Find the name of the canton
-  corresp_id_name_cantons <- tibble(
-    id_canton = seq_len(length(cantons_sf$NAME_1)),
-    name_canton = cantons_sf$NAME_1
-  )
-  
-  data_with_name_canton <- left_join(
-    x = data_with_id_canton, 
-    y = corresp_id_name_cantons, 
-    by = "id_canton"
+  data_with_id_canton <- st_join(
+    x = data_with_coord, 
+    y = select(cantons_sf, HASC_1)
   ) |> 
-    select(- id_canton)
+    rename(
+      id_canton = HASC_1
+    )
   
   # Add the canton to the raw data
   data_with_canton <- left_join(
     x = data, 
-    y = data_with_name_canton,
+    y = data_with_id_canton,
     by = "short_title"
   )
   
   # Check if all cantons have been found
   nb_canton_not_found <- data_with_canton |> 
     filter(!is.na(longitude) & !is.na(latitude)) |> 
-    filter(is.na(name_canton)) |> 
+    filter(is.na(id_canton)) |> 
     nrow()
   
   if (nb_canton_not_found > 0) {
-    stop(glue("{nb_canton_not_found} project.s is.are not associated to a canton. Please correct the problem before restarting the data preparation workflow, or this.these project.s will not be displayed on the observatory map."))
+    stop(
+      glue(
+        "{nb_canton_not_found} project.s is.are not associated to a canton.",
+        "Please correct the problem before restarting the data preparation workflow,",
+        "or this.these project.s will not be displayed on the observatory map.",
+        .sep = "\n"
+      )
+    )
   }
   
   return(data_with_canton)
-    
+  
 }

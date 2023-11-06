@@ -20,8 +20,8 @@
 #'   clean_raw_data()
 clean_raw_data <- function(
     data
-    ){
-    
+){
+  
   # Remove the first row containing some French column names
   if (data[1, 1] == "Titre") {
     data <- data[-1, ] 
@@ -30,12 +30,12 @@ clean_raw_data <- function(
   # Convert to digital format
   ## Standardize thousand separators in budget columns
   data_standardized_thousand_sep <- data |> 
-  mutate(
-    across(
-      starts_with("budget"),
-      ~ gsub("^CHF\\s+|\\'", "", .x)
-    )
-  ) 
+    mutate(
+      across(
+        starts_with("budget"),
+        ~ gsub("^CHF\\s+|\\'", "", .x)
+      )
+    ) 
   
   ## Convert to digital format
   clean_data <- data_standardized_thousand_sep |>

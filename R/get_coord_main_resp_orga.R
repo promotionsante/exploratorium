@@ -7,7 +7,7 @@
 #' @importFrom tidygeocoder geocode
 #' @importFrom dplyr mutate select filter
 #' @importFrom glue glue
-#' @importFrom sf st_read st_contains st_point st_union
+#' @importFrom sf st_read st_contains st_point st_union st_as_sf
 #' @importFrom purrr map_lgl
 #' 
 #' @return A tibble with a column with the coordinates of the principale organization.
@@ -24,7 +24,7 @@
 #'   get_coord_main_resp_orga()
 get_coord_main_resp_orga <- function(
     data
-    ){
+){
   
   # Check if some cities are missing
   nb_missing_cities <- data |> 
@@ -32,7 +32,14 @@ get_coord_main_resp_orga <- function(
     nrow()
   
   if (nb_missing_cities > 0) {
-    message(glue("{nb_missing_cities} project.s is.are not associated to a city. Please correct the problem before restarting the data preparation workflow, or this.these project.s will not be displayed on the observatory map."))
+    message(
+      glue(
+        "{nb_missing_cities} project.s is.are not associated to a city.",
+        "Please correct the problem before restarting the data preparation workflow,",
+        "or this.these project.s will not be displayed on the observatory map.",
+        .sep = "\n"
+      )
+    )
   }
   
   data_with_coord <- data |> 
@@ -62,18 +69,26 @@ get_coord_main_resp_orga <- function(
   
   check_is_in_switzerland <- data_with_coord |> 
     filter(!is.na(longitude) & !is.na(latitude)) |> 
-    select(longitude, latitude) |> 
-    t() |> 
-    as.data.frame() |> 
-    map_lgl(
-      ~ st_contains(
-        x = switzerland_sf,
-        y = st_point(c(.x[1], .x[2]))
-      ) |> as.logical()
-    )
-    
+    st_as_sf(
+      coords = c("longitude", "latitude"),
+      crs = 4326
+    ) |> 
+    st_contains(
+      x = switzerland_sf,
+      y = _,
+      sparse = FALSE
+    ) |> 
+    as.logical()
+  
+  
   if (any(isFALSE(check_is_in_switzerland))) {
-    stop("There is an issue in the geocoding of the principale organisation. Some points that have been found are not in Switzerland.")
+    stop(
+      paste(
+        "There is an issue in the geocoding of the principale organisation.",
+        "Some points that have been found are not in Switzerland.",
+        sep = "\n"
+      )
+    )
   }
   
   return(data_with_coord)

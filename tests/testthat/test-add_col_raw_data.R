@@ -34,7 +34,7 @@ test_that("Test that the addition of the variables names is ok", {
   expect_error(
     add_col_raw_data(
       data = raw_projects_data
-      )
+    )
   )
   
 })

@@ -55,15 +55,15 @@ test_that("Test that the detection of the canton is ok", {
   )
   
   expect_equal(
-    object = res_toy_data$name_canton,
+    object = res_toy_data$id_canton,
     expected = c(
-      "Aargau",
-      "SanktGallen",
-      "Ticino",
-      "Bern",
-      "Zürich",
-      "Bern",
-      "Vaud",
+      "CH.AG", 
+      "CH.SG", 
+      "CH.TI", 
+      "CH.BE", 
+      "CH.ZH", 
+      "CH.BE", 
+      "CH.VD", 
       NA
     )
   )
