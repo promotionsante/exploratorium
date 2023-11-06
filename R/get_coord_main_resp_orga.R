@@ -7,7 +7,7 @@
 #' @importFrom tidygeocoder geocode
 #' @importFrom dplyr mutate select filter
 #' @importFrom glue glue
-#' @importFrom sf st_read st_contains st_point
+#' @importFrom sf st_read st_contains st_point st_union
 #' @importFrom purrr map_lgl
 #' 
 #' @return A tibble with a column with the coordinates of the principale organization.
@@ -49,11 +49,15 @@ get_coord_main_resp_orga <- function(
     select(- country)
   
   # Check if the points are in Switzerland
-  switzerland_sf <- st_read(
+  cantons_sf <- st_read(
     dsn = system.file(
-      "gadm41_CHE_0.json", 
+      "gadm41_CHE_1.json", 
       package = "observatoire"
     )
+  )
+  
+  switzerland_sf <- st_union(
+    x = cantons_sf
   )
   
   check_is_in_switzerland <- data_with_coord |> 
