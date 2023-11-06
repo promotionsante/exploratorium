@@ -18,7 +18,7 @@
 #'   add_col_raw_data()
 add_col_raw_data <- function(
     data
-    ){
+){
   
   # Import the variables dictionary saved in the package
   dic_variables <- read_csv2(
@@ -27,8 +27,15 @@ add_col_raw_data <- function(
   )
   
   # Check if all columns are present
-  if (isFALSE(all(sort(colnames(data)) == sort(dic_variables$de)))) {
-    stop("The columns in the raw projects data file are not the expected ones. Please, make sure that the columns are those described in the file dic_variables.csv.")
+  all_expected_columns_are_present <- all(sort(colnames(data)) == sort(dic_variables$de))
+  if (isFALSE(all_expected_columns_are_present)) {
+    stop(
+      paste(
+        "The columns in the raw projects data file are not the expected ones.",
+        "Please, make sure that the columns are those described in the file dic_variables.csv.",
+        sep = "\n"
+      )
+    )
   }
   
   # Replace german column names with the names of the variables
@@ -36,9 +43,9 @@ add_col_raw_data <- function(
     match(
       dic_variables$de, 
       names(data)
-      )
-    ]
-
+    )
+  ]
+  
   return(data)
   
 }

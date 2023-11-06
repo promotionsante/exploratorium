@@ -12,6 +12,9 @@ library(here)
 library(tools)
 library(readr)
 library(dplyr)
+library(tidygeocoder)
+library(sf)
+library(glue)
 ```
 
 ```{r development-load}
@@ -20,7 +23,7 @@ pkgload::load_all(export_all = FALSE)
 ```
 
 # Import the raw projects data with `import_raw_data()`
-    
+
 ```{r function-import_raw_data}
 #' Import the raw data
 #' 
@@ -37,7 +40,7 @@ pkgload::load_all(export_all = FALSE)
 import_raw_data <- function(
     name_raw_file = "PGV.xlsx",
     pkg_dir = system.file(package = "observatoire")
-  ) {
+) {
   
   raw_data_path <- file.path(
     pkg_dir,
@@ -48,7 +51,7 @@ import_raw_data <- function(
   if (isFALSE(file.exists(raw_data_path))) {
     stop(glue("There is no file called {name_raw_file} in /data-raw"))
   }
-    
+  
   if (isFALSE(file_ext(name_raw_file) == "xlsx")) {
     stop("The raw file must be an xlsx file")
   }
@@ -56,15 +59,15 @@ import_raw_data <- function(
   read_excel(
     path = raw_data_path
   )
-    
+  
 }
 ```
-  
+
 ```{r example-import_raw_data}
 # Import the raw data
 import_raw_data()
 ```
-  
+
 ```{r tests-import_raw_data}
 test_that("Test that the import of the raw data is ok", {
   
@@ -72,7 +75,7 @@ test_that("Test that the import of the raw data is ok", {
   my_temp_dir <- tempfile("test-import-data")
   dir.create(my_temp_dir)
   dir.create(file.path(my_temp_dir, "data-raw"))
-
+  
   writexl::write_xlsx(
     x = iris[1:2, ], 
     path = file.path(my_temp_dir, "data-raw", "iris.xlsx")
@@ -90,37 +93,37 @@ test_that("Test that the import of the raw data is ok", {
       pkg_dir = my_temp_dir
     ), regexp = NA
   )
-
+  
   #' @description Testing that the object is the expected one
   expect_equal(
     object = res_iris_import |> 
       dplyr::mutate(
         dplyr::across(
-        everything(),
-        as.character
-      )),
+          everything(),
+          as.character
+        )),
     expected = tibble::as_tibble(iris[1:2, ]) |> 
       dplyr::mutate(
         dplyr::across(
-        everything(),
-        as.character
-      ))
+          everything(),
+          as.character
+        ))
   )
   
   #' @description Testing that there is an error if the data does not exist
   expect_error(
-      import_raw_data(
-        name_raw_file = "notexists.xlsx",
-        pkg_dir = my_temp_dir
-      )
+    import_raw_data(
+      name_raw_file = "notexists.xlsx",
+      pkg_dir = my_temp_dir
+    )
   )
   
   #' @description Testing that there is an error if the data is not a xlsx file
   expect_error(
-      import_raw_data(
-        name_raw_file = "iris.csv",
-        pkg_dir = my_temp_dir
-      )
+    import_raw_data(
+      name_raw_file = "iris.csv",
+      pkg_dir = my_temp_dir
+    )
   )
   
   unlink(
@@ -130,7 +133,7 @@ test_that("Test that the import of the raw data is ok", {
   
 })
 ```
- 
+
 # Add the proper colums names to the projects data with `add_col_raw_data()`
 
 ```{r function-add_col_raw_data}
@@ -145,7 +148,7 @@ test_that("Test that the import of the raw data is ok", {
 #' @noRd
 add_col_raw_data <- function(
     data
-    ){
+){
   
   # Import the variables dictionary saved in the package
   dic_variables <- read_csv2(
@@ -154,8 +157,15 @@ add_col_raw_data <- function(
   )
   
   # Check if all columns are present
-  if (isFALSE(all(sort(colnames(data)) == sort(dic_variables$de)))) {
-    stop("The columns in the raw projects data file are not the expected ones. Please, make sure that the columns are those described in the file dic_variables.csv.")
+  all_expected_columns_are_present <- all(sort(colnames(data)) == sort(dic_variables$de))
+  if (isFALSE(all_expected_columns_are_present)) {
+    stop(
+      paste(
+        "The columns in the raw projects data file are not the expected ones.",
+        "Please, make sure that the columns are those described in the file dic_variables.csv.",
+        sep = "\n"
+      )
+    )
   }
   
   # Replace german column names with the names of the variables
@@ -163,14 +173,14 @@ add_col_raw_data <- function(
     match(
       dic_variables$de, 
       names(data)
-      )
-    ]
-
+    )
+  ]
+  
   return(data)
   
 }
 ```
-  
+
 ```{r example-add_col_raw_data}
 # Import the raw data
 raw_projetcs_data <- import_raw_data()
@@ -179,7 +189,7 @@ raw_projetcs_data <- import_raw_data()
 raw_projetcs_data |> 
   add_col_raw_data()
 ```
-  
+
 ```{r tests-add_col_raw_data}
 test_that("Test that the addition of the variables names is ok", {
   
@@ -215,14 +225,14 @@ test_that("Test that the addition of the variables names is ok", {
   expect_error(
     add_col_raw_data(
       data = raw_projects_data
-      )
+    )
   )
   
 })
 ```
-  
+
 # Clean the raw projects data with `clean_raw_data()`
- 
+
 ```{r function-clean_raw_data}
 #' Clean the raw projects data
 #' 
@@ -236,8 +246,8 @@ test_that("Test that the addition of the variables names is ok", {
 #' @noRd
 clean_raw_data <- function(
     data
-    ){
-    
+){
+  
   # Remove the first row containing some French column names
   if (data[1, 1] == "Titre") {
     data <- data[-1, ] 
@@ -246,12 +256,12 @@ clean_raw_data <- function(
   # Convert to digital format
   ## Standardize thousand separators in budget columns
   data_standardized_thousand_sep <- data |> 
-  mutate(
-    across(
-      starts_with("budget"),
-      ~ gsub("^CHF\\s+|\\'", "", .x)
-    )
-  ) 
+    mutate(
+      across(
+        starts_with("budget"),
+        ~ gsub("^CHF\\s+|\\'", "", .x)
+      )
+    ) 
   
   ## Convert to digital format
   clean_data <- data_standardized_thousand_sep |>
@@ -266,7 +276,7 @@ clean_raw_data <- function(
   
 }
 ```
-  
+
 ```{r example-clean_raw_data}
 # Import the raw data and add the good columns names
 raw_data <- import_raw_data() |> 
@@ -276,10 +286,10 @@ raw_data <- import_raw_data() |>
 raw_data |> 
   clean_raw_data()
 ```
-  
+
 ```{r tests-clean_raw_data}
 test_that("Test that the cleaning of the raw data is ok", {
- 
+  
   raw_data <- import_raw_data()
   
   clean_data <- raw_data |>
@@ -297,26 +307,330 @@ test_that("Test that the cleaning of the raw data is ok", {
       dplyr::filter(
         dplyr::if_any(
           tidyselect::starts_with("budget"),
-                    ~ grepl("^CHF|\\'", .x))) |>
+          ~ grepl("^CHF|\\'", .x))) |>
       nrow(), 
     expected = 0
   )
   
-  
-  
+})
+```
 
+# Get the coordinates of the principale organization with `get_coord_main_resp_orga()`
+
+```{r function-get_coord_main_resp_orga}
+#' Get the coordinates of the principale organization
+#' 
+#' @param data Tibble. Raw data about projects, with the good columns names.
+#'
+#' @importFrom tidygeocoder geocode
+#' @importFrom dplyr mutate select filter
+#' @importFrom glue glue
+#' @importFrom sf st_read st_contains st_point st_union st_as_sf
+#' @importFrom purrr map_lgl
+#' 
+#' @return A tibble with a column with the coordinates of the principale organization.
+#' 
+#' @noRd
+get_coord_main_resp_orga <- function(
+    data
+){
   
+  # Check if some cities are missing
+  nb_missing_cities <- data |> 
+    filter(is.na(city_code_main_resp_orga)) |> 
+    nrow()
+  
+  if (nb_missing_cities > 0) {
+    message(
+      glue(
+        "{nb_missing_cities} project.s is.are not associated to a city.",
+        "Please correct the problem before restarting the data preparation workflow,",
+        "or this.these project.s will not be displayed on the observatory map.",
+        .sep = "\n"
+      )
+    )
+  }
+  
+  data_with_coord <- data |> 
+    mutate(
+      country = "Switzerland"
+    ) |> 
+    geocode(
+      city = city_code_main_resp_orga, 
+      country = country,
+      method = "osm", 
+      lat = latitude , 
+      long = longitude
+    ) |> 
+    select(- country)
+  
+  # Check if the points are in Switzerland
+  cantons_sf <- st_read(
+    dsn = system.file(
+      "gadm41_CHE_1.json", 
+      package = "observatoire"
+    )
+  )
+  
+  switzerland_sf <- st_union(
+    x = cantons_sf
+  )
+  
+  check_is_in_switzerland <- data_with_coord |> 
+    filter(!is.na(longitude) & !is.na(latitude)) |> 
+    st_as_sf(
+      coords = c("longitude", "latitude"),
+      crs = 4326
+    ) |> 
+    st_contains(
+      x = switzerland_sf,
+      y = _,
+      sparse = FALSE
+    ) |> 
+    as.logical()
+  
+  
+  if (any(isFALSE(check_is_in_switzerland))) {
+    stop(
+      paste(
+        "There is an issue in the geocoding of the principale organisation.",
+        "Some points that have been found are not in Switzerland.",
+        sep = "\n"
+      )
+    )
+  }
+  
+  return(data_with_coord)
+  
+}
+```
+
+```{r example-get_coord_main_resp_orga}
+# Import the raw data and add the good columns names
+raw_data <- import_raw_data() |> 
+  add_col_raw_data() |> 
+  clean_raw_data()
+
+# Geocode the principale organisation of the project
+raw_data |> 
+  get_coord_main_resp_orga()
+```
+
+```{r tests-get_coord_main_resp_orga}
+test_that("Test that the geocoding of the data is ok", {
+  
+  toy_data <-
+    structure(
+      list(
+        city_code_main_resp_orga = c(
+          "Zürich",
+          "Sion",
+          "Bern",
+          "Lausanne",
+          "St. Gallen",
+          NA,
+          "Le Cerneux-Veusil",
+          "Genève",
+          "Aarau",
+          "Münsingen"
+        )
+      ),
+      row.names = c(NA,
+                    -10L),
+      class = c("tbl_df", "tbl", "data.frame")
+    )
+  
+  expect_message(
+    res_geocode <- get_coord_main_resp_orga(
+      data = toy_data
+    ),
+    regexp = "1 project.s is.are not associated to a city."
+  )
+  
+  expect_error(
+    res_geocode <- get_coord_main_resp_orga(
+      data = toy_data
+    ),
+    regexp = NA
+  )
   
 })
 ```
-  
-# Get the coordinates of the principale organization with `get_coord_main_resp_orga()`
-
-TODO
 
 # Get the canton of the principale organization with `get_canton_main_resp_orga()`
 
-TODO
+```{r function-get_canton_main_resp_orga}
+#' Get the canton of the principale organization
+#' 
+#' @param data Tibble. Raw data about projects, with the good columns names.
+#' 
+#' @importFrom dplyr filter mutate select left_join rename
+#' @importFrom glue glue
+#' @importFrom sf st_read st_intersects st_as_sf st_join
+#' @importFrom purrr map_df 
+#' @importFrom tibble as_tibble tibble
+#' 
+#' 
+#' @return A tibble with the name of the canton
+#' 
+#' @noRd
+get_canton_main_resp_orga <- function(
+    data
+){
+  
+  # Check if some GPS points are missing
+  nb_missing_gps_points <- data |> 
+    filter(is.na(longitude) | is.na(latitude)) |> 
+    nrow()
+  
+  if (nb_missing_gps_points > 0) {
+    message(
+      glue(
+        "{nb_missing_gps_points} project.s is.are not associated to a GPS point.",
+        "Please correct the problem before restarting the data preparation workflow,",
+        "or this.these project.s will not be displayed on the observatory map.",
+        .sep = "\n"
+      )
+    )
+  }
+  
+  # Detect the id of the cantons
+  cantons_sf <- st_read(
+    dsn = system.file(
+      "gadm41_CHE_1.json", 
+      package = "observatoire"
+    ),
+    quiet = TRUE
+  )
+  
+  data_with_coord <- data |>
+    filter(!is.na(longitude) & !is.na(latitude)) |> 
+    select(short_title, longitude, latitude) |> 
+    st_as_sf(
+      coords = c("longitude", "latitude"),
+      crs = 4326
+    )
+  
+  data_with_id_canton <- st_join(
+    x = data_with_coord, 
+    y = select(cantons_sf, HASC_1)
+  ) |> 
+    rename(
+      id_canton = HASC_1
+    )
+  
+  # Add the canton to the raw data
+  data_with_canton <- left_join(
+    x = data, 
+    y = data_with_id_canton,
+    by = "short_title"
+  )
+  
+  # Check if all cantons have been found
+  nb_canton_not_found <- data_with_canton |> 
+    filter(!is.na(longitude) & !is.na(latitude)) |> 
+    filter(is.na(id_canton)) |> 
+    nrow()
+  
+  if (nb_canton_not_found > 0) {
+    stop(
+      glue(
+        "{nb_canton_not_found} project.s is.are not associated to a canton.",
+        "Please correct the problem before restarting the data preparation workflow,",
+        "or this.these project.s will not be displayed on the observatory map.",
+        .sep = "\n"
+      )
+    )
+  }
+  
+  return(data_with_canton)
+  
+}
+```
+
+```{r example-get_canton_main_resp_orga}
+# Import the raw data and perform the first preparations
+raw_data <- import_raw_data() |> 
+  add_col_raw_data() |> 
+  clean_raw_data() |> 
+  get_coord_main_resp_orga()
+
+# Geocode the principale organisation of the project
+raw_data |> 
+  get_canton_main_resp_orga()
+```
+
+```{r tests-get_canton_main_resp_orga}
+test_that("Test that the detection of the canton is ok", {
+  
+  toy_data <-
+    structure(
+      list(
+        short_title = c(
+          "Starke Familie",
+          "StoppSturz",
+          "Sturzprävention in der Spitex",
+          "WilaDina",
+          "Win Back Control PGV01.002",
+          "WOPM PGV02.015",
+          "Zigzag Plus PGV02.064",
+          "FM_ProPCC+"
+        ),
+        longitude = c(
+          8.0444448,
+          9.3762397,
+          8.7954859,
+          7.5631943,
+          8.5410422,
+          7.4521749,
+          6.6327025,
+          NA
+        ),
+        latitude = c(
+          47.3927146,
+          47.425618,
+          46.1695739,
+          46.8739775,
+          47.3744489,
+          46.9484742,
+          46.5218269,
+          NA
+        )
+      ),
+      row.names = c(NA, -8L),
+      class = c("tbl_df", "tbl", "data.frame")
+    )
+  
+  expect_message(
+    get_canton_main_resp_orga(
+      data = toy_data
+    ), 
+    regexp = "1 project.s is.are not associated to a GPS point"
+  )
+  
+  expect_error(
+    res_toy_data <- get_canton_main_resp_orga(
+      data = toy_data
+    ), 
+    regexp = NA
+  )
+  
+  expect_equal(
+    object = res_toy_data$id_canton,
+    expected = c(
+      "CH.AG", 
+      "CH.SG", 
+      "CH.TI", 
+      "CH.BE", 
+      "CH.ZH", 
+      "CH.BE", 
+      "CH.VD", 
+      NA
+    )
+  )
+  
+})
+```
 
 # Get the number of cantons influenced with `get_nb_cantons_influenced()`
 

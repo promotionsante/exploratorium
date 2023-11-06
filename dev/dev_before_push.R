@@ -4,11 +4,10 @@
 fusen::inflate_all_no_check()
 
 ## Update doc
-# attachment::att_amend_desc(
-#   pkg_ignore = "",
-#   extra.suggests = ""
-# )
-
+attachment::att_amend_desc(
+  path = here::here(),
+  extra.suggests = c("rsconnect", "cli")
+)
 
 ## Check the package
 devtools::check()

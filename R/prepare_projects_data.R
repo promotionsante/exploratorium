@@ -26,9 +26,9 @@ prepare_projects_data <- function(
     pkg_dir = pkg_dir
   ) |> 
   add_col_raw_data() |> 
-  clean_raw_data() # |>
-  # get_coord_main_resp_orga() |> 
-  # get_canton_main_resp_orga() |> 
+  clean_raw_data() |>
+  get_coord_main_resp_orga() |>
+  get_canton_main_resp_orga() # |> 
   # get_nb_cantons_influenced() |> 
   # get_prop_budget() |> 
   # translate_values_in_data() |> 

@@ -1,3 +1,11 @@
+# observatoire 0.0.4
+
+* Add the detection of the canton in the raw data
+
+# observatoire 0.0.3
+
+* Add the geocoding to the raw data
+
 # observatoire 0.0.2
 
 * Start the function to prepare the data

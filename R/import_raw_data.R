@@ -18,7 +18,7 @@
 import_raw_data <- function(
     name_raw_file = "PGV.xlsx",
     pkg_dir = system.file(package = "observatoire")
-  ) {
+) {
   
   raw_data_path <- file.path(
     pkg_dir,
@@ -29,7 +29,7 @@ import_raw_data <- function(
   if (isFALSE(file.exists(raw_data_path))) {
     stop(glue("There is no file called {name_raw_file} in /data-raw"))
   }
-    
+  
   if (isFALSE(file_ext(name_raw_file) == "xlsx")) {
     stop("The raw file must be an xlsx file")
   }
@@ -37,5 +37,5 @@ import_raw_data <- function(
   read_excel(
     path = raw_data_path
   )
-    
+  
 }
