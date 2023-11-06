@@ -32,7 +32,7 @@ get_coord_main_resp_orga <- function(
     nrow()
   
   if (nb_missing_cities > 0) {
-    message(glue("{nb_missing_cities} project.s is.are not associated to a city. Please correct the problem before restarting the data preparation workflow, or this.these projectSs will not be displayed on the observatory map."))
+    message(glue("{nb_missing_cities} project.s is.are not associated to a city. Please correct the problem before restarting the data preparation workflow, or this.these project.s will not be displayed on the observatory map."))
   }
   
   data_with_coord <- data |> 

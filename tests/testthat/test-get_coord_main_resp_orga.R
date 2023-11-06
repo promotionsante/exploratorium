@@ -2,7 +2,7 @@
 
 test_that("Test that the geocoding of the data is ok", {
   
-  toy_data_with_cities <-
+  toy_data <-
     structure(
       list(
         city_code_main_resp_orga = c(
@@ -25,14 +25,14 @@ test_that("Test that the geocoding of the data is ok", {
   
   expect_message(
     res_geocode <- get_coord_main_resp_orga(
-      data = toy_data_with_cities
+      data = toy_data
     ),
     regexp = "1 project.s is.are not associated to a city."
   )
   
   expect_error(
     res_geocode <- get_coord_main_resp_orga(
-      data = toy_data_with_cities
+      data = toy_data
     ),
     regexp = NA
   )
