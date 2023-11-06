@@ -17,17 +17,21 @@ Imports:
     golem (>= 0.3.5),
     here,
     leaflet,
+    purrr,
     readr,
     readxl,
     sf,
     shiny (>= 1.7.3),
+    tidygeocoder,
     tidyselect,
     tools
 Suggests: 
+    cli,
     DT,
     fs,
     knitr,
     rmarkdown,
+    rsconnect,
     testthat (>= 3.0.0),
     tibble,
     writexl

@@ -24,9 +24,4 @@ test_that("Test that the cleaning of the raw data is ok", {
     expected = 0
   )
   
-  
-  
-
-  
-  
 })

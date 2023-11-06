@@ -17,11 +17,13 @@ flat_prepare_data_subfunctions.Rmd:
   R:
   - R/add_col_raw_data.R
   - R/clean_raw_data.R
+  - R/get_coord_main_resp_orga.R
   - R/import_raw_data.R
   tests:
   - tests/testthat/test-import_raw_data.R
   - tests/testthat/test-add_col_raw_data.R
   - tests/testthat/test-clean_raw_data.R
+  - tests/testthat/test-get_coord_main_resp_orga.R
   vignettes: []
   inflate:
     flat_file: dev/flat_prepare_data_subfunctions.Rmd
