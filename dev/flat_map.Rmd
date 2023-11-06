@@ -1,0 +1,132 @@
+---
+title: "flat_map.Rmd empty"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r development, include=FALSE}
+library(testthat)
+library(sf)
+library(leaflet)
+```
+
+```{r development-load}
+# Load already included functions if relevant
+pkgload::load_all(export_all = FALSE)
+```
+
+# Draw leadlet map
+
+```{r developement-compute-bounding-box}
+cantons_sf <- st_read(
+  dsn = system.file(
+    "gadm41_CHE_1.json", 
+    package = "observatoire"
+  ),
+  quiet = TRUE
+)
+
+```
+
+
+```{r function-map}
+#' Draw main interactive map
+#'
+#' @return A leaflet object.
+#' 
+#' @importFrom stats setNames
+#' @importFrom sf st_as_sf st_read st_bbox st_union st_centroid st_geometry
+#' @importFrom leaflet leaflet setView addTiles  addMarkers addProviderTiles
+#' @importFrom leaflet leafletOptions setMaxBounds addPolygons
+#' 
+#' @noRd
+draw_leaflet_map <- function() {
+
+  # Dummy data for prototyping only
+  dummy_sf <- data.frame(
+    name = "PSCH",
+    addr = "52 Avenue de la Gare, 1003 Lausanne, Switzerland",
+    lat = 46.51756965,
+    long = 6.63061493418584
+  ) |>
+    sf::st_as_sf(
+      coords = c("long", "lat"),
+      crs = 4326
+    )
+  
+  cantons_sf <- st_read(
+    dsn = system.file(
+      "gadm41_CHE_1.json", 
+      package = "observatoire"
+    ),
+    quiet = TRUE
+  )
+  
+  cantons_bbox <- st_bbox(cantons_sf)
+  
+  switzerland_centroid <- cantons_sf |> 
+    st_union() |> 
+    st_centroid() |> 
+    st_geometry() |> 
+    unlist() |> 
+    setNames(
+      c("lng", "lat")
+    )
+  
+  zoom_level <- 8
+  leaflet(
+    data = dummy_sf,
+    options = leafletOptions(minZoom = zoom_level)    
+  ) |>
+    addTiles() |>
+    addMarkers() |>
+    addPolygons( 
+      data = cantons_sf,
+      weight = 1,
+      color = "#578397",
+      fillColor = "#578397",
+      fillOpacity = 0.3
+    ) |> 
+    addProviderTiles(
+      provider = "CartoDB.Positron"
+      ) |>
+    setView(
+      lng = switzerland_centroid[["lng"]],
+      lat = switzerland_centroid[["lat"]],
+      zoom = zoom_level
+    ) |> 
+    setMaxBounds(
+      lng1 = cantons_bbox[["xmin"]],
+      lat1 = cantons_bbox[["ymin"]],
+      lng2 = cantons_bbox[["xmax"]],
+      lat2 = cantons_bbox[["ymax"]]
+    )
+}
+```
+
+```{r examples-map}
+draw_leaflet_map()
+```
+
+```{r tests-map}
+test_that("draw_leaflet_map() returns a leaflet object", {
+  expect_s3_class(
+    draw_leaflet_map(),
+    c("leaflet", "htmlwidget")
+  )
+})
+```
+
+
+```{r development-inflate, eval=FALSE}
+# Run but keep eval=FALSE to avoid infinite loop
+# Execute in the console directly
+fusen::inflate(
+  flat_file = "dev/flat_map.Rmd", 
+  vignette_name = NA,
+  check = FALSE,
+  overwrite = TRUE
+)
+```
+

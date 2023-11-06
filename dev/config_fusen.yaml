@@ -1,3 +1,16 @@
+flat_map.Rmd:
+  path: dev/flat_map.Rmd
+  state: active
+  R: R/draw_leaflet_map.R
+  tests: tests/testthat/test-draw_leaflet_map.R
+  vignettes: []
+  inflate:
+    flat_file: dev/flat_map.Rmd
+    vignette_name: .na
+    open_vignette: true
+    check: false
+    document: true
+    overwrite: 'yes'
 flat_prepare_data.Rmd:
   path: dev/flat_prepare_data.Rmd
   state: active

@@ -22,6 +22,7 @@ Imports:
     readxl,
     sf,
     shiny (>= 1.7.3),
+    stats,
     tibble,
     tidygeocoder,
     tidyselect,
