@@ -1,3 +1,10 @@
+
+# observatoire 0.0.5
+
+* Include leaflet map bound to Swiss territory
+* Improve map layout
+* Update architecture schema with user story
+
 # observatoire 0.0.4
 
 * Add the detection of the canton in the raw data
