@@ -2,55 +2,36 @@
 
 #' Draw main interactive map
 #'
+#' @param projects_data_sf A sf data.frame containing coordinates of project 
+#' main organisation and project `short_title`.
+#' 
 #' @return A leaflet object.
 #' 
 #' @importFrom stats setNames
 #' @importFrom sf st_as_sf st_read st_bbox st_union st_centroid st_geometry
-#' @importFrom leaflet leaflet setView addTiles  addMarkers addProviderTiles
+#' @importFrom leaflet leaflet setView addTiles addCircleMarkers addProviderTiles
 #' @importFrom leaflet leafletOptions setMaxBounds addPolygons
 #' 
 #' @noRd
 #' @examples
-#' draw_leaflet_map()
-draw_leaflet_map <- function() {
-
-  # Dummy data for prototyping only
-  dummy_sf <- data.frame(
-    name = "PSCH",
-    addr = "52 Avenue de la Gare, 1003 Lausanne, Switzerland",
-    lat = 46.51756965,
-    long = 6.63061493418584
-  ) |>
-    sf::st_as_sf(
-      coords = c("long", "lat"),
-      crs = 4326
-    )
+#' draw_leaflet_map(
+#'   projects_data_sf = dummy_project_data_sf()
+#' )
+draw_leaflet_map <- function(
+    projects_data_sf
+) {
   
-  cantons_sf <- st_read(
-    dsn = system.file(
-      "gadm41_CHE_1.json", 
-      package = "observatoire"
-    ),
-    quiet = TRUE
-  )
+  cantons_sf <- read_cantons_sf()
   
-  cantons_bbox <- st_bbox(cantons_sf)
-  switzerland_centroid <- cantons_sf |> 
-    st_union() |> 
-    st_centroid() |> 
-    st_geometry() |> 
-    unlist() |> 
-    setNames(
-      c("lng", "lat")
-    )
+  switzerland_centroid <- get_switzerland_centroid()
+  switzerland_bounding_box <- get_switzerland_bounding_box()
   
   zoom_level <- 8
   leaflet(
-    data = dummy_sf,
+    data = projects_data_sf,
     options = leafletOptions(minZoom = zoom_level)    
   ) |>
     addTiles() |>
-    addMarkers() |>
     addPolygons( 
       data = cantons_sf,
       weight = 1,
@@ -58,6 +39,12 @@ draw_leaflet_map <- function() {
       fillColor = "#578397",
       fillOpacity = 0.3
     ) |> 
+    addCircleMarkers(
+      color = "#f59300",
+      stroke = FALSE,
+      fillOpacity = 0.8,
+      label = ~ as.character(short_title)
+    ) |>
     addProviderTiles(
       provider = "CartoDB.Positron"
       ) |>
@@ -67,9 +54,9 @@ draw_leaflet_map <- function() {
       zoom = zoom_level
     ) |> 
     setMaxBounds(
-      lng1 = cantons_bbox[["xmin"]],
-      lat1 = cantons_bbox[["ymin"]],
-      lng2 = cantons_bbox[["xmax"]],
-      lat2 = cantons_bbox[["ymax"]]
+      lng1 = switzerland_bounding_box[["xmin"]],
+      lat1 = switzerland_bounding_box[["ymin"]],
+      lng2 = switzerland_bounding_box[["xmax"]],
+      lat2 = switzerland_bounding_box[["ymax"]]
     )
 }

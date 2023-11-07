@@ -2,7 +2,9 @@
 
 test_that("draw_leaflet_map() returns a leaflet object", {
   expect_s3_class(
-    draw_leaflet_map(),
+    draw_leaflet_map(
+      projects_data_sf = dummy_project_data_sf()
+    ),
     c("leaflet", "htmlwidget")
   )
 })
