@@ -10,13 +10,19 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     # Your application UI logic
     fluidPage(
-      column(
-        width = 10,
-        mod_map_ui("map_1")
+      div(
+        class = "container-map",
+        column(
+          width = 9,
+          mod_map_ui("map_1"),
+        )
       ),
       column(
-        width = 2,
-        mod_project_ui("project_1")
+        width = 3,
+        div(
+          class = "container-project",
+          mod_project_ui("project_1")
+        )
       )
     )
   )
