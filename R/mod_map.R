@@ -30,7 +30,7 @@ mod_map_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
     output$map <- renderLeaflet({
-      draw_leaflet_map(
+      draw_map_selected_projects(
         projects_data_sf = dummy_project_data_sf()
       )
     })

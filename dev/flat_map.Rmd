@@ -22,21 +22,9 @@ pkgload::load_all(export_all = FALSE)
 
   
 ```{r function-map-utils}
-#' Read cantons polygons data
-#' @imoprtFrom sf st_read
 #' @filename map_utils
-#' @noRd
-read_cantons_sf <- function() {
-  st_read(
-    dsn = system.file(
-      "gadm41_CHE_1.json", 
-      package = "observatoire"
-    ),
-    quiet = TRUE
-  )
-}
-
-#' @filename map_utils
+#' @importFrom sf st_union st_centroid st_geometry
+#' @importFrom stats setNames 
 #' @noRd
 compute_switzerland_centroid  <- function() {
   read_cantons_sf() |> 
@@ -50,6 +38,7 @@ compute_switzerland_centroid  <- function() {
 }
 
 #' @filename map_utils
+#' @importFrom sf st_bbox
 #' @noRd
 compute_switzerland_bounding_box <- function() {
   bounding_box <- read_cantons_sf() |> 
@@ -93,7 +82,7 @@ dummy_project_data_sf <- function() {
     lat = 46.51756965,
     long = 6.63061493418584
   ) |>
-    sf::st_as_sf(
+    st_as_sf(
       coords = c("long", "lat"),
       crs = 4326
     )
@@ -102,39 +91,6 @@ dummy_project_data_sf <- function() {
 
 
 ```{r tests-map-utils}
-test_that("read_cantons_sf works", {
-  cantons_sf <- read_cantons_sf()
-  
-  expect_equal(
-    colnames(cantons_sf),
-    c(
-      "GID_1",
-      "GID_0",
-      "COUNTRY",
-      "NAME_1",
-      "VARNAME_1",
-      "NL_NAME_1",
-      "TYPE_1",
-      "ENGTYPE_1",
-      "CC_1",
-      "HASC_1",
-      "ISO_1",
-      "geometry"
-    )
-  )
-  
-  expect_equal(
-    dim(cantons_sf),
-    c(26L, 12L)
-  )
-  
-  expect_s3_class(
-    cantons_sf,
-    c("sf", "data.frame")
-  )
-  
-})
-
 test_that("Switzerland centroid are coherent between computation and accessor function", {
   expect_equal(
     compute_switzerland_centroid(),
@@ -161,42 +117,23 @@ test_that("Switzerland bounding box are coherent between computation and accesso
 #' @param projects_data_sf A sf data.frame containing coordinates of project 
 #' main organisation and project `short_title`.
 #' 
+#' @param zoom_level An integer. The zoom level for the map. Defines
+#' default zoom level.
+#' 
 #' @return A leaflet object.
 #' 
-#' @importFrom stats setNames
-#' @importFrom sf st_as_sf st_read st_bbox st_union st_centroid st_geometry
-#' @importFrom leaflet leaflet setView addTiles addCircleMarkers addProviderTiles
-#' @importFrom leaflet leafletOptions setMaxBounds addPolygons
+#' @importFrom leaflet leaflet setView addProviderTiles leafletOptions setMaxBounds
 #' 
+#' @filename map
 #' @noRd
-draw_leaflet_map <- function(
-    projects_data_sf
-) {
-  
-  cantons_sf <- read_cantons_sf()
+draw_map_base <- function(zoom_level = 8) {
   
   switzerland_centroid <- get_switzerland_centroid()
   switzerland_bounding_box <- get_switzerland_bounding_box()
   
-  zoom_level <- 8
   leaflet(
-    data = projects_data_sf,
-    options = leafletOptions(minZoom = zoom_level)    
+    options = leafletOptions(minZoom = zoom_level)
   ) |>
-    addTiles() |>
-    addPolygons( 
-      data = cantons_sf,
-      weight = 1,
-      color = "#578397",
-      fillColor = "#578397",
-      fillOpacity = 0.3
-    ) |> 
-    addCircleMarkers(
-      color = "#f59300",
-      stroke = FALSE,
-      fillOpacity = 0.8,
-      label = ~ as.character(short_title)
-    ) |>
     addProviderTiles(
       provider = "CartoDB.Positron"
       ) |>
@@ -215,21 +152,123 @@ draw_leaflet_map <- function(
 ```
 
 ```{r examples-map}
-draw_leaflet_map(
-  projects_data_sf = dummy_project_data_sf()
-)
+draw_map_base() 
 ```
 
 ```{r tests-map}
-test_that("draw_leaflet_map() returns a leaflet object", {
+test_that("draw_map_base() returns a leaflet object", {
   expect_s3_class(
-    draw_leaflet_map(
+    draw_map_base(),
+    c("leaflet", "htmlwidget")
+  )
+})
+```
+
+# Draw map of selected projects
+    
+```{r function-draw_map_selected_projects}
+#' Draw map of selected projects
+#' 
+#' @param projects_data_sf A sf data.frame containing coordinates of project 
+#' main organisation and project `short_title`.
+#' 
+#' @return A leaflet object.
+#' 
+#' @importFrom leaflet addCircleMarkers  addPolygons
+#' 
+#' @filename map
+#' @noRd 
+draw_map_selected_projects <- function(
+    projects_data_sf
+){
+  draw_map_base() |> 
+    addPolygons(
+      data = read_cantons_sf(),
+      weight = 1,
+      color = psch_blue(),
+      fillColor = psch_blue(),
+      fillOpacity = 0.3
+    ) |>
+    addCircleMarkers(
+      data = projects_data_sf,
+      color = psch_orange(),
+      stroke = FALSE,
+      fillOpacity = 0.8,
+      label = ~ as.character(short_title)
+    )
+}
+```
+  
+```{r example-draw_map_selected_projects}
+draw_map_selected_projects(
+  projects_data_sf = dummy_project_data_sf()
+)
+```
+  
+```{r tests-draw_map_selected_projects}
+test_that("draw_map_selected_projects() returns a leaflet object", {
+  expect_s3_class(
+    draw_map_selected_projects(
       projects_data_sf = dummy_project_data_sf()
     ),
     c("leaflet", "htmlwidget")
   )
 })
 ```
+  
+  
+# Draw map focused on one project
+    
+```{r function-draw_map_focus_one_project}
+#' Draw map of selected projects
+#' 
+#' @param projects_data_sf A sf data.frame containing coordinates of project 
+#' main organisation and project `short_title`.
+#' 
+#' @return A leaflet object.
+#' 
+#' @importFrom leaflet addCircleMarkers  addPolygons
+#' 
+#' @filename map
+#' @noRd 
+draw_map_focus_one_project <- function(
+    projects_data_sf
+){
+
+  cantons_sf <- read_cantons_sf()
+  
+  # Extract target cantons from project_data_sf
+  # Add column target_cantons (TRUE/FALSE) in project_data_sf
+  
+  draw_map_base()
+  
+  # Display target cantons in psch orange / others psch blue
+  # Display selected project in psch orange
+  
+  # Nice to have
+  # Display lines radiating from project to centroid of target cantons
+  
+}
+```
+  
+```{r example-draw_map_focus_one_project}
+# Modify dummy_project_data_sf() to include target cantons
+draw_map_focus_one_project(
+  projects_data_sf = dummy_project_data_sf()
+)
+```
+  
+```{r tests-draw_map_focus_one_project}
+test_that("draw_map_focus_one_project works", {
+  expect_s3_class(
+    draw_map_selected_projects(
+      projects_data_sf = dummy_project_data_sf()
+    ),
+    c("leaflet", "htmlwidget")
+  )
+})
+```
+  
 
 
 ```{r development-inflate, eval=FALSE}

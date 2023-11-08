@@ -1,3 +1,16 @@
+flat_fct_utils.Rmd:
+  path: dev/flat_fct_utils.Rmd
+  state: active
+  R: R/fct_utils.R
+  tests: tests/testthat/test-fct_utils.R
+  vignettes: []
+  inflate:
+    flat_file: dev/flat_fct_utils.Rmd
+    vignette_name: .na
+    open_vignette: true
+    check: false
+    document: true
+    overwrite: 'yes'
 flat_map.Rmd:
   path: dev/flat_map.Rmd
   state: active
