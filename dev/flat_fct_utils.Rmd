@@ -1,0 +1,114 @@
+---
+title: "flat_fct_utils.Rmd empty"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r development, include=FALSE}
+library(testthat)
+```
+
+```{r development-load}
+# Load already included functions if relevant
+pkgload::load_all(export_all = FALSE)
+```
+
+# Read Cantons Spatial Data
+
+```{r function-read_cantons_sf}
+#' Read cantons polygons data
+#' @importFrom sf st_read
+#' @filename fct_utils
+#' @noRd
+read_cantons_sf <- function() {
+  st_read(
+    dsn = system.file(
+      "gadm41_CHE_1.json", 
+      package = "observatoire"
+    ),
+    quiet = TRUE
+  )
+}
+```
+
+```{r tests-read_cantons_sf}
+test_that("read_cantons_sf works", {
+  cantons_sf <- read_cantons_sf()
+  
+  expect_equal(
+    colnames(cantons_sf),
+    c(
+      "GID_1",
+      "GID_0",
+      "COUNTRY",
+      "NAME_1",
+      "VARNAME_1",
+      "NL_NAME_1",
+      "TYPE_1",
+      "ENGTYPE_1",
+      "CC_1",
+      "HASC_1",
+      "ISO_1",
+      "geometry"
+    )
+  )
+  
+  expect_equal(
+    dim(cantons_sf),
+    c(26L, 12L)
+  )
+  
+  expect_s3_class(
+    cantons_sf,
+    c("sf", "data.frame")
+  )
+  
+})
+```
+
+
+# Get PSCH colors
+
+```{r function-colors}
+
+#' @filename fct_utils
+#' @noRd
+psch_blue <- function() {
+  # Meerblau
+  "#578397"
+} 
+
+#' @filename fct_utils
+#' @noRd
+psch_orange <- function() {
+  # Corporate: Orange
+  "#f59300"
+}
+```
+
+```{r tests-colors}
+test_that("psch color function return proper color",{
+  expect_equal(
+    psch_blue(),
+    "#578397"
+  )
+  expect_equal(
+    psch_orange(),
+    "#f59300"
+  )
+})
+```
+
+
+```{r development-inflate, eval=FALSE}
+# Run but keep eval=FALSE to avoid infinite loop
+# Execute in the console directly
+fusen::inflate(
+  flat_file = "dev/flat_fct_utils.Rmd", 
+  vignette_name = NA,
+  check = FALSE,
+  overwrite = TRUE
+)
+```
+

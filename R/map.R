@@ -97,13 +97,13 @@ draw_map_selected_projects <- function(
     addPolygons(
       data = read_cantons_sf(),
       weight = 1,
-      color = "#578397",
-      fillColor = "#578397",
+      color = psch_blue(),
+      fillColor = psch_blue(),
       fillOpacity = 0.3
     ) |>
     addCircleMarkers(
       data = projects_data_sf,
-      color = "#f59300",
+      color = psch_orange(),
       stroke = FALSE,
       fillOpacity = 0.8,
       label = ~ as.character(short_title)

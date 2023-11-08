@@ -22,20 +22,6 @@ pkgload::load_all(export_all = FALSE)
 
   
 ```{r function-map-utils}
-#' Read cantons polygons data
-#' @importFrom sf st_read
-#' @filename map_utils
-#' @noRd
-read_cantons_sf <- function() {
-  st_read(
-    dsn = system.file(
-      "gadm41_CHE_1.json", 
-      package = "observatoire"
-    ),
-    quiet = TRUE
-  )
-}
-
 #' @filename map_utils
 #' @importFrom sf st_union st_centroid st_geometry
 #' @importFrom stats setNames 
@@ -52,6 +38,7 @@ compute_switzerland_centroid  <- function() {
 }
 
 #' @filename map_utils
+#' @importFrom sf st_bbox
 #' @noRd
 compute_switzerland_bounding_box <- function() {
   bounding_box <- read_cantons_sf() |> 
@@ -104,39 +91,6 @@ dummy_project_data_sf <- function() {
 
 
 ```{r tests-map-utils}
-test_that("read_cantons_sf works", {
-  cantons_sf <- read_cantons_sf()
-  
-  expect_equal(
-    colnames(cantons_sf),
-    c(
-      "GID_1",
-      "GID_0",
-      "COUNTRY",
-      "NAME_1",
-      "VARNAME_1",
-      "NL_NAME_1",
-      "TYPE_1",
-      "ENGTYPE_1",
-      "CC_1",
-      "HASC_1",
-      "ISO_1",
-      "geometry"
-    )
-  )
-  
-  expect_equal(
-    dim(cantons_sf),
-    c(26L, 12L)
-  )
-  
-  expect_s3_class(
-    cantons_sf,
-    c("sf", "data.frame")
-  )
-  
-})
-
 test_that("Switzerland centroid are coherent between computation and accessor function", {
   expect_equal(
     compute_switzerland_centroid(),
@@ -231,13 +185,13 @@ draw_map_selected_projects <- function(
     addPolygons(
       data = read_cantons_sf(),
       weight = 1,
-      color = "#578397",
-      fillColor = "#578397",
+      color = psch_blue(),
+      fillColor = psch_blue(),
       fillOpacity = 0.3
     ) |>
     addCircleMarkers(
       data = projects_data_sf,
-      color = "#f59300",
+      color = psch_orange(),
       stroke = FALSE,
       fillOpacity = 0.8,
       label = ~ as.character(short_title)
