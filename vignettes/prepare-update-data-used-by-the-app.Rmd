@@ -32,35 +32,26 @@ knitr::opts_chunk$set(
 The data preparation workflow is shown below. **This data preparation process must be repeated each time the raw data is updated or each time a modification is required to the data dictionaries.**
 
 
-```{r echo = FALSE, eval = TRUE}
+```{r echo = FALSE, eval = TRUE, fig.align = 'center'}
 knitr::include_graphics("../man/figures/data_prep_workflow.png")
 ```
 
-# Update the data concerning the projects
+# Update the raw data concerning the projects
 
-You must upload the new version of the file `PGV.xlsx` in the `data-raw` folder.
-
-Then, to update the data concerning the projects used by the application, you can use the `prepare_projects_data()` function as follows:
+You must upload the new version of the file `PGV.xlsx` in the `inst/data-projects-raw` folder.
 
 
-  
-
-```{r example-prepare_projects_data}
-prepare_projects_data()
+```{r echo = FALSE, eval = TRUE, fig.align = 'center', out.width = '20%'}
+knitr::include_graphics("../man/figures/update_raw_projects_data.png")
 ```
 
 # Update the data concerning the translations
 
-You must modify directly the dictionaries used for the translations. They are saved in the `inst` folder, in a `.csv` format. 
+You must modify directly the dictionaries used for the translations. They are saved in the `inst/data-dic` folder, in a `.csv` format.
 
 
-```{r echo = FALSE, eval = TRUE}
-fs::dir_tree(
-  file.path(
-    system.file(package = "observatoire")
-  ), 
-  regexp = "dic_"
-)
+```{r echo = FALSE, eval = TRUE, fig.align = 'center', out.width = '20%'}
+knitr::include_graphics("../man/figures/update_dic_data.png")
 ```
 
 The content of **"dic_variables.csv"** is the following one:
@@ -69,7 +60,11 @@ The content of **"dic_variables.csv"** is the following one:
 ```{r echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
 DT::datatable(
   readr::read_csv2(
-    system.file("dic_variables.csv", package = "observatoire")
+    system.file(
+      "data-dic",
+      "dic_variables.csv", 
+      package = "observatoire"
+    )
   )
 )
 ```
@@ -80,7 +75,11 @@ The content of **"dic_cantons.csv"** is the following one:
 ```{r echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
 DT::datatable(
   readr::read_csv(
-    system.file("dic_cantons.csv", package = "observatoire")
+    system.file(
+      "data-dic",
+      "dic_cantons.csv", 
+      package = "observatoire"
+    )
   )
 )
 ```
@@ -91,5 +90,16 @@ The content of **"dic_values.csv"** is the following one:
 
 ```{r echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
 #TODO
+```
+
+# Prepare/update the data used by the app
+
+Then, to update the data concerning the projects used by the application, you can use the `prepare_projects_data()` function as follows:
+
+
+  
+
+```{r example-prepare_projects_data}
+prepare_projects_data()
 ```
 

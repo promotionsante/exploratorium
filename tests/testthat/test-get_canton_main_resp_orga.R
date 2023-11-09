@@ -40,6 +40,7 @@ test_that("Test that the detection of the canton is ok", {
       class = c("tbl_df", "tbl", "data.frame")
     )
   
+  #' @description Testing that there is a message if there is an issue
   expect_message(
     get_canton_main_resp_orga(
       data = toy_data
@@ -47,6 +48,7 @@ test_that("Test that the detection of the canton is ok", {
     regexp = "1 project.s is.are not associated to a GPS point"
   )
   
+  #' @description Testing that there is no error in an usual case
   expect_error(
     res_toy_data <- get_canton_main_resp_orga(
       data = toy_data
@@ -54,6 +56,7 @@ test_that("Test that the detection of the canton is ok", {
     regexp = NA
   )
   
+  #' @description Testing that the feature provide the expected output
   expect_equal(
     object = res_toy_data$id_canton,
     expected = c(

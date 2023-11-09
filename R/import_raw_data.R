@@ -3,7 +3,7 @@
 #' Import the raw data
 #' 
 #' @param name_raw_file Character. Name of the raw data file.
-#' @param pkg_dir Character. Path to the package (must contain a data-raw folder).
+#' @param pkg_dir Character. Path to the package.
 #' 
 #' @importFrom readxl read_excel
 #' @importFrom tools file_ext
@@ -22,12 +22,12 @@ import_raw_data <- function(
   
   raw_data_path <- file.path(
     pkg_dir,
-    "data-raw", 
+    "data-projects-raw", 
     name_raw_file
   )
   
   if (isFALSE(file.exists(raw_data_path))) {
-    stop(glue("There is no file called {name_raw_file} in /data-raw"))
+    stop(glue("There is no file called {name_raw_file} in /data-projects-raw"))
   }
   
   if (isFALSE(file_ext(name_raw_file) == "xlsx")) {

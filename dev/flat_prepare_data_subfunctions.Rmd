@@ -44,12 +44,12 @@ import_raw_data <- function(
   
   raw_data_path <- file.path(
     pkg_dir,
-    "data-raw", 
+    "data-projects-raw", 
     name_raw_file
   )
   
   if (isFALSE(file.exists(raw_data_path))) {
-    stop(glue("There is no file called {name_raw_file} in /data-raw"))
+    stop(glue("There is no file called {name_raw_file} in /data-projects-raw"))
   }
   
   if (isFALSE(file_ext(name_raw_file) == "xlsx")) {
@@ -71,19 +71,19 @@ import_raw_data()
 ```{r tests-import_raw_data}
 test_that("Test that the import of the raw data is ok", {
   
-  # Create a temp folder with data-raw subfolder and save a toy object inside
+  # Create a temp folder with data-projects-raw subfolder and save a toy object inside
   my_temp_dir <- tempfile("test-import-data")
   dir.create(my_temp_dir)
-  dir.create(file.path(my_temp_dir, "data-raw"))
+  dir.create(file.path(my_temp_dir, "data-projects-raw"))
   
   writexl::write_xlsx(
     x = iris[1:2, ], 
-    path = file.path(my_temp_dir, "data-raw", "iris.xlsx")
+    path = file.path(my_temp_dir, "data-projects-raw", "iris.xlsx")
   )
   
   write.csv(
     x = iris[1:2, ], 
-    file = file.path(my_temp_dir, "data-raw", "iris.csv")
+    file = file.path(my_temp_dir, "data-projects-raw", "iris.csv")
   )
   
   #' @description Testing that there is no error if the xlsx data exists
@@ -152,7 +152,7 @@ add_col_raw_data <- function(
   
   # Import the variables dictionary saved in the package
   dic_variables <- read_csv2(
-    system.file("dic_variables.csv", package = "observatoire"),
+    system.file("data-dic", "dic_variables.csv", package = "observatoire"),
     show_col_types = FALSE
   )
   
@@ -202,7 +202,11 @@ test_that("Test that the addition of the variables names is ok", {
   
   # Import the variables dictionary saved in the package
   dic_variables <- read_csv2(
-    system.file("dic_variables.csv", package = "observatoire"),
+    system.file(
+      "data-dic", 
+      "dic_variables.csv", 
+      package = "observatoire"
+    ),
     show_col_types = FALSE
   )
   
@@ -367,6 +371,7 @@ get_coord_main_resp_orga <- function(
   # Check if the points are in Switzerland
   cantons_sf <- st_read(
     dsn = system.file(
+      "data-geo",
       "gadm41_CHE_1.json", 
       package = "observatoire"
     )
@@ -440,6 +445,7 @@ test_that("Test that the geocoding of the data is ok", {
       class = c("tbl_df", "tbl", "data.frame")
     )
   
+  #' @description Testing that there is a message if there is an issue
   expect_message(
     res_geocode <- get_coord_main_resp_orga(
       data = toy_data
@@ -447,6 +453,7 @@ test_that("Test that the geocoding of the data is ok", {
     regexp = "1 project.s is.are not associated to a city."
   )
   
+  #' @description Testing that there is no error is an usual situation
   expect_error(
     res_geocode <- get_coord_main_resp_orga(
       data = toy_data
@@ -497,6 +504,7 @@ get_canton_main_resp_orga <- function(
   # Detect the id of the cantons
   cantons_sf <- st_read(
     dsn = system.file(
+      "data-geo",
       "gadm41_CHE_1.json", 
       package = "observatoire"
     ),
@@ -601,6 +609,7 @@ test_that("Test that the detection of the canton is ok", {
       class = c("tbl_df", "tbl", "data.frame")
     )
   
+  #' @description Testing that there is a message if there is an issue
   expect_message(
     get_canton_main_resp_orga(
       data = toy_data
@@ -608,6 +617,7 @@ test_that("Test that the detection of the canton is ok", {
     regexp = "1 project.s is.are not associated to a GPS point"
   )
   
+  #' @description Testing that there is no error in an usual case
   expect_error(
     res_toy_data <- get_canton_main_resp_orga(
       data = toy_data
@@ -615,6 +625,7 @@ test_that("Test that the detection of the canton is ok", {
     regexp = NA
   )
   
+  #' @description Testing that the feature provide the expected output
   expect_equal(
     object = res_toy_data$id_canton,
     expected = c(
@@ -692,6 +703,7 @@ test_that("Test that the computation of the nb of cantons is ok", {
   res_nb_cantons_influenced <- toy_data |> 
     get_nb_cantons_influenced()
   
+  #' @description Testing that the feature provide the expected output
   expect_equal(
     object = res_nb_cantons_influenced$nb_cantons_influenced,
     expected = c(2, 2, 13, 2)
@@ -767,6 +779,7 @@ test_that("Test that the computation of the prop of the budget is ok", {
         prop_budget_orga
     )
   
+  #' @description Testing that the sum of all the proportion equals 1
   expect_true(
     object = all(res_prop_budget$sum_prop_budget == 1)
   )
@@ -822,6 +835,8 @@ test_that("Test that the translation of the data is ok", {
 #' @param list_data_fr_de List. With 2 tibbles corresponding to data in FR and data in DE.
 #' @param pkg_dir Character. Path to the package.
 #' 
+#' @importFrom purrr walk
+#' 
 #' @return Nothing, used for side effect. Save 2 rds files in the package.
 #' 
 #' @noRd
@@ -830,11 +845,27 @@ save_projects_data <- function(
     pkg_dir = system.file(package = "observatoire")
     ){
   
+  # Check that the list contains 2 tibbles (FR and DE)
+  data_fr_and_de_in_names <- all(
+    c("data_fr", "data_de") %in% names(list_data_fr_de)
+  )
+  
+  if (isFALSE(data_fr_and_de_in_names)) {
+    stop(
+      paste(
+        "The object to be saved does not contain FR and DE data",
+        "Please check the origin of this issue",
+        sep = "\n"
+      )
+    )
+  }
+  
   # Save FR data
   saveRDS(
     object = list_data_fr_de$data_fr, 
     file = file.path(
       pkg_dir, 
+      "data-projects",
       "projects_fr.rds"
     )
   )
@@ -844,9 +875,37 @@ save_projects_data <- function(
     object = list_data_fr_de$data_de, 
     file = file.path(
       pkg_dir, 
+      "data-projects",
       "projects_de.rds"
     )
   )
+  
+  # Print a message about the time of modification
+  available_files_in_data <- list.files(
+    file.path(
+      pkg_dir, 
+      "data-projects"
+    )
+  )
+  
+  c("projects_fr.rds", "projects_de.rds") |> 
+    walk(
+      function(.x){
+        if (isTRUE(.x %in% available_files_in_data)) {
+          message(
+            glue(
+              "{.x} has been updated at {file.info(file.path(pkg_dir, 'data', .x))$mtime}"
+              )
+            )
+          } else {
+            message(
+              glue(
+                "{.x} does not exist in the inst/data folder"
+              )
+            )
+          }
+        }
+      )
     
 }
 ```
@@ -858,18 +917,65 @@ list_translated_data <- import_raw_data() |>
   clean_raw_data() |> 
   translate_values_in_data()
 
+# Create a temp folder with data-projects subfolder
+my_temp_dir <- tempfile("test-export-data")
+dir.create(my_temp_dir)
+dir.create(file.path(my_temp_dir, "data-projects"))
+
 # Save rds data in FR and DE
 list_translated_data |> 
-  save_projects_data()
+  save_projects_data(
+    pkg_dir = my_temp_dir
+  )
+
+# Delete the temp folder
+unlink(
+  my_temp_dir, 
+  recursive = TRUE
+)
 ```
   
 ```{r tests-save_projects_data}
-test_that("save_projects_data works", {
-  expect_true(inherits(save_projects_data, "function")) 
+test_that("Test that the saving of the data in inst works", {
+  
+  # Create a temp folder with data subfolder
+  my_temp_dir <- tempfile("test-export-data")
+  dir.create(my_temp_dir)
+  dir.create(file.path(my_temp_dir, "data-projects"))
+  
+  # Create toy lists
+  toy_list_ok <- list(
+    data_fr = iris, 
+    data_de = iris
+  )
+  
+  toy_list_nok <- list(
+    data_frzd = iris, 
+    data_defe = iris
+  )
+  
+  #' @description Testing that there is an error of the list does not contain the object data_fr and data_de
+  expect_error(
+    object = save_projects_data(
+      toy_list_nok, 
+      pkg_dir = my_temp_dir
+    ), 
+    regexp = "The object to be saved does not contain FR and DE data"
+  )
+   
+  #' @description Testing that the export is ok
+  expect_message(
+    object = save_projects_data(
+      toy_list_ok, 
+      pkg_dir = my_temp_dir
+    ), 
+    regexp = "has been updated at"
+  )
+  
+  unlink(my_temp_dir, recursive = TRUE)
+  
 })
 ```
-  
-TODO
 
 ```{r development-inflate, eval=FALSE}
 # Run but keep eval=FALSE to avoid infinite loop

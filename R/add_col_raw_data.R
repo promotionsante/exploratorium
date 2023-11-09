@@ -22,7 +22,7 @@ add_col_raw_data <- function(
   
   # Import the variables dictionary saved in the package
   dic_variables <- read_csv2(
-    system.file("dic_variables.csv", package = "observatoire"),
+    system.file("data-dic", "dic_variables.csv", package = "observatoire"),
     show_col_types = FALSE
   )
   

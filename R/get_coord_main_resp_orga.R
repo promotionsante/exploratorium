@@ -58,6 +58,7 @@ get_coord_main_resp_orga <- function(
   # Check if the points are in Switzerland
   cantons_sf <- st_read(
     dsn = system.file(
+      "data-geo",
       "gadm41_CHE_1.json", 
       package = "observatoire"
     )

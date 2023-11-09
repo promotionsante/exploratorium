@@ -28,12 +28,9 @@ Imports:
     tidyselect,
     tools
 Suggests: 
-    cli,
     DT,
-    fs,
     knitr,
     rmarkdown,
-    rsconnect,
     testthat (>= 3.0.0),
     writexl
 VignetteBuilder: 

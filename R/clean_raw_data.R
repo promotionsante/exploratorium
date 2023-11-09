@@ -5,7 +5,7 @@
 #' @param data Tibble. Raw data about projects, with the good columns names.
 #' 
 #' @importFrom dplyr mutate across
-#' @importFrom tidyselect starts_with
+#' @importFrom tidyselect contains
 #' 
 #' @return A tibble with clean data.
 #' 
@@ -32,16 +32,16 @@ clean_raw_data <- function(
   data_standardized_thousand_sep <- data |> 
     mutate(
       across(
-        starts_with("budget"),
+        contains("budget"),
         ~ gsub("^CHF\\s+|\\'", "", .x)
       )
-    ) 
+    )
   
   ## Convert to digital format
   clean_data <- data_standardized_thousand_sep |>
     mutate(
       across(
-        starts_with("budget"),
+        contains("budget"),
         as.numeric
       )
     )
