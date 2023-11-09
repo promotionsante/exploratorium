@@ -29,14 +29,16 @@ knitr::opts_chunk$set(
 
 *The aim of this article is to show you how to update the data used by the app.*
 
-The data preparation workflow is shown below. **This data preparation process must be repeated each time the raw data is updated or each time a modification is required to the data dictionaries.**
+The data preparation workflow is shown below. **This data preparation process must be repeated each time the raw data is modified or each time a modification is required to the data dictionaries.**
 
 
 ```{r echo = FALSE, eval = TRUE, fig.align = 'center'}
 knitr::include_graphics("../man/figures/data_prep_workflow.png")
 ```
 
-# Update the raw data concerning the projects
+# Modify the raw data about the projects or modify the translations
+
+## Modify the raw data about the projects
 
 You must upload the new version of the file `PGV.xlsx` in the `inst/data-projects-raw` folder.
 
@@ -45,12 +47,12 @@ You must upload the new version of the file `PGV.xlsx` in the `inst/data-project
 knitr::include_graphics("../man/figures/update_raw_projects_data.png")
 ```
 
-# Update the data concerning the translations
+## Modify the data concerning the translations
 
 You must modify directly the dictionaries used for the translations. They are saved in the `inst/data-dic` folder, in a `.csv` format.
 
 
-```{r echo = FALSE, eval = TRUE, fig.align = 'center', out.width = '20%'}
+```{r echo = FALSE, eval = TRUE, fig.align = 'center', out.width = '30%'}
 knitr::include_graphics("../man/figures/update_dic_data.png")
 ```
 
@@ -92,9 +94,9 @@ The content of **"dic_values.csv"** is the following one:
 #TODO
 ```
 
-# Prepare/update the data used by the app
+# Update the data used by the app
 
-Then, to update the data concerning the projects used by the application, you can use the `prepare_projects_data()` function as follows:
+Then, to update the data used by the application, you can use the `prepare_projects_data()` function as follows:
 
 
   
