@@ -28,7 +28,7 @@ pkgload::load_all(export_all = FALSE)
 #' Import the raw data
 #' 
 #' @param name_raw_file Character. Name of the raw data file.
-#' @param pkg_dir Character. Path to the package (must contain a data-raw folder).
+#' @param pkg_dir Character. Path to the package.
 #' 
 #' @importFrom readxl read_excel
 #' @importFrom tools file_ext
@@ -239,7 +239,7 @@ test_that("Test that the addition of the variables names is ok", {
 #' @param data Tibble. Raw data about projects, with the good columns names.
 #' 
 #' @importFrom dplyr mutate across
-#' @importFrom tidyselect starts_with
+#' @importFrom tidyselect contains
 #' 
 #' @return A tibble with clean data.
 #' 
@@ -258,16 +258,16 @@ clean_raw_data <- function(
   data_standardized_thousand_sep <- data |> 
     mutate(
       across(
-        starts_with("budget"),
+        contains("budget"),
         ~ gsub("^CHF\\s+|\\'", "", .x)
       )
-    ) 
+    )
   
   ## Convert to digital format
   clean_data <- data_standardized_thousand_sep |>
     mutate(
       across(
-        starts_with("budget"),
+        contains("budget"),
         as.numeric
       )
     )
@@ -634,18 +634,241 @@ test_that("Test that the detection of the canton is ok", {
 
 # Get the number of cantons influenced with `get_nb_cantons_influenced()`
 
-TODO
+```{r function-get_nb_cantons_influenced}
+#' Get the number of cantons influenced
+#' 
+#' @param data Tibble. Raw data about projects, with the good columns names.
+#' 
+#' @importFrom dplyr mutate
+#' 
+#' @return A tibble with a column with the number of cantons influenced
+#' 
+#' @noRd
+get_nb_cantons_influenced <- function(
+    data
+    ){
+  
+  data |> 
+    mutate(
+      nb_cantons_influenced = lengths(gregexpr(
+          ",", 
+          geo_range
+        )
+    ) + 1) 
+  
+}
+```
+  
+```{r example-get_nb_cantons_influenced}
+# Import the raw data and perform the first preparations
+raw_data <- import_raw_data() |> 
+  add_col_raw_data() |> 
+  clean_raw_data()
 
+# Get the number of cantons influenced
+raw_data |> 
+  get_nb_cantons_influenced() |> 
+  select(geo_range, nb_cantons_influenced)
+```
+  
+```{r tests-get_nb_cantons_influenced}
+test_that("Test that the computation of the nb of cantons is ok", {
+  
+  toy_data <-
+    structure(
+      list(
+        geo_range = c(
+          "Aargau,\r\nSt. Gallen",
+          "Wallis",
+          "Appenzell Ausserrhoden,\r\nAppenzell Innerrhoden,\r\nBasel-Landschaft,\r\nBasel-Stadt,\r\nBern,\r\nGenf,\r\nLuzern,\r\nNidwalden,\r\nObwalden,\r\nSt. Gallen,\r\nThurgau,\r\nWaadt,\r\nZürich",
+          "Zürich"
+        )
+      ),
+      row.names = c(NA, -4L),
+      class = c("tbl_df", "tbl",
+                "data.frame")
+    )
+  
+  res_nb_cantons_influenced <- toy_data |> 
+    get_nb_cantons_influenced()
+  
+  expect_equal(
+    object = res_nb_cantons_influenced$nb_cantons_influenced,
+    expected = c(2, 2, 13, 2)
+  )
+  
+})
+```
+  
 # Get the proportion of the budget for GFCH, principale organization and third party with `get_prop_budget()`
 
-TODO
+```{r function-get_prop_budget}
+#' Get the proportion of the budget for GFCH, principale organization and third party
+#' 
+#' @param data Tibble. Raw data about projects, with the good columns names.
+#' 
+#' @importFrom dplyr mutate across
+#' @importFrom tidyselect starts_with
+#' 
+#' @return A tibble with 3 columns about the proportion of the budget paid by each actor
+#' 
+#' @noRd
+get_prop_budget <- function(
+    data
+    ){
+  
+  data |> 
+    mutate(
+      across(
+        starts_with("budget_"), 
+        ~ .x / total_budget, 
+        .names = "prop_{.col}"
+      )
+    )
+  
+}
+```
+  
+```{r example-get_prop_budget}
+# Import the raw data and perform the first preparations
+raw_data <- import_raw_data() |> 
+  add_col_raw_data() |> 
+  clean_raw_data()
 
+# Get the proportion of the budget for GFCH, principale organization and third party
+raw_data |> 
+  get_prop_budget()
+```
+  
+```{r tests-get_prop_budget}
+test_that("Test that the computation of the prop of the budget is ok", {
+  
+  toy_data <-
+    structure(
+      list(
+        budget_gfch = c(2e+05, 2e+06, 1500000, 182635),
+        budget_orga = c(25000, 1714500, 160346, 45000),
+        budget_third_party = c(361720,
+                               380000, 1500000, 20000),
+        total_budget = c(586720, 4094500,
+                         3160346, 247635)
+      ),
+      row.names = c(NA, -4L),
+      class = c("tbl_df",
+                "tbl", "data.frame")
+    )
+  
+  res_prop_budget <- toy_data |> 
+    get_prop_budget() |> 
+    dplyr::mutate(
+      sum_prop_budget = 
+        prop_budget_gfch + 
+        prop_budget_third_party + 
+        prop_budget_orga
+    )
+  
+  expect_true(
+    object = all(res_prop_budget$sum_prop_budget == 1)
+  )
+  
+})
+```
+  
 # Translate the data (values in the table) in FR and DE with `translate_values_in_data()`
 
-TODO
+```{r function-translate_values_in_data}
+#' Translate the data (values in the table) in FR and DE
+#' 
+#' @param data Tibble. Raw data about projects, with the good columns names.
+#' 
+#' @return A list of 2 tibbles (FR and DE)
+#' 
+#' @noRd
+translate_values_in_data <- function(
+    data
+    ){
+  
+  #TODO
+  list(
+    data_fr = data, 
+    data_de = data
+  )
+    
+}
+```
+  
+```{r example-translate_values_in_data}
+# Import the raw data and perform the first preparations
+raw_data <- import_raw_data() |> 
+  add_col_raw_data() |> 
+  clean_raw_data()
+
+# Get the translated data in FR and DE
+raw_data |> 
+  translate_values_in_data()
+```
+  
+```{r tests-translate_values_in_data}
+test_that("Test that the translation of the data is ok", {
+  #TODO
+})
+```
 
 # Save the prepared data (FR and DE versions) with `save_projects_data()`
 
+```{r function-save_projects_data}
+#' Save the prepared data (FR and DE versions) as .rds objects in the package
+#' 
+#' @param list_data_fr_de List. With 2 tibbles corresponding to data in FR and data in DE.
+#' @param pkg_dir Character. Path to the package.
+#' 
+#' @return Nothing, used for side effect. Save 2 rds files in the package.
+#' 
+#' @noRd
+save_projects_data <- function(
+    list_data_fr_de, 
+    pkg_dir = system.file(package = "observatoire")
+    ){
+  
+  # Save FR data
+  saveRDS(
+    object = list_data_fr_de$data_fr, 
+    file = file.path(
+      pkg_dir, 
+      "projects_fr.rds"
+    )
+  )
+  
+  # Save DE data
+  saveRDS(
+    object = list_data_fr_de$data_de, 
+    file = file.path(
+      pkg_dir, 
+      "projects_de.rds"
+    )
+  )
+    
+}
+```
+  
+```{r example-save_projects_data}
+# Import the raw data and perform the some preparations
+list_translated_data <- import_raw_data() |> 
+  add_col_raw_data() |> 
+  clean_raw_data() |> 
+  translate_values_in_data()
+
+# Save rds data in FR and DE
+list_translated_data |> 
+  save_projects_data()
+```
+  
+```{r tests-save_projects_data}
+test_that("save_projects_data works", {
+  expect_true(inherits(save_projects_data, "function")) 
+})
+```
+  
 TODO
 
 ```{r development-inflate, eval=FALSE}
