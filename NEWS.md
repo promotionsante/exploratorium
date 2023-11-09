@@ -1,3 +1,7 @@
+# observatoire 0.0.6
+
+* Add more ations to prepare the data used by the app
+* Update the vignette to prepare the data used by the app
 
 # observatoire 0.0.5
 
