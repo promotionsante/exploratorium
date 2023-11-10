@@ -1,6 +1,7 @@
 # observatoire 0.0.6
 
 * Add more ations to prepare the data used by the app
+* Start to begin unit test to ensure the projects data will be usable by the app
 * Update the vignette to prepare the data used by the app
 
 # observatoire 0.0.5

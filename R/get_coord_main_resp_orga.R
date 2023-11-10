@@ -52,7 +52,8 @@ get_coord_main_resp_orga <- function(
     )
   }
   
-  data_with_coord <- data |> 
+  # Get the GPS coordinates
+  data_with_long_lat <- data |> 
     mutate(
       country = "Switzerland"
     ) |> 
@@ -65,6 +66,15 @@ get_coord_main_resp_orga <- function(
     ) |> 
     select(- country)
   
+  # Create sf points
+  data_with_coord <- data_with_long_lat |>
+    st_as_sf(
+      coords = c("longitude", "latitude"),
+      crs = 4326, 
+      remove = FALSE,
+      na.fail = FALSE
+    )
+  
   # Check if the points are in Switzerland
   if (is.null(cantons_sf)) {
     cantons_sf <- read_cantons_sf()
@@ -76,10 +86,6 @@ get_coord_main_resp_orga <- function(
   
   check_is_in_switzerland <- data_with_coord |> 
     filter(!is.na(longitude) & !is.na(latitude)) |> 
-    st_as_sf(
-      coords = c("longitude", "latitude"),
-      crs = 4326
-    ) |> 
     st_contains(
       x = switzerland_sf,
       y = _,

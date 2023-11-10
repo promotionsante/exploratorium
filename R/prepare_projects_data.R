@@ -4,6 +4,8 @@
 #' 
 #' @param name_raw_file Character. Name of the raw data file.
 #' @param pkg_dir Character. Path to the package (must contain a data-raw folder).
+#' @param dic_variables Tibble. Variables dictionaries. Mainly used for examples and unit testing purpose.
+#' @param cantons_sf Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.
 #' 
 #' @importFrom glue glue
 #' @importFrom here here
@@ -17,10 +19,37 @@
 #' data("toy_dic_variables")
 #' data("toy_cantons_sf")
 #'
-#' #TODO
+#' # Create a temp folder with data-projects-raw and ata-projects subfolder
+#' my_temp_dir <- tempfile("test-prepare-data")
+#' dir.create(my_temp_dir)
+#' dir.create(file.path(my_temp_dir, "data-projects-raw"))
+#' dir.create(file.path(my_temp_dir, "data-projects"))
+#'
+#' # Save the toy PGV file inside
+#' writexl::write_xlsx(
+#'   toy_data_pgv, 
+#'   file.path(
+#'     my_temp_dir, 
+#'     "data-projects-raw", 
+#'     "toy_PGV.xlsx"
+#'   )
+#' )
+#'
+#' # Prepare the data
+#' prepare_projects_data(
+#'   name_raw_file = "toy_PGV.xlsx",
+#'   pkg_dir = my_temp_dir, 
+#'   dic_variables = toy_dic_variables, 
+#'   cantons_sf = toy_cantons_sf
+#' )
+#'
+#' # Delete the tempdir
+#' unlink(my_temp_dir, recursive = TRUE)
 prepare_projects_data <- function(
     name_raw_file = "PGV.xlsx",
-    pkg_dir = system.file(package = "observatoire")
+    pkg_dir = system.file(package = "observatoire"),
+    dic_variables = NULL, 
+    cantons_sf = NULL
   ){
   
   # Prepare the data and save them
@@ -28,10 +57,16 @@ prepare_projects_data <- function(
     name_raw_file = name_raw_file,
     pkg_dir = pkg_dir
   ) |> 
-  add_col_raw_data() |> 
+  add_col_raw_data(
+    dic_variables = dic_variables
+  ) |> 
   clean_raw_data() |>
-  get_coord_main_resp_orga() |>
-  get_canton_main_resp_orga() |> 
+  get_coord_main_resp_orga(
+    cantons_sf = cantons_sf
+  ) |>
+  get_canton_main_resp_orga(
+    cantons_sf = cantons_sf
+  ) |> 
   get_nb_cantons_influenced() |> 
   get_prop_budget() |> 
   translate_values_in_data() |> 

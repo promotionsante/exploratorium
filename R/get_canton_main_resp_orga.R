@@ -62,12 +62,7 @@ get_canton_main_resp_orga <- function(
   }
   
   data_with_coord <- data |>
-    filter(!is.na(longitude) & !is.na(latitude)) |> 
-    select(short_title, longitude, latitude) |> 
-    st_as_sf(
-      coords = c("longitude", "latitude"),
-      crs = 4326
-    )
+    select(short_title, geometry)
   
   data_with_id_canton <- st_join(
     x = data_with_coord, 
@@ -78,11 +73,12 @@ get_canton_main_resp_orga <- function(
     )
   
   # Add the canton to the raw data
-  data_with_canton <- left_join(
+  data_with_canton <- st_join(
     x = data, 
     y = data_with_id_canton,
-    by = "short_title"
-  )
+    suffix = c("", "extra")
+  ) |> 
+    select(-short_titleextra)
   
   # Check if all cantons have been found
   nb_canton_not_found <- data_with_canton |> 
