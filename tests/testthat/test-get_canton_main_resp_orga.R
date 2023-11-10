@@ -40,10 +40,14 @@ test_that("Test that the detection of the canton is ok", {
       class = c("tbl_df", "tbl", "data.frame")
     )
   
+  # Load the toy cantons geometry
+  data("toy_cantons_sf")
+  
   #' @description Testing that there is a message if there is an issue
   expect_message(
     get_canton_main_resp_orga(
-      data = toy_data
+      data = toy_data, 
+      cantons_sf = toy_cantons_sf
     ), 
     regexp = "1 project.s is.are not associated to a GPS point"
   )
@@ -51,7 +55,8 @@ test_that("Test that the detection of the canton is ok", {
   #' @description Testing that there is no error in an usual case
   expect_error(
     res_toy_data <- get_canton_main_resp_orga(
-      data = toy_data
+      data = toy_data, 
+      cantons_sf = toy_cantons_sf
     ), 
     regexp = NA
   )

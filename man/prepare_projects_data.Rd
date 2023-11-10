@@ -21,5 +21,10 @@ Nothing to return, used for side effect. A message is displayed in the console.
 Prepare the projects data in FR and DE to be included in the app as .rds files
 }
 \examples{
-prepare_projects_data()
+# Load the toy datasets
+data("toy_data_pgv")
+data("toy_dic_variables")
+data("toy_cantons_sf")
+
+#TODO
 }

@@ -3,6 +3,7 @@
 #' Get the canton of the principale organization
 #' 
 #' @param data Tibble. Raw data about projects, with the good columns names.
+#' @param cantons_sf Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.
 #' 
 #' @importFrom dplyr filter mutate select left_join rename
 #' @importFrom glue glue
@@ -15,17 +16,28 @@
 #' 
 #' @noRd
 #' @examples
-#' # Import the raw data and perform the first preparations
-#' raw_data <- import_raw_data() |> 
-#'   add_col_raw_data() |> 
+#' # Load the toy datasets
+#' data("toy_data_pgv")
+#' data("toy_dic_variables")
+#' data("toy_cantons_sf")
+#'
+#' toy_data <- toy_data_pgv |> 
+#'   add_col_raw_data(
+#'     dic_variables = toy_dic_variables
+#'   ) |> 
 #'   clean_raw_data() |> 
-#'   get_coord_main_resp_orga()
+#'   get_coord_main_resp_orga(
+#'     cantons_sf = toy_cantons_sf
+#'   )
 #'
 #' # Geocode the principale organisation of the project
-#' raw_data |> 
-#'   get_canton_main_resp_orga()
+#' toy_data |> 
+#'   get_canton_main_resp_orga(
+#'     cantons_sf = toy_cantons_sf
+#'   )
 get_canton_main_resp_orga <- function(
-    data
+    data, 
+    cantons_sf = NULL
 ){
   
   # Check if some GPS points are missing
@@ -45,14 +57,9 @@ get_canton_main_resp_orga <- function(
   }
   
   # Detect the id of the cantons
-  cantons_sf <- st_read(
-    dsn = system.file(
-      "data-geo",
-      "gadm41_CHE_1.json", 
-      package = "observatoire"
-    ),
-    quiet = TRUE
-  )
+  if (is.null(cantons_sf)) {
+    cantons_sf <- read_cantons_sf()
+  }
   
   data_with_coord <- data |>
     filter(!is.na(longitude) & !is.na(latitude)) |> 

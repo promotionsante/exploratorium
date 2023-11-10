@@ -2,4 +2,11 @@
 
 test_that("Test that the preparation of the projects data is ok", {
 
+  # Load the toy datasets
+  data("toy_data_pgv")
+  data("toy_dic_variables")
+  data("toy_cantons_sf")
+
+  #TODO
+  
 })

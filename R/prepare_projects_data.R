@@ -12,7 +12,12 @@
 #' 
 #' @export
 #' @examples
-#' prepare_projects_data()
+#' # Load the toy datasets
+#' data("toy_data_pgv")
+#' data("toy_dic_variables")
+#' data("toy_cantons_sf")
+#'
+#' #TODO
 prepare_projects_data <- function(
     name_raw_file = "PGV.xlsx",
     pkg_dir = system.file(package = "observatoire")

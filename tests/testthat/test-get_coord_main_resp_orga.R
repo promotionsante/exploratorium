@@ -8,25 +8,23 @@ test_that("Test that the geocoding of the data is ok", {
         city_code_main_resp_orga = c(
           "Zürich",
           "Sion",
-          "Bern",
-          "Lausanne",
           "St. Gallen",
           NA,
           "Le Cerneux-Veusil",
           "Genève",
-          "Aarau",
           "Münsingen"
         )
       ),
       row.names = c(NA,
-                    -10L),
+                    -7L),
       class = c("tbl_df", "tbl", "data.frame")
     )
-  
+
   #' @description Testing that there is a message if there is an issue
   expect_message(
     res_geocode <- get_coord_main_resp_orga(
-      data = toy_data
+      data = toy_data,
+      cantons_sf = toy_cantons_sf
     ),
     regexp = "1 project.s is.are not associated to a city."
   )
@@ -34,7 +32,8 @@ test_that("Test that the geocoding of the data is ok", {
   #' @description Testing that there is no error is an usual situation
   expect_error(
     res_geocode <- get_coord_main_resp_orga(
-      data = toy_data
+      data = toy_data,
+      cantons_sf = toy_cantons_sf
     ),
     regexp = NA
   )

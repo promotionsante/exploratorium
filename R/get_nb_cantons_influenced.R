@@ -10,9 +10,14 @@
 #' 
 #' @noRd
 #' @examples
-#' # Import the raw data and perform the first preparations
-#' raw_data <- import_raw_data() |> 
-#'   add_col_raw_data() |> 
+#' # Load the toy datasets
+#' data("toy_data_pgv")
+#' data("toy_dic_variables")
+#'
+#' raw_data <- toy_data_pgv |> 
+#'   add_col_raw_data(
+#'     dic_variables = toy_dic_variables
+#'   ) |> 
 #'   clean_raw_data()
 #'
 #' # Get the number of cantons influenced

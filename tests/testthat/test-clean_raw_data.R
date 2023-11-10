@@ -2,9 +2,9 @@
 
 test_that("Test that the cleaning of the raw data is ok", {
   
-  raw_data <- import_raw_data()
-  
-  clean_data <- raw_data |>
+  data("toy_data_pgv")
+
+  clean_data <- toy_data_pgv |>
     add_col_raw_data() |>
     clean_raw_data()
   

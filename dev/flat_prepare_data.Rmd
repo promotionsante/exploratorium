@@ -121,12 +121,24 @@ prepare_projects_data <- function(
 ```
   
 ```{r example-prepare_projects_data}
-prepare_projects_data()
+# Load the toy datasets
+data("toy_data_pgv")
+data("toy_dic_variables")
+data("toy_cantons_sf")
+
+#TODO
 ```
 
 ```{r tests-prepare_projects_data}
 test_that("Test that the preparation of the projects data is ok", {
 
+  # Load the toy datasets
+  data("toy_data_pgv")
+  data("toy_dic_variables")
+  data("toy_cantons_sf")
+
+  #TODO
+  
 })
 ```
 

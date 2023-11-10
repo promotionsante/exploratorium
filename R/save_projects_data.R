@@ -11,9 +11,15 @@
 #' 
 #' @noRd
 #' @examples
-#' # Import the raw data and perform the some preparations
-#' list_translated_data <- import_raw_data() |> 
-#'   add_col_raw_data() |> 
+#' # Load the toy datasets
+#' data("toy_data_pgv")
+#' data("toy_dic_variables")
+#'
+#' # Perform the some preparations
+#' list_translated_data <- toy_data_pgv |> 
+#'   add_col_raw_data(
+#'     dic_variables = toy_dic_variables
+#'   ) |> 
 #'   clean_raw_data() |> 
 #'   translate_values_in_data()
 #'

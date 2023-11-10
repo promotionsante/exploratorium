@@ -3,6 +3,7 @@
 #' Get the coordinates of the principale organization
 #' 
 #' @param data Tibble. Raw data about projects, with the good columns names.
+#' @param cantons_sf Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.
 #'
 #' @importFrom tidygeocoder geocode
 #' @importFrom dplyr mutate select filter
@@ -14,16 +15,25 @@
 #' 
 #' @noRd
 #' @examples
-#' # Import the raw data and add the good columns names
-#' raw_data <- import_raw_data() |> 
-#'   add_col_raw_data() |> 
+#' # Load the toy datasets
+#' data("toy_data_pgv")
+#' data("toy_dic_variables")
+#' data("toy_cantons_sf")
+#'
+#' toy_data <- toy_data_pgv |> 
+#'   add_col_raw_data(
+#'     dic_variables = toy_dic_variables
+#'   ) |> 
 #'   clean_raw_data()
 #'
 #' # Geocode the principale organisation of the project
-#' raw_data |> 
-#'   get_coord_main_resp_orga()
+#' toy_data |> 
+#'   get_coord_main_resp_orga(
+#'     cantons_sf = toy_cantons_sf
+#'   )
 get_coord_main_resp_orga <- function(
-    data
+    data,
+    cantons_sf = NULL
 ){
   
   # Check if some cities are missing
@@ -56,13 +66,9 @@ get_coord_main_resp_orga <- function(
     select(- country)
   
   # Check if the points are in Switzerland
-  cantons_sf <- st_read(
-    dsn = system.file(
-      "data-geo",
-      "gadm41_CHE_1.json", 
-      package = "observatoire"
-    )
-  )
+  if (is.null(cantons_sf)) {
+    cantons_sf <- read_cantons_sf()
+  }
   
   switzerland_sf <- st_union(
     x = cantons_sf

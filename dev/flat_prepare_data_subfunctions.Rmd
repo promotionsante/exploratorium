@@ -140,6 +140,7 @@ test_that("Test that the import of the raw data is ok", {
 #' Add the proper colums names to the projects data
 #' 
 #' @param data Tibble. Raw data about projects.
+#' @param dic_variables Tibble. Variables dictionaries. Mainly used for examples and unit testing purpose.
 #' 
 #' @importFrom readr read_csv2
 #' 
@@ -147,14 +148,21 @@ test_that("Test that the import of the raw data is ok", {
 #'
 #' @noRd
 add_col_raw_data <- function(
-    data
+    data,
+    dic_variables = NULL
 ){
   
   # Import the variables dictionary saved in the package
-  dic_variables <- read_csv2(
-    system.file("data-dic", "dic_variables.csv", package = "observatoire"),
-    show_col_types = FALSE
-  )
+  if (is.null(dic_variables)) {
+    dic_variables <- read_csv2(
+      system.file(
+        "data-dic", 
+        "dic_variables.csv", 
+        package = "observatoire"
+      ),
+      show_col_types = FALSE
+    )
+  }
   
   # Check if all columns are present
   all_expected_columns_are_present <- all(sort(colnames(data)) == sort(dic_variables$de))
@@ -182,53 +190,51 @@ add_col_raw_data <- function(
 ```
 
 ```{r example-add_col_raw_data}
-# Import the raw data
-raw_projetcs_data <- import_raw_data()
+# Load the toy datasets
+data("toy_data_pgv")
+data("toy_dic_variables")
 
 # Add the good columns names
-raw_projetcs_data |> 
-  add_col_raw_data()
+toy_data_pgv |> 
+  add_col_raw_data(
+    dic_variables = toy_dic_variables
+  )
 ```
 
 ```{r tests-add_col_raw_data}
 test_that("Test that the addition of the variables names is ok", {
   
-  raw_projects_data <- import_raw_data()
+  # Load the raw data
+  data("toy_data_pgv")
   
+  # Load the variables dictionary
+  data("toy_dic_variables")
+
   # Add colnames
   raw_data_with_colnames <- add_col_raw_data(
-    data = raw_projects_data
-  )
-  
-  # Import the variables dictionary saved in the package
-  dic_variables <- read_csv2(
-    system.file(
-      "data-dic", 
-      "dic_variables.csv", 
-      package = "observatoire"
-    ),
-    show_col_types = FALSE
+    data = toy_data_pgv,
+    dic_variables = toy_dic_variables
   )
   
   #' @description Testing that the colnames are the expected ones
   expect_equal(
     object = sort(colnames(raw_data_with_colnames)), 
-    expect = sort(dic_variables$name_variable)
+    expect = sort(toy_dic_variables$name_variable)
   )
   
-  colnames(raw_data_with_colnames) <- colnames(raw_projects_data)
+  colnames(raw_data_with_colnames) <- colnames(toy_data_pgv)
   
   #' @description Testing that the data is not modified
   expect_equal(
     object = raw_data_with_colnames, 
-    expect = raw_projects_data
+    expect = toy_data_pgv
   )
   
-  colnames(raw_projects_data)[1] <- "mistake"
+  colnames(toy_data_pgv)[1] <- "mistake"
   #' @description Testing that there is an error if columns are not the expected ones
   expect_error(
     add_col_raw_data(
-      data = raw_projects_data
+      data = toy_data_pgv
     )
   )
   
@@ -282,21 +288,26 @@ clean_raw_data <- function(
 ```
 
 ```{r example-clean_raw_data}
-# Import the raw data and add the good columns names
-raw_data <- import_raw_data() |> 
-  add_col_raw_data()
+# Load the toy datasets
+data("toy_data_pgv")
+data("toy_dic_variables")
+
+toy_data <- toy_data_pgv |> 
+  add_col_raw_data(
+    dic_variables = toy_dic_variables
+  )
 
 # Clean the data
-raw_data |> 
+toy_data |> 
   clean_raw_data()
 ```
 
 ```{r tests-clean_raw_data}
 test_that("Test that the cleaning of the raw data is ok", {
   
-  raw_data <- import_raw_data()
-  
-  clean_data <- raw_data |>
+  data("toy_data_pgv")
+
+  clean_data <- toy_data_pgv |>
     add_col_raw_data() |>
     clean_raw_data()
   
@@ -325,6 +336,7 @@ test_that("Test that the cleaning of the raw data is ok", {
 #' Get the coordinates of the principale organization
 #' 
 #' @param data Tibble. Raw data about projects, with the good columns names.
+#' @param cantons_sf Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.
 #'
 #' @importFrom tidygeocoder geocode
 #' @importFrom dplyr mutate select filter
@@ -336,7 +348,8 @@ test_that("Test that the cleaning of the raw data is ok", {
 #' 
 #' @noRd
 get_coord_main_resp_orga <- function(
-    data
+    data,
+    cantons_sf = NULL
 ){
   
   # Check if some cities are missing
@@ -369,13 +382,9 @@ get_coord_main_resp_orga <- function(
     select(- country)
   
   # Check if the points are in Switzerland
-  cantons_sf <- st_read(
-    dsn = system.file(
-      "data-geo",
-      "gadm41_CHE_1.json", 
-      package = "observatoire"
-    )
-  )
+  if (is.null(cantons_sf)) {
+    cantons_sf <- read_cantons_sf()
+  }
   
   switzerland_sf <- st_union(
     x = cantons_sf
@@ -411,14 +420,22 @@ get_coord_main_resp_orga <- function(
 ```
 
 ```{r example-get_coord_main_resp_orga}
-# Import the raw data and add the good columns names
-raw_data <- import_raw_data() |> 
-  add_col_raw_data() |> 
+# Load the toy datasets
+data("toy_data_pgv")
+data("toy_dic_variables")
+data("toy_cantons_sf")
+
+toy_data <- toy_data_pgv |> 
+  add_col_raw_data(
+    dic_variables = toy_dic_variables
+  ) |> 
   clean_raw_data()
 
 # Geocode the principale organisation of the project
-raw_data |> 
-  get_coord_main_resp_orga()
+toy_data |> 
+  get_coord_main_resp_orga(
+    cantons_sf = toy_cantons_sf
+  )
 ```
 
 ```{r tests-get_coord_main_resp_orga}
@@ -430,25 +447,23 @@ test_that("Test that the geocoding of the data is ok", {
         city_code_main_resp_orga = c(
           "Zürich",
           "Sion",
-          "Bern",
-          "Lausanne",
           "St. Gallen",
           NA,
           "Le Cerneux-Veusil",
           "Genève",
-          "Aarau",
           "Münsingen"
         )
       ),
       row.names = c(NA,
-                    -10L),
+                    -7L),
       class = c("tbl_df", "tbl", "data.frame")
     )
-  
+
   #' @description Testing that there is a message if there is an issue
   expect_message(
     res_geocode <- get_coord_main_resp_orga(
-      data = toy_data
+      data = toy_data,
+      cantons_sf = toy_cantons_sf
     ),
     regexp = "1 project.s is.are not associated to a city."
   )
@@ -456,7 +471,8 @@ test_that("Test that the geocoding of the data is ok", {
   #' @description Testing that there is no error is an usual situation
   expect_error(
     res_geocode <- get_coord_main_resp_orga(
-      data = toy_data
+      data = toy_data,
+      cantons_sf = toy_cantons_sf
     ),
     regexp = NA
   )
@@ -470,6 +486,7 @@ test_that("Test that the geocoding of the data is ok", {
 #' Get the canton of the principale organization
 #' 
 #' @param data Tibble. Raw data about projects, with the good columns names.
+#' @param cantons_sf Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.
 #' 
 #' @importFrom dplyr filter mutate select left_join rename
 #' @importFrom glue glue
@@ -482,7 +499,8 @@ test_that("Test that the geocoding of the data is ok", {
 #' 
 #' @noRd
 get_canton_main_resp_orga <- function(
-    data
+    data, 
+    cantons_sf = NULL
 ){
   
   # Check if some GPS points are missing
@@ -502,14 +520,9 @@ get_canton_main_resp_orga <- function(
   }
   
   # Detect the id of the cantons
-  cantons_sf <- st_read(
-    dsn = system.file(
-      "data-geo",
-      "gadm41_CHE_1.json", 
-      package = "observatoire"
-    ),
-    quiet = TRUE
-  )
+  if (is.null(cantons_sf)) {
+    cantons_sf <- read_cantons_sf()
+  }
   
   data_with_coord <- data |>
     filter(!is.na(longitude) & !is.na(latitude)) |> 
@@ -557,15 +570,25 @@ get_canton_main_resp_orga <- function(
 ```
 
 ```{r example-get_canton_main_resp_orga}
-# Import the raw data and perform the first preparations
-raw_data <- import_raw_data() |> 
-  add_col_raw_data() |> 
+# Load the toy datasets
+data("toy_data_pgv")
+data("toy_dic_variables")
+data("toy_cantons_sf")
+
+toy_data <- toy_data_pgv |> 
+  add_col_raw_data(
+    dic_variables = toy_dic_variables
+  ) |> 
   clean_raw_data() |> 
-  get_coord_main_resp_orga()
+  get_coord_main_resp_orga(
+    cantons_sf = toy_cantons_sf
+  )
 
 # Geocode the principale organisation of the project
-raw_data |> 
-  get_canton_main_resp_orga()
+toy_data |> 
+  get_canton_main_resp_orga(
+    cantons_sf = toy_cantons_sf
+  )
 ```
 
 ```{r tests-get_canton_main_resp_orga}
@@ -609,10 +632,14 @@ test_that("Test that the detection of the canton is ok", {
       class = c("tbl_df", "tbl", "data.frame")
     )
   
+  # Load the toy cantons geometry
+  data("toy_cantons_sf")
+  
   #' @description Testing that there is a message if there is an issue
   expect_message(
     get_canton_main_resp_orga(
-      data = toy_data
+      data = toy_data, 
+      cantons_sf = toy_cantons_sf
     ), 
     regexp = "1 project.s is.are not associated to a GPS point"
   )
@@ -620,7 +647,8 @@ test_that("Test that the detection of the canton is ok", {
   #' @description Testing that there is no error in an usual case
   expect_error(
     res_toy_data <- get_canton_main_resp_orga(
-      data = toy_data
+      data = toy_data, 
+      cantons_sf = toy_cantons_sf
     ), 
     regexp = NA
   )
@@ -671,9 +699,14 @@ get_nb_cantons_influenced <- function(
 ```
   
 ```{r example-get_nb_cantons_influenced}
-# Import the raw data and perform the first preparations
-raw_data <- import_raw_data() |> 
-  add_col_raw_data() |> 
+# Load the toy datasets
+data("toy_data_pgv")
+data("toy_dic_variables")
+
+raw_data <- toy_data_pgv |> 
+  add_col_raw_data(
+    dic_variables = toy_dic_variables
+  ) |> 
   clean_raw_data()
 
 # Get the number of cantons influenced
@@ -742,9 +775,15 @@ get_prop_budget <- function(
 ```
   
 ```{r example-get_prop_budget}
+# Load the toy datasets
+data("toy_data_pgv")
+data("toy_dic_variables")
+
 # Import the raw data and perform the first preparations
-raw_data <- import_raw_data() |> 
-  add_col_raw_data() |> 
+raw_data <- toy_data_pgv |> 
+  add_col_raw_data(
+    dic_variables = toy_dic_variables
+  ) |> 
   clean_raw_data()
 
 # Get the proportion of the budget for GFCH, principale organization and third party
@@ -911,9 +950,15 @@ save_projects_data <- function(
 ```
   
 ```{r example-save_projects_data}
-# Import the raw data and perform the some preparations
-list_translated_data <- import_raw_data() |> 
-  add_col_raw_data() |> 
+# Load the toy datasets
+data("toy_data_pgv")
+data("toy_dic_variables")
+
+# Perform the some preparations
+list_translated_data <- toy_data_pgv |> 
+  add_col_raw_data(
+    dic_variables = toy_dic_variables
+  ) |> 
   clean_raw_data() |> 
   translate_values_in_data()
 

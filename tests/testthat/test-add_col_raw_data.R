@@ -2,42 +2,37 @@
 
 test_that("Test that the addition of the variables names is ok", {
   
-  raw_projects_data <- import_raw_data()
+  # Load the raw data
+  data("toy_data_pgv")
   
+  # Load the variables dictionary
+  data("toy_dic_variables")
+
   # Add colnames
   raw_data_with_colnames <- add_col_raw_data(
-    data = raw_projects_data
-  )
-  
-  # Import the variables dictionary saved in the package
-  dic_variables <- read_csv2(
-    system.file(
-      "data-dic", 
-      "dic_variables.csv", 
-      package = "observatoire"
-    ),
-    show_col_types = FALSE
+    data = toy_data_pgv,
+    dic_variables = toy_dic_variables
   )
   
   #' @description Testing that the colnames are the expected ones
   expect_equal(
     object = sort(colnames(raw_data_with_colnames)), 
-    expect = sort(dic_variables$name_variable)
+    expect = sort(toy_dic_variables$name_variable)
   )
   
-  colnames(raw_data_with_colnames) <- colnames(raw_projects_data)
+  colnames(raw_data_with_colnames) <- colnames(toy_data_pgv)
   
   #' @description Testing that the data is not modified
   expect_equal(
     object = raw_data_with_colnames, 
-    expect = raw_projects_data
+    expect = toy_data_pgv
   )
   
-  colnames(raw_projects_data)[1] <- "mistake"
+  colnames(toy_data_pgv)[1] <- "mistake"
   #' @description Testing that there is an error if columns are not the expected ones
   expect_error(
     add_col_raw_data(
-      data = raw_projects_data
+      data = toy_data_pgv
     )
   )
   

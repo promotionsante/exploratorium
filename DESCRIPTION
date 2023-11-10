@@ -10,6 +10,8 @@ Description: Rendre accessible et valoriser les données d’investissement
     dans la promotion de la santé et de la prévention des maladies en
     Suisse.
 License: file LICENSE
+Depends: 
+    R (>= 2.10)
 Imports: 
     config (>= 0.3.1),
     dplyr,
