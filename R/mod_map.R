@@ -26,12 +26,15 @@ mod_map_ui <- function(id){
 #'
 #' @importFrom leaflet renderLeaflet
 #' @noRd
-mod_map_server <- function(id){
+mod_map_server <- function(id, r_global){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
+
+
     output$map <- renderLeaflet({
       draw_map_selected_projects(
-        projects_data_sf = dummy_project_data_sf()
+        projects_data_sf = dummy_project_data_sf(),
+        zoom_level = r_global$zoom_level
       )
     })
   })

@@ -6,7 +6,7 @@ fusen::inflate_all_no_check()
 ## Update doc
 attachment::att_amend_desc(
   path = here::here(),
-  extra.suggests = c("rsconnect", "cli")
+  extra.suggests = c("rsconnect")
 )
 
 ## Check the package

@@ -13,6 +13,7 @@ License: file LICENSE
 Depends: 
     R (>= 2.10)
 Imports: 
+    cli,
     config (>= 0.3.1),
     dplyr,
     glue,
@@ -30,7 +31,6 @@ Imports:
     tidyselect,
     tools
 Suggests: 
-    cli,
     DT,
     knitr,
     rmarkdown,

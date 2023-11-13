@@ -80,6 +80,8 @@ draw_map_focus_one_project <- function(
 #' @param projects_data_sf A sf data.frame containing coordinates of project 
 #' main organisation and project `short_title`.
 #' 
+#' @inheritParams draw_map_base
+#' 
 #' @return A leaflet object.
 #' 
 #' @importFrom leaflet addCircleMarkers  addPolygons
@@ -91,9 +93,10 @@ draw_map_focus_one_project <- function(
 #'   projects_data_sf = dummy_project_data_sf()
 #' )
 draw_map_selected_projects <- function(
-    projects_data_sf
+    projects_data_sf,
+    zoom_level = 8
 ){
-  draw_map_base() |> 
+  draw_map_base(zoom_level) |> 
     addPolygons(
       data = read_cantons_sf(),
       weight = 1,
