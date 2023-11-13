@@ -9,6 +9,9 @@ reference:
   desc: Prepare and update the data used by the app
 - contents:
   - prepare_projects_data
+  - toy_data_pgv
+  - toy_cantons_sf
+  - toy_dic_variables
 - title: Shiny app
 - contents:
   - run_app
