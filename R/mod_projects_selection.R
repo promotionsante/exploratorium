@@ -14,21 +14,13 @@ mod_projects_selection_ui <- function(id){
       column(9),
       column(
         3,
-        fixedRow(
-          column(
-            4,
-            p("FR")
+        tags$div(
+          materialSwitch(
+            inputId = "language_switch",
+            label = "DE",
+            inline = TRUE
           ),
-          column(
-            4,
-            materialSwitch(
-              inputId = ns("language")
-            )
-          ),
-          column(
-            4,
-            p("DE")
-          )
+          tags$span("FR")
         )
       )
     ),
