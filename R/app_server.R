@@ -28,5 +28,5 @@ app_server <- function(input, output, session) {
 
 
   mod_map_server("map_1", r_global = r_global)
-  mod_project_server("project_1")
+  mod_right_panel_server("right_panel_1")
 }

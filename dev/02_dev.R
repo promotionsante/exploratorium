@@ -20,8 +20,12 @@ attachment::att_amend_desc()
 
 ## Add modules ----
 ## Create a module infrastructure in R/
-golem::add_module(name = "map", with_test = TRUE) # Name of the module
-golem::add_module(name = "project", with_test = TRUE) # Name of the module
+golem::add_module(name = "map", with_test = TRUE)
+golem::add_module(name = "project", with_test = TRUE)
+
+golem::add_module(name = "right_panel", with_test = TRUE)
+golem::add_module(name = "projects_selection", with_test = TRUE)
+golem::add_module(name = "projects_graph_summary", with_test = TRUE)
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
