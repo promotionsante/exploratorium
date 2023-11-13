@@ -59,6 +59,7 @@ get_coord_main_resp_orga <- function(
     ) |> 
     geocode(
       city = city_code_main_resp_orga, 
+      postalcode = zip_code_main_resp_orga,
       country = country,
       method = "osm", 
       lat = latitude , 

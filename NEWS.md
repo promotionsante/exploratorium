@@ -1,3 +1,8 @@
+# observatoire 0.0.7
+
+* Adjust map zoom depending on screen width
+* Add a first draft for the projects cards
+
 # observatoire 0.0.6
 
 * Add more ations to prepare the data used by the app

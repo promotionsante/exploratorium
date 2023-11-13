@@ -4,13 +4,22 @@
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
+#' @importFrom shinyWidgets materialSwitch
+#'
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
 mod_project_ui <- function(id){
   ns <- NS(id)
+
   tagList(
-    h1("observatoire")
+
+    materialSwitch(
+      inputId = ns("language")
+    ),
+
+    htmlOutput(ns("projectcard"))
+
   )
 }
 
@@ -19,7 +28,31 @@ mod_project_ui <- function(id){
 #' @noRd
 mod_project_server <- function(id){
   moduleServer( id, function(input, output, session){
+
     ns <- session$ns
+
+    observeEvent(input$language,
+                 ignoreNULL = TRUE,
+                 ignoreInit = TRUE, {
+
+      add_resource_path(
+        "projectscardslibrary",
+        system.file(
+          "data-projects-cards",
+          package = "observatoire")
+      )
+
+      output$projectcard <- renderUI({
+
+        tags$iframe(
+          seamless = "seamless",
+          src = "projectscardslibrary/template_projects_cards.html",
+          frameborder = "0",
+          style = "width:100vw;height:100vh;"
+        )
+
+      })
+    })
 
   })
 }
