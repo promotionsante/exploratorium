@@ -11,12 +11,19 @@ test_that("Test that the geocoding of the data is ok", {
           "St. Gallen",
           NA,
           "Le Cerneux-Veusil",
-          "Genève",
-          "Münsingen"
+          "Genève"
+        ), 
+        zip_code_main_resp_orga = c(
+          "8000",
+          "1950",
+          "9000",
+          NA,
+          "2345",
+          "1201"
         )
       ),
       row.names = c(NA,
-                    -7L),
+                    -6L),
       class = c("tbl_df", "tbl", "data.frame")
     )
 
