@@ -101,7 +101,7 @@ Then, to update the data used by the application, you can use the `prepare_proje
 
   
 
-```{r example-prepare_projects_data}
+```{r example-prepare_projects_data, echo = FALSE}
 # Load the toy datasets
 data("toy_data_pgv")
 data("toy_dic_variables")
@@ -133,5 +133,9 @@ prepare_projects_data(
 
 # Delete the tempdir
 unlink(my_temp_dir, recursive = TRUE)
+```
+
+```{r}
+prepare_projects_data()
 ```
 
