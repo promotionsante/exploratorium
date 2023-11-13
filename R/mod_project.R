@@ -38,7 +38,7 @@ mod_project_server <- function(id){
 
         tags$iframe(
           seamless = "seamless",
-          src = "projectscardslibrary/template_projects_cards.html",
+          src = "projectscardslibrary/template_projects_cards_true.html",
           frameborder = "0",
           style = "width:100vw;height:100vh;"
         )
