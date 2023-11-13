@@ -5,18 +5,23 @@
 #' @param data Tibble. Raw data about projects, with the good columns names.
 #' 
 #' @importFrom dplyr mutate across
-#' @importFrom tidyselect starts_with
+#' @importFrom tidyselect contains
 #' 
 #' @return A tibble with clean data.
 #' 
 #' @noRd
 #' @examples
-#' # Import the raw data and add the good columns names
-#' raw_data <- import_raw_data() |> 
-#'   add_col_raw_data()
+#' # Load the toy datasets
+#' data("toy_data_pgv")
+#' data("toy_dic_variables")
+#'
+#' toy_data <- toy_data_pgv |> 
+#'   add_col_raw_data(
+#'     dic_variables = toy_dic_variables
+#'   )
 #'
 #' # Clean the data
-#' raw_data |> 
+#' toy_data |> 
 #'   clean_raw_data()
 clean_raw_data <- function(
     data
@@ -32,16 +37,16 @@ clean_raw_data <- function(
   data_standardized_thousand_sep <- data |> 
     mutate(
       across(
-        starts_with("budget"),
+        contains("budget"),
         ~ gsub("^CHF\\s+|\\'", "", .x)
       )
-    ) 
+    )
   
   ## Convert to digital format
   clean_data <- data_standardized_thousand_sep |>
     mutate(
       across(
-        starts_with("budget"),
+        contains("budget"),
         as.numeric
       )
     )

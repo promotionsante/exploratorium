@@ -7,6 +7,7 @@
 read_cantons_sf <- function() {
   st_read(
     dsn = system.file(
+      "data-geo",
       "gadm41_CHE_1.json", 
       package = "observatoire"
     ),

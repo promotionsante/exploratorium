@@ -45,13 +45,21 @@ flat_prepare_data_subfunctions.Rmd:
   - R/clean_raw_data.R
   - R/get_canton_main_resp_orga.R
   - R/get_coord_main_resp_orga.R
+  - R/get_nb_cantons_influenced.R
+  - R/get_prop_budget.R
   - R/import_raw_data.R
+  - R/save_projects_data.R
+  - R/translate_values_in_data.R
   tests:
   - tests/testthat/test-import_raw_data.R
   - tests/testthat/test-add_col_raw_data.R
   - tests/testthat/test-clean_raw_data.R
   - tests/testthat/test-get_coord_main_resp_orga.R
   - tests/testthat/test-get_canton_main_resp_orga.R
+  - tests/testthat/test-get_nb_cantons_influenced.R
+  - tests/testthat/test-get_prop_budget.R
+  - tests/testthat/test-translate_values_in_data.R
+  - tests/testthat/test-save_projects_data.R
   vignettes: []
   inflate:
     flat_file: dev/flat_prepare_data_subfunctions.Rmd

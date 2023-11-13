@@ -3,6 +3,7 @@
 #' Add the proper colums names to the projects data
 #' 
 #' @param data Tibble. Raw data about projects.
+#' @param dic_variables Tibble. Variables dictionaries. Mainly used for examples and unit testing purpose.
 #' 
 #' @importFrom readr read_csv2
 #' 
@@ -10,21 +11,31 @@
 #'
 #' @noRd
 #' @examples
-#' # Import the raw data
-#' raw_projetcs_data <- import_raw_data()
+#' # Load the toy datasets
+#' data("toy_data_pgv")
+#' data("toy_dic_variables")
 #'
 #' # Add the good columns names
-#' raw_projetcs_data |> 
-#'   add_col_raw_data()
+#' toy_data_pgv |> 
+#'   add_col_raw_data(
+#'     dic_variables = toy_dic_variables
+#'   )
 add_col_raw_data <- function(
-    data
+    data,
+    dic_variables = NULL
 ){
   
   # Import the variables dictionary saved in the package
-  dic_variables <- read_csv2(
-    system.file("dic_variables.csv", package = "observatoire"),
-    show_col_types = FALSE
-  )
+  if (is.null(dic_variables)) {
+    dic_variables <- read_csv2(
+      system.file(
+        "data-dic", 
+        "dic_variables.csv", 
+        package = "observatoire"
+      ),
+      show_col_types = FALSE
+    )
+  }
   
   # Check if all columns are present
   all_expected_columns_are_present <- all(sort(colnames(data)) == sort(dic_variables$de))

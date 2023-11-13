@@ -28,7 +28,7 @@ pkgload::load_all(export_all = FALSE)
 #' Import the raw data
 #' 
 #' @param name_raw_file Character. Name of the raw data file.
-#' @param pkg_dir Character. Path to the package (must contain a data-raw folder).
+#' @param pkg_dir Character. Path to the package.
 #' 
 #' @importFrom readxl read_excel
 #' @importFrom tools file_ext
@@ -44,12 +44,12 @@ import_raw_data <- function(
   
   raw_data_path <- file.path(
     pkg_dir,
-    "data-raw", 
+    "data-projects-raw", 
     name_raw_file
   )
   
   if (isFALSE(file.exists(raw_data_path))) {
-    stop(glue("There is no file called {name_raw_file} in /data-raw"))
+    stop(glue("There is no file called {name_raw_file} in /data-projects-raw"))
   }
   
   if (isFALSE(file_ext(name_raw_file) == "xlsx")) {
@@ -71,19 +71,19 @@ import_raw_data()
 ```{r tests-import_raw_data}
 test_that("Test that the import of the raw data is ok", {
   
-  # Create a temp folder with data-raw subfolder and save a toy object inside
+  # Create a temp folder with data-projects-raw subfolder and save a toy object inside
   my_temp_dir <- tempfile("test-import-data")
   dir.create(my_temp_dir)
-  dir.create(file.path(my_temp_dir, "data-raw"))
+  dir.create(file.path(my_temp_dir, "data-projects-raw"))
   
   writexl::write_xlsx(
     x = iris[1:2, ], 
-    path = file.path(my_temp_dir, "data-raw", "iris.xlsx")
+    path = file.path(my_temp_dir, "data-projects-raw", "iris.xlsx")
   )
   
   write.csv(
     x = iris[1:2, ], 
-    file = file.path(my_temp_dir, "data-raw", "iris.csv")
+    file = file.path(my_temp_dir, "data-projects-raw", "iris.csv")
   )
   
   #' @description Testing that there is no error if the xlsx data exists
@@ -140,6 +140,7 @@ test_that("Test that the import of the raw data is ok", {
 #' Add the proper colums names to the projects data
 #' 
 #' @param data Tibble. Raw data about projects.
+#' @param dic_variables Tibble. Variables dictionaries. Mainly used for examples and unit testing purpose.
 #' 
 #' @importFrom readr read_csv2
 #' 
@@ -147,14 +148,21 @@ test_that("Test that the import of the raw data is ok", {
 #'
 #' @noRd
 add_col_raw_data <- function(
-    data
+    data,
+    dic_variables = NULL
 ){
   
   # Import the variables dictionary saved in the package
-  dic_variables <- read_csv2(
-    system.file("dic_variables.csv", package = "observatoire"),
-    show_col_types = FALSE
-  )
+  if (is.null(dic_variables)) {
+    dic_variables <- read_csv2(
+      system.file(
+        "data-dic", 
+        "dic_variables.csv", 
+        package = "observatoire"
+      ),
+      show_col_types = FALSE
+    )
+  }
   
   # Check if all columns are present
   all_expected_columns_are_present <- all(sort(colnames(data)) == sort(dic_variables$de))
@@ -182,49 +190,51 @@ add_col_raw_data <- function(
 ```
 
 ```{r example-add_col_raw_data}
-# Import the raw data
-raw_projetcs_data <- import_raw_data()
+# Load the toy datasets
+data("toy_data_pgv")
+data("toy_dic_variables")
 
 # Add the good columns names
-raw_projetcs_data |> 
-  add_col_raw_data()
+toy_data_pgv |> 
+  add_col_raw_data(
+    dic_variables = toy_dic_variables
+  )
 ```
 
 ```{r tests-add_col_raw_data}
 test_that("Test that the addition of the variables names is ok", {
   
-  raw_projects_data <- import_raw_data()
+  # Load the raw data
+  data("toy_data_pgv")
   
+  # Load the variables dictionary
+  data("toy_dic_variables")
+
   # Add colnames
   raw_data_with_colnames <- add_col_raw_data(
-    data = raw_projects_data
-  )
-  
-  # Import the variables dictionary saved in the package
-  dic_variables <- read_csv2(
-    system.file("dic_variables.csv", package = "observatoire"),
-    show_col_types = FALSE
+    data = toy_data_pgv,
+    dic_variables = toy_dic_variables
   )
   
   #' @description Testing that the colnames are the expected ones
   expect_equal(
     object = sort(colnames(raw_data_with_colnames)), 
-    expect = sort(dic_variables$name_variable)
+    expect = sort(toy_dic_variables$name_variable)
   )
   
-  colnames(raw_data_with_colnames) <- colnames(raw_projects_data)
+  colnames(raw_data_with_colnames) <- colnames(toy_data_pgv)
   
   #' @description Testing that the data is not modified
   expect_equal(
     object = raw_data_with_colnames, 
-    expect = raw_projects_data
+    expect = toy_data_pgv
   )
   
-  colnames(raw_projects_data)[1] <- "mistake"
+  colnames(toy_data_pgv)[1] <- "mistake"
   #' @description Testing that there is an error if columns are not the expected ones
   expect_error(
     add_col_raw_data(
-      data = raw_projects_data
+      data = toy_data_pgv
     )
   )
   
@@ -239,7 +249,7 @@ test_that("Test that the addition of the variables names is ok", {
 #' @param data Tibble. Raw data about projects, with the good columns names.
 #' 
 #' @importFrom dplyr mutate across
-#' @importFrom tidyselect starts_with
+#' @importFrom tidyselect contains
 #' 
 #' @return A tibble with clean data.
 #' 
@@ -258,16 +268,16 @@ clean_raw_data <- function(
   data_standardized_thousand_sep <- data |> 
     mutate(
       across(
-        starts_with("budget"),
+        contains("budget"),
         ~ gsub("^CHF\\s+|\\'", "", .x)
       )
-    ) 
+    )
   
   ## Convert to digital format
   clean_data <- data_standardized_thousand_sep |>
     mutate(
       across(
-        starts_with("budget"),
+        contains("budget"),
         as.numeric
       )
     )
@@ -278,21 +288,26 @@ clean_raw_data <- function(
 ```
 
 ```{r example-clean_raw_data}
-# Import the raw data and add the good columns names
-raw_data <- import_raw_data() |> 
-  add_col_raw_data()
+# Load the toy datasets
+data("toy_data_pgv")
+data("toy_dic_variables")
+
+toy_data <- toy_data_pgv |> 
+  add_col_raw_data(
+    dic_variables = toy_dic_variables
+  )
 
 # Clean the data
-raw_data |> 
+toy_data |> 
   clean_raw_data()
 ```
 
 ```{r tests-clean_raw_data}
 test_that("Test that the cleaning of the raw data is ok", {
   
-  raw_data <- import_raw_data()
-  
-  clean_data <- raw_data |>
+  data("toy_data_pgv")
+
+  clean_data <- toy_data_pgv |>
     add_col_raw_data() |>
     clean_raw_data()
   
@@ -321,6 +336,7 @@ test_that("Test that the cleaning of the raw data is ok", {
 #' Get the coordinates of the principale organization
 #' 
 #' @param data Tibble. Raw data about projects, with the good columns names.
+#' @param cantons_sf Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.
 #'
 #' @importFrom tidygeocoder geocode
 #' @importFrom dplyr mutate select filter
@@ -332,7 +348,8 @@ test_that("Test that the cleaning of the raw data is ok", {
 #' 
 #' @noRd
 get_coord_main_resp_orga <- function(
-    data
+    data,
+    cantons_sf = NULL
 ){
   
   # Check if some cities are missing
@@ -351,7 +368,8 @@ get_coord_main_resp_orga <- function(
     )
   }
   
-  data_with_coord <- data |> 
+  # Get the GPS coordinates
+  data_with_long_lat <- data |> 
     mutate(
       country = "Switzerland"
     ) |> 
@@ -364,13 +382,19 @@ get_coord_main_resp_orga <- function(
     ) |> 
     select(- country)
   
-  # Check if the points are in Switzerland
-  cantons_sf <- st_read(
-    dsn = system.file(
-      "gadm41_CHE_1.json", 
-      package = "observatoire"
+  # Create sf points
+  data_with_coord <- data_with_long_lat |>
+    st_as_sf(
+      coords = c("longitude", "latitude"),
+      crs = 4326, 
+      remove = FALSE,
+      na.fail = FALSE
     )
-  )
+  
+  # Check if the points are in Switzerland
+  if (is.null(cantons_sf)) {
+    cantons_sf <- read_cantons_sf()
+  }
   
   switzerland_sf <- st_union(
     x = cantons_sf
@@ -378,10 +402,6 @@ get_coord_main_resp_orga <- function(
   
   check_is_in_switzerland <- data_with_coord |> 
     filter(!is.na(longitude) & !is.na(latitude)) |> 
-    st_as_sf(
-      coords = c("longitude", "latitude"),
-      crs = 4326
-    ) |> 
     st_contains(
       x = switzerland_sf,
       y = _,
@@ -406,14 +426,22 @@ get_coord_main_resp_orga <- function(
 ```
 
 ```{r example-get_coord_main_resp_orga}
-# Import the raw data and add the good columns names
-raw_data <- import_raw_data() |> 
-  add_col_raw_data() |> 
+# Load the toy datasets
+data("toy_data_pgv")
+data("toy_dic_variables")
+data("toy_cantons_sf")
+
+toy_data <- toy_data_pgv |> 
+  add_col_raw_data(
+    dic_variables = toy_dic_variables
+  ) |> 
   clean_raw_data()
 
 # Geocode the principale organisation of the project
-raw_data |> 
-  get_coord_main_resp_orga()
+toy_data |> 
+  get_coord_main_resp_orga(
+    cantons_sf = toy_cantons_sf
+  )
 ```
 
 ```{r tests-get_coord_main_resp_orga}
@@ -425,31 +453,32 @@ test_that("Test that the geocoding of the data is ok", {
         city_code_main_resp_orga = c(
           "Zürich",
           "Sion",
-          "Bern",
-          "Lausanne",
           "St. Gallen",
           NA,
           "Le Cerneux-Veusil",
           "Genève",
-          "Aarau",
           "Münsingen"
         )
       ),
       row.names = c(NA,
-                    -10L),
+                    -7L),
       class = c("tbl_df", "tbl", "data.frame")
     )
-  
+
+  #' @description Testing that there is a message if there is an issue
   expect_message(
     res_geocode <- get_coord_main_resp_orga(
-      data = toy_data
+      data = toy_data,
+      cantons_sf = toy_cantons_sf
     ),
     regexp = "1 project.s is.are not associated to a city."
   )
   
+  #' @description Testing that there is no error is an usual situation
   expect_error(
     res_geocode <- get_coord_main_resp_orga(
-      data = toy_data
+      data = toy_data,
+      cantons_sf = toy_cantons_sf
     ),
     regexp = NA
   )
@@ -463,6 +492,7 @@ test_that("Test that the geocoding of the data is ok", {
 #' Get the canton of the principale organization
 #' 
 #' @param data Tibble. Raw data about projects, with the good columns names.
+#' @param cantons_sf Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.
 #' 
 #' @importFrom dplyr filter mutate select left_join rename
 #' @importFrom glue glue
@@ -475,7 +505,8 @@ test_that("Test that the geocoding of the data is ok", {
 #' 
 #' @noRd
 get_canton_main_resp_orga <- function(
-    data
+    data, 
+    cantons_sf = NULL
 ){
   
   # Check if some GPS points are missing
@@ -495,21 +526,12 @@ get_canton_main_resp_orga <- function(
   }
   
   # Detect the id of the cantons
-  cantons_sf <- st_read(
-    dsn = system.file(
-      "gadm41_CHE_1.json", 
-      package = "observatoire"
-    ),
-    quiet = TRUE
-  )
+  if (is.null(cantons_sf)) {
+    cantons_sf <- read_cantons_sf()
+  }
   
   data_with_coord <- data |>
-    filter(!is.na(longitude) & !is.na(latitude)) |> 
-    select(short_title, longitude, latitude) |> 
-    st_as_sf(
-      coords = c("longitude", "latitude"),
-      crs = 4326
-    )
+    select(short_title, geometry)
   
   data_with_id_canton <- st_join(
     x = data_with_coord, 
@@ -520,11 +542,12 @@ get_canton_main_resp_orga <- function(
     )
   
   # Add the canton to the raw data
-  data_with_canton <- left_join(
+  data_with_canton <- st_join(
     x = data, 
     y = data_with_id_canton,
-    by = "short_title"
-  )
+    suffix = c("", "extra")
+  ) |> 
+    select(-short_titleextra)
   
   # Check if all cantons have been found
   nb_canton_not_found <- data_with_canton |> 
@@ -549,15 +572,25 @@ get_canton_main_resp_orga <- function(
 ```
 
 ```{r example-get_canton_main_resp_orga}
-# Import the raw data and perform the first preparations
-raw_data <- import_raw_data() |> 
-  add_col_raw_data() |> 
+# Load the toy datasets
+data("toy_data_pgv")
+data("toy_dic_variables")
+data("toy_cantons_sf")
+
+toy_data <- toy_data_pgv |> 
+  add_col_raw_data(
+    dic_variables = toy_dic_variables
+  ) |> 
   clean_raw_data() |> 
-  get_coord_main_resp_orga()
+  get_coord_main_resp_orga(
+    cantons_sf = toy_cantons_sf
+  )
 
 # Geocode the principale organisation of the project
-raw_data |> 
-  get_canton_main_resp_orga()
+toy_data |> 
+  get_canton_main_resp_orga(
+    cantons_sf = toy_cantons_sf
+  )
 ```
 
 ```{r tests-get_canton_main_resp_orga}
@@ -567,65 +600,93 @@ test_that("Test that the detection of the canton is ok", {
     structure(
       list(
         short_title = c(
-          "Starke Familie",
-          "StoppSturz",
-          "Sturzprävention in der Spitex",
-          "WilaDina",
-          "Win Back Control PGV01.002",
-          "WOPM PGV02.015",
-          "Zigzag Plus PGV02.064",
-          "FM_ProPCC+"
+          "1+1=3  PGV03.038",
+          "Action Diabète PGV01.057",
+          "Angehörigen-Expert/innen PGV03.078",
+          "DZ SUCHT",
+          "EMIA"
         ),
-        longitude = c(
-          8.0444448,
-          9.3762397,
-          8.7954859,
-          7.5631943,
-          8.5410422,
-          7.4521749,
-          6.6327025,
-          NA
-        ),
-        latitude = c(
-          47.3927146,
-          47.425618,
-          46.1695739,
-          46.8739775,
-          47.3744489,
-          46.9484742,
-          46.5218269,
-          NA
+        longitude = c(8.5410422,
+                      7.3588795, 7.4521749, NA, 6.957368),
+        latitude = c(47.3744489,
+                     46.2311749, 46.9484742, NA, 47.184604),
+        geometry = structure(
+          list(
+            structure(c(8.5410422, 47.3744489), class = c("XY", "POINT",
+                                                          "sfg")),
+            structure(c(7.3588795, 46.2311749), class = c("XY",
+                                                          "POINT", "sfg")),
+            structure(c(7.4521749, 46.9484742), class = c("XY",
+                                                          "POINT", "sfg")),
+            structure(c(NA_real_, NA_real_), class = c("XY",
+                                                       "POINT", "sfg")),
+            structure(c(6.957368, 47.184604), class = c("XY",
+                                                        "POINT", "sfg"))
+          ),
+          class = c("sfc_POINT", "sfc"),
+          precision = 0,
+          bbox = structure(
+            c(
+              xmin = 6.957368,
+              ymin = 46.2311749,
+              xmax = 8.5410422,
+              ymax = 47.3744489
+            ),
+            class = "bbox"
+          ),
+          crs = structure(
+            list(input = "EPSG:4326", wkt = "GEOGCRS[\"WGS 84\",\n    ENSEMBLE[\"World Geodetic System 1984 ensemble\",\n        MEMBER[\"World Geodetic System 1984 (Transit)\"],\n        MEMBER[\"World Geodetic System 1984 (G730)\"],\n        MEMBER[\"World Geodetic System 1984 (G873)\"],\n        MEMBER[\"World Geodetic System 1984 (G1150)\"],\n        MEMBER[\"World Geodetic System 1984 (G1674)\"],\n        MEMBER[\"World Geodetic System 1984 (G1762)\"],\n        MEMBER[\"World Geodetic System 1984 (G2139)\"],\n        ELLIPSOID[\"WGS 84\",6378137,298.257223563,\n            LENGTHUNIT[\"metre\",1]],\n        ENSEMBLEACCURACY[2.0]],\n    PRIMEM[\"Greenwich\",0,\n        ANGLEUNIT[\"degree\",0.0174532925199433]],\n    CS[ellipsoidal,2],\n        AXIS[\"geodetic latitude (Lat)\",north,\n            ORDER[1],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        AXIS[\"geodetic longitude (Lon)\",east,\n            ORDER[2],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n    USAGE[\n        SCOPE[\"Horizontal component of 3D system.\"],\n        AREA[\"World.\"],\n        BBOX[-90,-180,90,180]],\n    ID[\"EPSG\",4326]]"),
+            class = "crs"
+          ),
+          n_empty = 1L
         )
       ),
-      row.names = c(NA, -8L),
-      class = c("tbl_df", "tbl", "data.frame")
+      row.names = c(NA,
+                    -5L),
+      sf_column = "geometry",
+      agr = structure(
+        c(
+          short_title = NA_integer_,
+          longitude = NA_integer_,
+          latitude = NA_integer_
+        ),
+        class = "factor",
+        levels = c("constant",
+                   "aggregate", "identity")
+      ),
+      class = c("sf", "tbl_df", "tbl", "data.frame")
     )
   
+  # Load the toy cantons geometry
+  data("toy_cantons_sf")
+  
+  #' @description Testing that there is a message if there is an issue
   expect_message(
     get_canton_main_resp_orga(
-      data = toy_data
+      data = toy_data, 
+      cantons_sf = toy_cantons_sf
     ), 
     regexp = "1 project.s is.are not associated to a GPS point"
   )
   
+  #' @description Testing that there is no error in an usual case
   expect_error(
     res_toy_data <- get_canton_main_resp_orga(
-      data = toy_data
+      data = toy_data, 
+      cantons_sf = toy_cantons_sf
     ), 
     regexp = NA
   )
   
+  #' @description Testing that the feature provide the expected output
   expect_equal(
     object = res_toy_data$id_canton,
     expected = c(
-      "CH.AG", 
-      "CH.SG", 
-      "CH.TI", 
-      "CH.BE", 
       "CH.ZH", 
+      "CH.VS", 
       "CH.BE", 
-      "CH.VD", 
-      NA
+      NA, 
+      "CH.BE"
     )
   )
   
@@ -634,19 +695,354 @@ test_that("Test that the detection of the canton is ok", {
 
 # Get the number of cantons influenced with `get_nb_cantons_influenced()`
 
-TODO
+```{r function-get_nb_cantons_influenced}
+#' Get the number of cantons influenced
+#' 
+#' @param data Tibble. Raw data about projects, with the good columns names.
+#' 
+#' @importFrom dplyr mutate
+#' 
+#' @return A tibble with a column with the number of cantons influenced
+#' 
+#' @noRd
+get_nb_cantons_influenced <- function(
+    data
+    ){
+  
+  data |> 
+    mutate(
+      nb_cantons_influenced = lengths(gregexpr(
+          ",", 
+          geo_range
+        )
+    ) + 1) 
+  
+}
+```
+  
+```{r example-get_nb_cantons_influenced}
+# Load the toy datasets
+data("toy_data_pgv")
+data("toy_dic_variables")
 
+raw_data <- toy_data_pgv |> 
+  add_col_raw_data(
+    dic_variables = toy_dic_variables
+  ) |> 
+  clean_raw_data()
+
+# Get the number of cantons influenced
+raw_data |> 
+  get_nb_cantons_influenced() |> 
+  select(geo_range, nb_cantons_influenced)
+```
+  
+```{r tests-get_nb_cantons_influenced}
+test_that("Test that the computation of the nb of cantons is ok", {
+  
+  toy_data <-
+    structure(
+      list(
+        geo_range = c(
+          "Aargau,\r\nSt. Gallen",
+          "Wallis",
+          "Appenzell Ausserrhoden,\r\nAppenzell Innerrhoden,\r\nBasel-Landschaft,\r\nBasel-Stadt,\r\nBern,\r\nGenf,\r\nLuzern,\r\nNidwalden,\r\nObwalden,\r\nSt. Gallen,\r\nThurgau,\r\nWaadt,\r\nZürich",
+          "Zürich"
+        )
+      ),
+      row.names = c(NA, -4L),
+      class = c("tbl_df", "tbl",
+                "data.frame")
+    )
+  
+  res_nb_cantons_influenced <- toy_data |> 
+    get_nb_cantons_influenced()
+  
+  #' @description Testing that the feature provide the expected output
+  expect_equal(
+    object = res_nb_cantons_influenced$nb_cantons_influenced,
+    expected = c(2, 2, 13, 2)
+  )
+  
+})
+```
+  
 # Get the proportion of the budget for GFCH, principale organization and third party with `get_prop_budget()`
 
-TODO
+```{r function-get_prop_budget}
+#' Get the proportion of the budget for GFCH, principale organization and third party
+#' 
+#' @param data Tibble. Raw data about projects, with the good columns names.
+#' 
+#' @importFrom dplyr mutate across
+#' @importFrom tidyselect starts_with
+#' 
+#' @return A tibble with 3 columns about the proportion of the budget paid by each actor
+#' 
+#' @noRd
+get_prop_budget <- function(
+    data
+    ){
+  
+  data |> 
+    mutate(
+      across(
+        starts_with("budget_"), 
+        ~ .x / total_budget, 
+        .names = "prop_{.col}"
+      )
+    )
+  
+}
+```
+  
+```{r example-get_prop_budget}
+# Load the toy datasets
+data("toy_data_pgv")
+data("toy_dic_variables")
 
+# Import the raw data and perform the first preparations
+raw_data <- toy_data_pgv |> 
+  add_col_raw_data(
+    dic_variables = toy_dic_variables
+  ) |> 
+  clean_raw_data()
+
+# Get the proportion of the budget for GFCH, principale organization and third party
+raw_data |> 
+  get_prop_budget()
+```
+  
+```{r tests-get_prop_budget}
+test_that("Test that the computation of the prop of the budget is ok", {
+  
+  toy_data <-
+    structure(
+      list(
+        budget_gfch = c(2e+05, 2e+06, 1500000, 182635),
+        budget_orga = c(25000, 1714500, 160346, 45000),
+        budget_third_party = c(361720,
+                               380000, 1500000, 20000),
+        total_budget = c(586720, 4094500,
+                         3160346, 247635)
+      ),
+      row.names = c(NA, -4L),
+      class = c("tbl_df",
+                "tbl", "data.frame")
+    )
+  
+  res_prop_budget <- toy_data |> 
+    get_prop_budget() |> 
+    dplyr::mutate(
+      sum_prop_budget = 
+        prop_budget_gfch + 
+        prop_budget_third_party + 
+        prop_budget_orga
+    )
+  
+  #' @description Testing that the sum of all the proportion equals 1
+  expect_true(
+    object = all(res_prop_budget$sum_prop_budget == 1)
+  )
+  
+})
+```
+  
 # Translate the data (values in the table) in FR and DE with `translate_values_in_data()`
 
-TODO
+```{r function-translate_values_in_data}
+#' Translate the data (values in the table) in FR and DE
+#' 
+#' @param data Tibble. Raw data about projects, with the good columns names.
+#' 
+#' @return A list of 2 tibbles (FR and DE)
+#' 
+#' @noRd
+translate_values_in_data <- function(
+    data
+    ){
+  
+  #TODO
+  list(
+    data_fr = data, 
+    data_de = data
+  )
+    
+}
+```
+  
+```{r example-translate_values_in_data}
+# Import the raw data and perform the first preparations
+raw_data <- import_raw_data() |> 
+  add_col_raw_data() |> 
+  clean_raw_data()
+
+# Get the translated data in FR and DE
+raw_data |> 
+  translate_values_in_data()
+```
+  
+```{r tests-translate_values_in_data}
+test_that("Test that the translation of the data is ok", {
+  #TODO
+})
+```
 
 # Save the prepared data (FR and DE versions) with `save_projects_data()`
 
-TODO
+```{r function-save_projects_data}
+#' Save the prepared data (FR and DE versions) as .rds objects in the package
+#' 
+#' @param list_data_fr_de List. With 2 tibbles corresponding to data in FR and data in DE.
+#' @param pkg_dir Character. Path to the package.
+#' 
+#' @importFrom purrr walk
+#' 
+#' @return Nothing, used for side effect. Save 2 rds files in the package.
+#' 
+#' @noRd
+save_projects_data <- function(
+    list_data_fr_de, 
+    pkg_dir = system.file(package = "observatoire")
+    ){
+  
+  # Check that the list contains 2 tibbles (FR and DE)
+  data_fr_and_de_in_names <- all(
+    c("data_fr", "data_de") %in% names(list_data_fr_de)
+  )
+  
+  if (isFALSE(data_fr_and_de_in_names)) {
+    stop(
+      paste(
+        "The object to be saved does not contain FR and DE data",
+        "Please check the origin of this issue",
+        sep = "\n"
+      )
+    )
+  }
+  
+  # Save FR data
+  saveRDS(
+    object = list_data_fr_de$data_fr, 
+    file = file.path(
+      pkg_dir, 
+      "data-projects",
+      "projects_fr.rds"
+    )
+  )
+  
+  # Save DE data
+  saveRDS(
+    object = list_data_fr_de$data_de, 
+    file = file.path(
+      pkg_dir, 
+      "data-projects",
+      "projects_de.rds"
+    )
+  )
+  
+  # Print a message about the time of modification
+  available_files_in_data <- list.files(
+    file.path(
+      pkg_dir, 
+      "data-projects"
+    )
+  )
+  
+  c("projects_fr.rds", "projects_de.rds") |> 
+    walk(
+      function(.x){
+        if (isTRUE(.x %in% available_files_in_data)) {
+          message(
+            glue(
+              "{.x} has been updated at {file.info(file.path(pkg_dir, 'data-projects', .x))$mtime}"
+              )
+            )
+          } else {
+            message(
+              glue(
+                "{.x} does not exist in the inst/data folder"
+              )
+            )
+          }
+        }
+      )
+    
+}
+```
+  
+```{r example-save_projects_data}
+# Load the toy datasets
+data("toy_data_pgv")
+data("toy_dic_variables")
+
+# Perform the some preparations
+list_translated_data <- toy_data_pgv |> 
+  add_col_raw_data(
+    dic_variables = toy_dic_variables
+  ) |> 
+  clean_raw_data() |> 
+  translate_values_in_data()
+
+# Create a temp folder with data-projects subfolder
+my_temp_dir <- tempfile("test-export-data")
+dir.create(my_temp_dir)
+dir.create(file.path(my_temp_dir, "data-projects"))
+
+# Save rds data in FR and DE
+list_translated_data |> 
+  save_projects_data(
+    pkg_dir = my_temp_dir
+  )
+
+# Delete the temp folder
+unlink(
+  my_temp_dir, 
+  recursive = TRUE
+)
+```
+  
+```{r tests-save_projects_data}
+test_that("Test that the saving of the data in inst works", {
+  
+  # Create a temp folder with data subfolder
+  my_temp_dir <- tempfile("test-export-data")
+  dir.create(my_temp_dir)
+  dir.create(file.path(my_temp_dir, "data-projects"))
+  
+  # Create toy lists
+  toy_list_ok <- list(
+    data_fr = iris, 
+    data_de = iris
+  )
+  
+  toy_list_nok <- list(
+    data_frzd = iris, 
+    data_defe = iris
+  )
+  
+  #' @description Testing that there is an error of the list does not contain the object data_fr and data_de
+  expect_error(
+    object = save_projects_data(
+      toy_list_nok, 
+      pkg_dir = my_temp_dir
+    ), 
+    regexp = "The object to be saved does not contain FR and DE data"
+  )
+   
+  #' @description Testing that the export is ok
+  expect_message(
+    object = save_projects_data(
+      toy_list_ok, 
+      pkg_dir = my_temp_dir
+    ), 
+    regexp = "has been updated at"
+  )
+  
+  unlink(my_temp_dir, recursive = TRUE)
+  
+})
+```
 
 ```{r development-inflate, eval=FALSE}
 # Run but keep eval=FALSE to avoid infinite loop

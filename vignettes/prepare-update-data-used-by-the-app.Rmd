@@ -29,38 +29,31 @@ knitr::opts_chunk$set(
 
 *The aim of this article is to show you how to update the data used by the app.*
 
-The data preparation workflow is shown below. **This data preparation process must be repeated each time the raw data is updated or each time a modification is required to the data dictionaries.**
+The data preparation workflow is shown below. **This data preparation process must be repeated each time the raw data is modified or each time a modification is required to the data dictionaries.**
 
 
-```{r echo = FALSE, eval = TRUE}
+```{r echo = FALSE, eval = TRUE, fig.align = 'center'}
 knitr::include_graphics("../man/figures/data_prep_workflow.png")
 ```
 
-# Update the data concerning the projects
+# Modify the raw data about the projects or modify the translations
 
-You must upload the new version of the file `PGV.xlsx` in the `data-raw` folder.
+## Modify the raw data about the projects
 
-Then, to update the data concerning the projects used by the application, you can use the `prepare_projects_data()` function as follows:
+You must upload the new version of the file `PGV.xlsx` in the `inst/data-projects-raw` folder.
 
 
-  
-
-```{r example-prepare_projects_data}
-prepare_projects_data()
+```{r echo = FALSE, eval = TRUE, fig.align = 'center', out.width = '20%'}
+knitr::include_graphics("../man/figures/update_raw_projects_data.png")
 ```
 
-# Update the data concerning the translations
+## Modify the data concerning the translations
 
-You must modify directly the dictionaries used for the translations. They are saved in the `inst` folder, in a `.csv` format. 
+You must modify directly the dictionaries used for the translations. They are saved in the `inst/data-dic` folder, in a `.csv` format.
 
 
-```{r echo = FALSE, eval = TRUE}
-fs::dir_tree(
-  file.path(
-    system.file(package = "observatoire")
-  ), 
-  regexp = "dic_"
-)
+```{r echo = FALSE, eval = TRUE, fig.align = 'center', out.width = '30%'}
+knitr::include_graphics("../man/figures/update_dic_data.png")
 ```
 
 The content of **"dic_variables.csv"** is the following one:
@@ -69,7 +62,11 @@ The content of **"dic_variables.csv"** is the following one:
 ```{r echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
 DT::datatable(
   readr::read_csv2(
-    system.file("dic_variables.csv", package = "observatoire")
+    system.file(
+      "data-dic",
+      "dic_variables.csv", 
+      package = "observatoire"
+    )
   )
 )
 ```
@@ -80,7 +77,11 @@ The content of **"dic_cantons.csv"** is the following one:
 ```{r echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
 DT::datatable(
   readr::read_csv(
-    system.file("dic_cantons.csv", package = "observatoire")
+    system.file(
+      "data-dic",
+      "dic_cantons.csv", 
+      package = "observatoire"
+    )
   )
 )
 ```
@@ -91,5 +92,46 @@ The content of **"dic_values.csv"** is the following one:
 
 ```{r echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
 #TODO
+```
+
+# Update the data used by the app
+
+Then, to update the data used by the application, you can use the `prepare_projects_data()` function as follows:
+
+
+  
+
+```{r example-prepare_projects_data}
+# Load the toy datasets
+data("toy_data_pgv")
+data("toy_dic_variables")
+data("toy_cantons_sf")
+
+# Create a temp folder with data-projects-raw and ata-projects subfolder
+my_temp_dir <- tempfile("test-prepare-data")
+dir.create(my_temp_dir)
+dir.create(file.path(my_temp_dir, "data-projects-raw"))
+dir.create(file.path(my_temp_dir, "data-projects"))
+
+# Save the toy PGV file inside
+writexl::write_xlsx(
+  toy_data_pgv, 
+  file.path(
+    my_temp_dir, 
+    "data-projects-raw", 
+    "toy_PGV.xlsx"
+  )
+)
+
+# Prepare the data
+prepare_projects_data(
+  name_raw_file = "toy_PGV.xlsx",
+  pkg_dir = my_temp_dir, 
+  dic_variables = toy_dic_variables, 
+  cantons_sf = toy_cantons_sf
+)
+
+# Delete the tempdir
+unlink(my_temp_dir, recursive = TRUE)
 ```
 

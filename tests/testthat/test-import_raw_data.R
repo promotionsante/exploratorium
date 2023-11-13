@@ -2,19 +2,19 @@
 
 test_that("Test that the import of the raw data is ok", {
   
-  # Create a temp folder with data-raw subfolder and save a toy object inside
+  # Create a temp folder with data-projects-raw subfolder and save a toy object inside
   my_temp_dir <- tempfile("test-import-data")
   dir.create(my_temp_dir)
-  dir.create(file.path(my_temp_dir, "data-raw"))
+  dir.create(file.path(my_temp_dir, "data-projects-raw"))
   
   writexl::write_xlsx(
     x = iris[1:2, ], 
-    path = file.path(my_temp_dir, "data-raw", "iris.xlsx")
+    path = file.path(my_temp_dir, "data-projects-raw", "iris.xlsx")
   )
   
   write.csv(
     x = iris[1:2, ], 
-    file = file.path(my_temp_dir, "data-raw", "iris.csv")
+    file = file.path(my_temp_dir, "data-projects-raw", "iris.csv")
   )
   
   #' @description Testing that there is no error if the xlsx data exists
