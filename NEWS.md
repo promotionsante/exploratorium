@@ -1,3 +1,8 @@
+# observatoire 0.0.8
+
+* Add translation system scaffold
+* Add project selection UI
+
 # observatoire 0.0.7
 
 * Adjust map zoom depending on screen width
@@ -5,7 +10,7 @@
 
 # observatoire 0.0.6
 
-* Add more ations to prepare the data used by the app
+* Add more functions to prepare the data used by the app
 * Start to begin unit test to ensure the projects data will be usable by the app
 * Update the vignette to prepare the data used by the app
 
