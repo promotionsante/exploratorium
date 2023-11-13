@@ -25,16 +25,16 @@ mod_projects_selection_ui <- function(id){
       )
     ),
     fluidRow(
-      h2("Exploratoire"),
+      h2("Hallo!") |> with_i18n("app-title"),
       checkboxGroupInput(
         inputId = ns("theme"),
-        label = "Theme",
+        label = "Thema(e)" |> with_i18n("theme"),
         choices = letters[1:10],
         inline = TRUE
       ),
       sliderInput(
         inputId = ns("budget"),
-        label = "Budget",
+        label = "Budget" |> with_i18n("budget"),
         min = 0,
         max = 10^7,
         value = 10^5,
@@ -42,7 +42,7 @@ mod_projects_selection_ui <- function(id){
       ),
       sliderInput(
         inputId = ns("prop_self_funded"),
-        label = "Proportion du budget auto-financee",
+        label = "Selbstfinanzierter Anteil des Budgets"|> with_i18n("prop_self_funded"),
         min = 0,
         max = 10^7,
         value = 10^5,
@@ -50,7 +50,7 @@ mod_projects_selection_ui <- function(id){
       ),
       selectInput(
         inputId = ns("cantons_main_org"),
-        label = "Cantons de l'organisation principale",
+        label = "Kanton(e) der Hauptorganisation" |> with_i18n("cantons_main_org"),
         choices = letters[1:5],
         multiple = TRUE,
         width = "95%"
@@ -62,7 +62,7 @@ mod_projects_selection_ui <- function(id){
         4,
         actionButton(
           inputId = ns("filter_projects"),
-          label = "Filtrer les projets"
+          label = "Projekte filtern" |> with_i18n("filter_projects")
         )
       )
     )

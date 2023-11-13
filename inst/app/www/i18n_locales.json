@@ -1,0 +1,22 @@
+{
+    "de": {
+        "translation": {
+            "app-title": "Hallo!",
+            "theme": "Thème(s)",
+            "budget": "Budget",
+            "prop_self_funded" : "Selbstfinanzierter Anteil des Budgets",
+            "cantons_main_org" : "Kanton(e) der Hauptorganisation",
+            "filter_projects" : "Projekte filtern"
+        }
+    },
+    "fr": {
+        "translation": {
+            "app-title": "Bonjour !",
+            "theme": "Thema(e)",
+            "budget": "Budget",
+            "prop_self_funded" : "Proportion du budget auto-financée",
+            "cantons_main_org" : "Canton(s) de l'organisation principale",
+            "filter_projects" : "Filtrer les projets"
+        }
+    }
+}
