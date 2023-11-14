@@ -21,7 +21,7 @@ app_ui <- function(request) {
         width = 3,
         div(
           class = "container-project",
-          mod_project_ui("project_1")
+          mod_right_panel_ui("right_panel_1")
         )
       )
     )

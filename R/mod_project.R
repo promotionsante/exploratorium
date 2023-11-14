@@ -4,8 +4,6 @@
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
-#' @importFrom shinyWidgets materialSwitch
-#'
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
@@ -13,13 +11,7 @@ mod_project_ui <- function(id){
   ns <- NS(id)
 
   tagList(
-
-    materialSwitch(
-      inputId = ns("language")
-    ),
-
     htmlOutput(ns("projectcard"))
-
   )
 }
 

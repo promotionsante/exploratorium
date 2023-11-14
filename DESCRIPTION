@@ -1,7 +1,7 @@
 Package: observatoire
 Title: Observatoire De La Promotion De La Santé et La Prévention Des
     Maladies en Suisse
-Version: 0.0.7
+Version: 0.0.8
 Authors@R: c(
     person("Margot", "Brard", , "margot@thinkr.fr", role = c("aut", "cre")),
     person("Antoine", "Languillaume", , "antoine@thinkr.fr", role = "aut")
@@ -19,6 +19,7 @@ Imports:
     glue,
     golem (>= 0.3.5),
     here,
+    htmltools,
     leaflet,
     purrr,
     readr,

@@ -12,6 +12,19 @@ app_server <- function(input, output, session) {
   )
 
   observeEvent(
+    input$language_switch, {
+      language <- if (
+        isTRUE(input$language_switch)
+      ) {
+        "fr"
+      } else {
+        "de"
+      }
+      change_language(language)
+      localize("html")
+    })
+
+  observeEvent(
     input$screen_width,
     once = TRUE,
     {
@@ -23,10 +36,8 @@ app_server <- function(input, output, session) {
       } else {
         r_global$zoom_level <- 8
       }
-    }
-  )
-
+    })
 
   mod_map_server("map_1", r_global = r_global)
-  mod_project_server("project_1")
+  mod_right_panel_server("right_panel_1")
 }
