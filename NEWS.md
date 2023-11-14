@@ -1,3 +1,8 @@
+# observatoire 0.0.9
+
+* Add a function to create a map for one project
+* Include the example HTML for the projects
+
 # observatoire 0.0.8
 
 * Add translation system scaffold
