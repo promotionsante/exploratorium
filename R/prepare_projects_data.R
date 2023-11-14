@@ -5,6 +5,7 @@
 #' @param name_raw_file Character. Name of the raw data file.
 #' @param pkg_dir Character. Path to the package (must contain a data-raw folder).
 #' @param dic_variables Tibble. Variables dictionaries. Mainly used for examples and unit testing purpose.
+#' @param dic_cantons Tibble. Canton dictionary. Mainly used for examples and unit testing purpose.
 #' @param cantons_sf Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.
 #' 
 #' @importFrom glue glue
@@ -18,6 +19,7 @@
 #' # Load the toy datasets
 #' data("toy_data_pgv")
 #' data("toy_dic_variables")
+#' data("toy_dic_cantons")
 #' data("toy_cantons_sf")
 #'
 #' # Create a temp folder with data-projects-raw and ata-projects subfolder
@@ -41,6 +43,7 @@
 #'   name_raw_file = "toy_PGV.xlsx",
 #'   pkg_dir = my_temp_dir, 
 #'   dic_variables = toy_dic_variables, 
+#'   dic_cantons = toy_dic_cantons,
 #'   cantons_sf = toy_cantons_sf
 #' )
 #'
@@ -50,6 +53,7 @@ prepare_projects_data <- function(
     name_raw_file = "PGV.xlsx",
     pkg_dir = system.file(package = "observatoire"),
     dic_variables = NULL, 
+    dic_cantons = NULL,
     cantons_sf = NULL
   ){
   
@@ -67,9 +71,8 @@ prepare_projects_data <- function(
   cli_alert("Add the columns")
   data_with_col <- data_import |>
     add_col_raw_data(
-      dic_variables = 
-        dic_variables
-      ) 
+      dic_variables = dic_variables
+    ) 
   
   cli_alert("Clean the data")
   data_cleaned <- data_with_col |> 
@@ -87,12 +90,18 @@ prepare_projects_data <- function(
       cantons_sf = cantons_sf
     )
   
+  cli_alert("Detect the id of the cantons influenced")
+  data_with_id_cantons_influenced <- data_with_cantons |> 
+    get_id_cantons_influenced(
+      dic_cantons = dic_cantons
+    )
+  
   cli_alert("Add the number of cantons influenced")
-  data_with_nb_cantons <- data_with_cantons |> 
+  data_with_nb_cantons_influenced <- data_with_id_cantons_influenced |> 
     get_nb_cantons_influenced() 
   
   cli_alert("Add the proportion of the budget")
-  data_with_prop_budget <- data_with_nb_cantons |> 
+  data_with_prop_budget <- data_with_nb_cantons_influenced |> 
     get_prop_budget()
   
   cli_alert("Translate the data")

@@ -8,6 +8,7 @@ prepare_projects_data(
   name_raw_file = "PGV.xlsx",
   pkg_dir = system.file(package = "observatoire"),
   dic_variables = NULL,
+  dic_cantons = NULL,
   cantons_sf = NULL
 )
 }
@@ -17,6 +18,8 @@ prepare_projects_data(
 \item{pkg_dir}{Character. Path to the package (must contain a data-raw folder).}
 
 \item{dic_variables}{Tibble. Variables dictionaries. Mainly used for examples and unit testing purpose.}
+
+\item{dic_cantons}{Tibble. Canton dictionary. Mainly used for examples and unit testing purpose.}
 
 \item{cantons_sf}{Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.}
 }
@@ -30,6 +33,7 @@ Prepare the projects data in FR and DE to be included in the app as .rds files
 # Load the toy datasets
 data("toy_data_pgv")
 data("toy_dic_variables")
+data("toy_dic_cantons")
 data("toy_cantons_sf")
 
 # Create a temp folder with data-projects-raw and ata-projects subfolder
@@ -53,6 +57,7 @@ prepare_projects_data(
   name_raw_file = "toy_PGV.xlsx",
   pkg_dir = my_temp_dir, 
   dic_variables = toy_dic_variables, 
+  dic_cantons = toy_dic_cantons,
   cantons_sf = toy_cantons_sf
 )
 

@@ -3,6 +3,8 @@
 #           EXAMPLES AND UNIT TESTS            #
 ################################################
 
+library(readr)
+
 ## code to prepare `toy_data_pgv` ----
 
 toy_data_pgv <- read_excel(
@@ -42,6 +44,25 @@ checkhelper::use_data_doc(
   name = "toy_dic_variables"
 )
 
+## code to prepare `toy_dic_cantons` ----
+toy_dic_cantons <- read_csv(
+  system.file(
+    "data-dic",
+    "dic_cantons.csv",
+    package = "observatoire"
+  ),
+  show_col_types = FALSE
+)
+
+usethis::use_data(
+  toy_dic_cantons,
+  overwrite = TRUE
+)
+
+checkhelper::use_data_doc(
+  name = "toy_dic_cantons"
+)
+
 ## code to prepare `toy_cantons_sf` ----
 toy_cantons_sf <- st_read(
   dsn = system.file(
@@ -60,3 +81,20 @@ checkhelper::use_data_doc(
   name = "toy_cantons_sf"
 )
 
+## code to prepare `toy_projects_data_sf` ----
+toy_projects_data_sf <- readRDS(
+  system.file(
+    "data-projects",
+    "projects_de.rds",
+    package = "observatoire"
+  )
+)
+
+usethis::use_data(
+  toy_projects_data_sf,
+  overwrite = TRUE
+)
+
+checkhelper::use_data_doc(
+  name = "toy_projects_data_sf"
+)

@@ -30,6 +30,7 @@ Imports:
     stats,
     tibble,
     tidygeocoder,
+    tidyr,
     tidyselect,
     tools
 Suggests: 
@@ -37,6 +38,7 @@ Suggests:
     knitr,
     rmarkdown,
     rsconnect,
+    stringr,
     testthat (>= 3.0.0),
     writexl
 VignetteBuilder: 
