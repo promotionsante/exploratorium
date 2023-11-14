@@ -30,19 +30,31 @@ mod_map_server <- function(id, r_global){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+    data("toy_projects_data_sf")
+    output$map <- renderLeaflet({
+      draw_map_selected_projects(
+        projects_data_sf = toy_projects_data_sf,
+        zoom_level = r_global$zoom_level
+      )
+    })
+
+    # data("toy_projects_data_sf")
     # output$map <- renderLeaflet({
-    #   draw_map_selected_projects(
-    #     projects_data_sf = dummy_project_data_sf(),
-    #     zoom_level = r_global$zoom_level
+    #   draw_map_focus_one_project(
+    #     projects_data_sf = toy_projects_data_sf,
+    #     project_short_title = "1+1=3  PGV03.038"
     #   )
     # })
 
-    data("toy_projects_data_sf")
-    output$map <- renderLeaflet({
-      draw_map_focus_one_project(
-        projects_data_sf = toy_projects_data_sf,
-        project_short_title = "1+1=3  PGV03.038"
+    observeEvent(
+      input$map_marker_click$id,
+      ignoreNULL = TRUE,
+      ignoreInit = TRUE, {
+
+      print(
+        paste("Project selected:", input$map_marker_click$id)
       )
+
     })
 
   })

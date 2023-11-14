@@ -60,6 +60,7 @@ draw_map_selected_projects <- function(
       color = psch_orange(),
       stroke = FALSE,
       fillOpacity = 0.8,
+      layerId = ~ short_title,
       label = ~ as.character(short_title)
     )
 }
