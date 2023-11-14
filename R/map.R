@@ -44,6 +44,7 @@ draw_map_base <- function(zoom_level = 8) {
 #' 
 #' @param projects_data_sf A sf data.frame containing coordinates of project 
 #' main organisation and project `short_title`.
+#' @param project_short_title Character. Id of the project.
 #' 
 #' @return A leaflet object.
 #' 
@@ -57,12 +58,34 @@ draw_map_base <- function(zoom_level = 8) {
 #'   projects_data_sf = dummy_project_data_sf()
 #' )
 draw_map_focus_one_project <- function(
-    projects_data_sf
+    projects_data_sf = readRDS(system.file("data-projects", "projects_de.rds", package = "observatoire")),
+    project_short_title = "1+1=3  PGV03.038"
 ){
 
   cantons_sf <- read_cantons_sf()
   
   # Extract target cantons from project_data_sf
+  project_data_sf <- projects_data_sf |> 
+    filter(short_title == project_short_title) |> 
+    select(short_title, geometry, geo_range) |> 
+    mutate(
+      geo_range = 
+        str_remove_all(
+          geo_range, 
+          "\r|\n"
+        )
+    ) |> 
+    mutate(
+      geo_range = 
+        str_split(
+          geo_range, 
+          pattern = ","
+        )
+    ) |>
+    unnest(geo_range)
+    
+  
+  
   # Add column target_cantons (TRUE/FALSE) in project_data_sf
   
   draw_map_base()

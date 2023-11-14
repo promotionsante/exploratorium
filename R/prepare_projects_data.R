@@ -85,7 +85,7 @@ prepare_projects_data <- function(
   data_with_cantons <- data_with_coord |> 
     get_canton_main_resp_orga(
       cantons_sf = cantons_sf
-    ) 
+    )
   
   cli_alert("Add the number of cantons influenced")
   data_with_nb_cantons <- data_with_cantons |> 

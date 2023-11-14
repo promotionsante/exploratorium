@@ -5,7 +5,7 @@
 #' @param data Tibble. Raw data about projects, with the good columns names.
 #' @param cantons_sf Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.
 #' 
-#' @importFrom dplyr filter mutate select left_join rename
+#' @importFrom dplyr filter mutate select left_join rename distinct
 #' @importFrom glue glue
 #' @importFrom sf st_read st_intersects st_as_sf st_join
 #' @importFrom purrr map_df 
@@ -78,7 +78,8 @@ get_canton_main_resp_orga <- function(
     y = data_with_id_canton,
     suffix = c("", "extra")
   ) |> 
-    select(-short_titleextra)
+    select(-short_titleextra) |> 
+    distinct()
   
   # Check if all cantons have been found
   nb_canton_not_found <- data_with_canton |> 
