@@ -11,7 +11,13 @@ mod_one_project_desc_ui <- function(id){
   ns <- NS(id)
 
   tagList(
-    htmlOutput(ns("projectcard"))
+    checkboxInput(
+      inputId = ns("display_projectcard"),
+      label = "Display the project"
+    ),
+    htmlOutput(
+      outputId = ns("projectcard")
+    )
   )
 }
 
@@ -25,7 +31,7 @@ mod_one_project_desc_server <- function(id){
 
     ns <- session$ns
 
-    observeEvent(input$language,
+    observeEvent(input$display_projectcard,
                  ignoreNULL = TRUE,
                  ignoreInit = TRUE, {
 
