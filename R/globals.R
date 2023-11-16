@@ -8,6 +8,8 @@ globalVariables(unique(c(
   "geo_range",
   # draw_map_focus_one_project:
   "NAME_1", "target_cantons", "geo_range_id",
-  #get_id_cantons_influenced:
-  "de", "geo_range_id", "id"
+  # get_id_cantons_influenced:
+  "de", "geo_range_id", "id",
+  # mod_map_server:
+  "toy_projects_data_sf"
 )))
