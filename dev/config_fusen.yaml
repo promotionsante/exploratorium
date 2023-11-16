@@ -1,3 +1,42 @@
+flat_doc_deploy_app.Rmd:
+  path: dev/flat_doc_deploy_app.Rmd
+  state: active
+  R: []
+  tests: []
+  vignettes: vignettes/deploy-the-app.Rmd
+  inflate:
+    flat_file: dev/flat_doc_deploy_app.Rmd
+    vignette_name: Deploy the app
+    open_vignette: true
+    check: false
+    document: true
+    overwrite: 'yes'
+flat_doc_general_overview.Rmd:
+  path: dev/flat_doc_general_overview.Rmd
+  state: active
+  R: []
+  tests: []
+  vignettes: vignettes/general-overview-of-the-app.Rmd
+  inflate:
+    flat_file: dev/flat_doc_general_overview.Rmd
+    vignette_name: General overview of the app
+    open_vignette: true
+    check: false
+    document: true
+    overwrite: 'yes'
+flat_fct_utils.Rmd:
+  path: dev/flat_fct_utils.Rmd
+  state: active
+  R: R/fct_utils.R
+  tests: tests/testthat/test-fct_utils.R
+  vignettes: []
+  inflate:
+    flat_file: dev/flat_fct_utils.Rmd
+    vignette_name: .na
+    open_vignette: true
+    check: false
+    document: true
+    overwrite: 'yes'
 flat_map.Rmd:
   path: dev/flat_map.Rmd
   state: active
