@@ -1,3 +1,7 @@
+# observatoire 0.0.10
+
+* Enable the user to switch between views (all projects vs one project)
+
 # observatoire 0.0.9
 
 * Add a function to create a map for one project
