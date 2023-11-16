@@ -30,32 +30,57 @@ mod_map_server <- function(id, r_global){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-    data("toy_projects_data_sf")
-    output$map <- renderLeaflet({
-      draw_map_selected_projects(
-        projects_data_sf = toy_projects_data_sf,
-        zoom_level = r_global$zoom_level
-      )
-    })
+    r_local <- reactiveValues()
 
-    # data("toy_projects_data_sf")
-    # output$map <- renderLeaflet({
-    #   draw_map_focus_one_project(
-    #     projects_data_sf = toy_projects_data_sf,
-    #     project_short_title = "1+1=3  PGV03.038"
-    #   )
-    # })
+    # Set initial view: project selection
+    observeEvent(
+      r_global$zoom_level,
+      once = TRUE, {
+        req(r_global$zoom_level)
+        r_local$map_to_draw <- draw_map_selected_projects(
+          projects_data_sf = toy_projects_data_sf,
+          zoom_level = r_global$zoom_level
+        )
+      })
+
+    observeEvent(
+      r_global$id_selected_project,
+      ignoreInit = TRUE,
+      ignoreNULL = FALSE,
+      {
+        if (
+          is.null(r_global$id_selected_project)
+        ) {
+          r_local$map_to_draw <- draw_map_selected_projects(
+            projects_data_sf = toy_projects_data_sf,
+            zoom_level = r_global$zoom_level
+          )
+        } else {
+          r_local$map_to_draw <- draw_map_focus_one_project(
+            projects_data_sf = toy_projects_data_sf,
+            # project_short_title = "1+1=3  PGV03.038"
+            project_short_title = r_global$id_selected_project,
+            zoom_level = r_global$zoom_level
+          )
+        }
+      }
+    )
+
+    output$map <- renderLeaflet({
+      r_local$map_to_draw
+    })
 
     observeEvent(
       input$map_marker_click$id,
       ignoreNULL = TRUE,
       ignoreInit = TRUE, {
 
-      print(
-        paste("Project selected:", input$map_marker_click$id)
-      )
+        print(
+          paste("Project selected:", input$map_marker_click$id)
+        )
+        r_global$id_selected_project <- input$map_marker_click$id
 
-    })
+      })
 
   })
 }
