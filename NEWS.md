@@ -1,3 +1,7 @@
+# observatoire 0.1.0
+
+* Enable the user to see all projects cards
+
 # observatoire 0.0.10
 
 * Enable the user to switch between views (all projects vs one project)
