@@ -8,7 +8,9 @@ app_server <- function(input, output, session) {
   # Your application server logic
 
   r_global <- reactiveValues(
-    zoom_level = 8
+    zoom_level = NULL,
+    # Set initial condition: no focus project is selected
+    id_selected_project = NULL
   )
 
   observeEvent(
@@ -39,7 +41,5 @@ app_server <- function(input, output, session) {
     })
 
   mod_map_server("map_1", r_global = r_global)
-  mod_right_panel_server("right_panel_1")
-  # mod_one_project_server("one_project_1")
-
+  mod_right_panel_server("right_panel_1", r_global = r_global)
 }

@@ -11,9 +11,9 @@ mod_one_project_desc_ui <- function(id){
   ns <- NS(id)
 
   tagList(
-    checkboxInput(
-      inputId = ns("display_projectcard"),
-      label = "Display the project"
+    actionButton(
+      inputId = ns("back_to_project_selection_view"),
+      label = "Back to project selection"
     ),
     htmlOutput(
       outputId = ns("projectcard")
@@ -26,32 +26,31 @@ mod_one_project_desc_ui <- function(id){
 #' @importFrom glue glue
 #'
 #' @noRd
-mod_one_project_desc_server <- function(id){
+mod_one_project_desc_server <- function(id, r_global){
   moduleServer( id, function(input, output, session){
 
     ns <- session$ns
 
-    observeEvent(input$display_projectcard,
-                 ignoreNULL = TRUE,
-                 ignoreInit = TRUE, {
-
-      add_resource_path(
-        "projectscardslibrary",
-        system.file(
-          "data-projects-cards",
-          package = "observatoire")
-      )
-
-      output$projectcard <- renderUI({
-
-        tags$iframe(
-          seamless = "seamless",
-          src = glue("projectscardslibrary/template_projects_cards_de.html"),
-          frameborder = "0",
-          style = "width:100vw;height:100vh;"
-        )
-
+    observeEvent(
+      input$back_to_project_selection_view,
+      {
+        r_global$id_selected_project <- NULL
       })
+
+    add_resource_path(
+      "projectscardslibrary",
+      system.file(
+        "data-projects-cards",
+        package = "observatoire")
+    )
+
+    output$projectcard <- renderUI({
+      tags$iframe(
+        seamless = "seamless",
+        src = glue("projectscardslibrary/template_projects_cards_de.html"),
+        frameborder = "0",
+        style = "width:100vw;height:100vh;"
+      )
     })
 
   })

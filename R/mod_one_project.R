@@ -19,12 +19,12 @@ mod_one_project_ui <- function(id){
 #' one_project Server Functions
 #'
 #' @noRd
-mod_one_project_server <- function(id){
+mod_one_project_server <- function(id, r_global){
 
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-    mod_one_project_desc_server("project_1")
+    mod_one_project_desc_server("project_1", r_global = r_global)
 
   })
 }
