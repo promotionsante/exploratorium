@@ -7,23 +7,31 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_project_ui <- function(id){
+mod_one_project_desc_ui <- function(id){
   ns <- NS(id)
 
   tagList(
-    htmlOutput(ns("projectcard"))
+    checkboxInput(
+      inputId = ns("display_projectcard"),
+      label = "Display the project"
+    ),
+    htmlOutput(
+      outputId = ns("projectcard")
+    )
   )
 }
 
 #' project Server Functions
 #'
+#' @importFrom glue glue
+#'
 #' @noRd
-mod_project_server <- function(id){
+mod_one_project_desc_server <- function(id){
   moduleServer( id, function(input, output, session){
 
     ns <- session$ns
 
-    observeEvent(input$language,
+    observeEvent(input$display_projectcard,
                  ignoreNULL = TRUE,
                  ignoreInit = TRUE, {
 
@@ -38,7 +46,7 @@ mod_project_server <- function(id){
 
         tags$iframe(
           seamless = "seamless",
-          src = "projectscardslibrary/template_projects_cards.html",
+          src = glue("projectscardslibrary/template_projects_cards_de.html"),
           frameborder = "0",
           style = "width:100vw;height:100vh;"
         )
@@ -50,7 +58,7 @@ mod_project_server <- function(id){
 }
 
 ## To be copied in the UI
-# mod_project_ui("project_1")
+# mod_one_project_desc_ui("project_1")
 
 ## To be copied in the server
-# mod_project_server("project_1")
+# mod_one_project_desc_server("project_1")

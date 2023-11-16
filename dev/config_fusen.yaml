@@ -1,24 +1,32 @@
-flat_fct_utils.Rmd:
-  path: dev/flat_fct_utils.Rmd
+flat_map.Rmd:
+  path: dev/flat_map.Rmd
   state: active
-  R: R/fct_utils.R
-  tests: tests/testthat/test-fct_utils.R
-  vignettes: []
+  R:
+  - R/draw_map_focus_one_project.R
+  - R/draw_map_selected_projects.R
+  tests:
+  - tests/testthat/test-draw_map_selected_projects.R
+  - tests/testthat/test-draw_map_focus_one_project.R
+  vignettes: vignettes/draw-the-switzerland-maps-with-projects.Rmd
   inflate:
-    flat_file: dev/flat_fct_utils.Rmd
-    vignette_name: .na
+    flat_file: dev/flat_map.Rmd
+    vignette_name: Draw the Switzerland maps with projects
     open_vignette: true
     check: false
     document: true
     overwrite: 'yes'
-flat_map.Rmd:
-  path: dev/flat_map.Rmd
+flat_map_subfunctions.Rmd:
+  path: dev/flat_map_subfunctions.Rmd
   state: active
-  R: R/draw_leaflet_map.R
-  tests: tests/testthat/test-draw_leaflet_map.R
+  R:
+  - R/map_utils.R
+  - R/draw_map_base.R
+  tests:
+  - tests/testthat/test-map_utils.R
+  - tests/testthat/test-draw_map_base.R
   vignettes: []
   inflate:
-    flat_file: dev/flat_map.Rmd
+    flat_file: dev/flat_map_subfunctions.Rmd
     vignette_name: .na
     open_vignette: true
     check: false
@@ -45,6 +53,7 @@ flat_prepare_data_subfunctions.Rmd:
   - R/clean_raw_data.R
   - R/get_canton_main_resp_orga.R
   - R/get_coord_main_resp_orga.R
+  - R/get_id_cantons_influenced.R
   - R/get_nb_cantons_influenced.R
   - R/get_prop_budget.R
   - R/import_raw_data.R
@@ -56,6 +65,7 @@ flat_prepare_data_subfunctions.Rmd:
   - tests/testthat/test-clean_raw_data.R
   - tests/testthat/test-get_coord_main_resp_orga.R
   - tests/testthat/test-get_canton_main_resp_orga.R
+  - tests/testthat/test-get_id_cantons_influenced.R
   - tests/testthat/test-get_nb_cantons_influenced.R
   - tests/testthat/test-get_prop_budget.R
   - tests/testthat/test-translate_values_in_data.R

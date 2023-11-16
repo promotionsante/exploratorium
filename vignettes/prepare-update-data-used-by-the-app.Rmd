@@ -105,6 +105,7 @@ Then, to update the data used by the application, you can use the `prepare_proje
 # Load the toy datasets
 data("toy_data_pgv")
 data("toy_dic_variables")
+data("toy_dic_cantons")
 data("toy_cantons_sf")
 
 # Create a temp folder with data-projects-raw and ata-projects subfolder
@@ -128,6 +129,7 @@ prepare_projects_data(
   name_raw_file = "toy_PGV.xlsx",
   pkg_dir = my_temp_dir, 
   dic_variables = toy_dic_variables, 
+  dic_cantons = toy_dic_cantons,
   cantons_sf = toy_cantons_sf
 )
 

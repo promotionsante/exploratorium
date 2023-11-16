@@ -3,15 +3,26 @@ articles:
   navbar: ~
   contents:
   - prepare-update-data-used-by-the-app
+  - draw-the-switzerland-maps-with-projects
 
 reference:
 - title: Data used by the app
   desc: Prepare and update the data used by the app
 - contents:
   - prepare_projects_data
-  - toy_data_pgv
-  - toy_cantons_sf
-  - toy_dic_variables
+- title: Draw the Switzerland maps
+  desc: Build the maps with projects
+- contents:
+  - draw_map_selected_projects
+  - draw_map_focus_one_project
 - title: Shiny app
 - contents:
   - run_app
+- title: Toy datasets
+  desc: Datasets used for demo purposes
+- contents:
+  - toy_data_pgv
+  - toy_cantons_sf
+  - toy_dic_variables
+  - toy_dic_cantons
+  - toy_projects_data_sf

@@ -5,6 +5,7 @@ test_that("Test that the preparation of the projects data is ok", {
   # Load the toy datasets
   data("toy_data_pgv")
   data("toy_dic_variables")
+  data("toy_dic_cantons")
   data("toy_cantons_sf")
   
   # Create a temp folder with data-projects-raw and ata-projects subfolder
@@ -22,8 +23,9 @@ test_that("Test that the preparation of the projects data is ok", {
   # Prepare the data
   prepare_projects_data(
     name_raw_file = "toy_PGV.xlsx",
-    pkg_dir = my_temp_dir,
-    dic_variables = toy_dic_variables,
+    pkg_dir = my_temp_dir, 
+    dic_variables = toy_dic_variables, 
+    dic_cantons = toy_dic_cantons,
     cantons_sf = toy_cantons_sf
   )
   
@@ -37,6 +39,13 @@ test_that("Test that the preparation of the projects data is ok", {
   )
   
   # Perform usage checks on the data
+  
+  #' @description Testing that the number of rows is the same than in the raw data
+  expect_equal(
+    object = nrow(projects_data_fr), 
+    expected = nrow(toy_data_pgv) - 1 # remove the first line with FR variables names
+  )
+  
   #' @description Testing that the object contains geometry of points (SF)
   expect_true(
     inherits(projects_data_fr |>
@@ -52,6 +61,12 @@ test_that("Test that the preparation of the projects data is ok", {
       )$input, 
     expected = "EPSG:4326"
   )
+  
+  #' @description Testing that the object contains a column geo_range_id
+  expect_true(
+    "geo_range_id" %in% colnames(projects_data_fr)
+  )
+  
   
   # Delete the tempdir
   unlink(my_temp_dir, recursive = TRUE)
