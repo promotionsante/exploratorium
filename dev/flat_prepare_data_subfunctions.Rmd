@@ -1257,7 +1257,7 @@ test_that("Test that the saving of the data in inst works", {
 #' @param language Character. Language, 'fr' or 'de'.
 #' @param pkg_dir Character. Path to the package.
 #' 
-#' @importFrom htmltools htmlTemplate
+#' @importFrom htmltools htmlTemplate withTags
 #' @importFrom glue glue
 #' @importFrom purrr map set_names
 #' @importFrom dplyr filter
@@ -1366,9 +1366,9 @@ prepare_one_project_card <- function(
     project_description_title = list_titles[["project_description_title"]],
     description_value = description_value,
     project_theme_title = list_titles[["project_theme_title"]],
-    theme_value = theme_value,
+    theme_value = withTags(HTML(theme_value)),
     project_risk_title = list_titles[["project_risk_title"]],
-    risk_value = risk_value,
+    risk_value = withTags(HTML(risk_value)),
     project_budget_title = list_titles[["project_budget_title"]],
     budget_value = budget_value,
     project_prop_budget_title = list_titles[["project_prop_budget_title"]]
