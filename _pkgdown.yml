@@ -20,6 +20,7 @@ reference:
   desc: Prepare and update the data used by the app
 - contents:
   - prepare_projects_data
+  - prepare_projects_cards
 - title: Draw the Switzerland maps
   desc: Build the maps with projects
 - contents:

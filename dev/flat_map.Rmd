@@ -90,7 +90,7 @@ test_that("draw_map_selected_projects() returns a leaflet object", {
 To create the map with a project as a point and the cantons of influence, you can use the `draw_map_focus_one_project()` function as follows *(here with a toy dataset)*:
 
 ```{r function-draw_map_focus_one_project}
-#' Draw map of selected projects
+#' Draw the map focused on one project
 #' 
 #' @param projects_data_sf A sf data.frame containing coordinates of project 
 #' main organisation and project `short_title`.
@@ -157,7 +157,7 @@ draw_map_focus_one_project <- function(
   # Display selected project in psch orange
   # Nice to have
   # Display lines radiating from project to centroid of target cantons
-  draw_map_base(zoom_level) |> 
+  map_with_not_influenced_cantons <- draw_map_base(zoom_level) |> 
     addPolygons(
       data = cantons_sf_project |> 
         filter(target_cantons == FALSE),
@@ -165,8 +165,13 @@ draw_map_focus_one_project <- function(
       color = psch_blue(),
       fillColor = psch_blue(),
       fillOpacity = 0.1
-    ) |>
-    addPolygons(
+    ) 
+  
+  if (nrow(cantons_sf_project |> 
+        filter(target_cantons == TRUE)) > 0) {
+    
+    map_with_influenced_cantons <- map_with_not_influenced_cantons |> 
+      addPolygons(
       data = cantons_sf_project |> 
         filter(target_cantons == TRUE),
       weight = 1,
@@ -174,7 +179,15 @@ draw_map_focus_one_project <- function(
       fillColor = psch_orange(),
       fillOpacity = 0.5,
       label = ~ as.character(NAME_1)
-    ) |>
+    ) 
+    
+  } else {
+    
+    map_with_influenced_cantons <- map_with_not_influenced_cantons
+    
+  }
+    
+  map_with_influenced_cantons |>
     addCircleMarkers(
       data = coord_sf_project,
       color = psch_orange(),
@@ -193,6 +206,12 @@ data("toy_cantons_sf")
 draw_map_focus_one_project(
   projects_data_sf = toy_projects_data_sf,
   id_project = "1+1=3  PGV03.038", 
+  cantons_sf = toy_cantons_sf
+)
+
+draw_map_focus_one_project(
+  projects_data_sf = toy_projects_data_sf,
+  id_project = "FM_ProPCC+", 
   cantons_sf = toy_cantons_sf
 )
 ```

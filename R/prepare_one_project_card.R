@@ -128,7 +128,7 @@ prepare_one_project_card <- function(
     "</li>"
   )
     
-  budget_value <- data_one_project[["project_start"]]
+  budget_value <- data_one_project[["budget_value"]]
   
   # Generate the html content
   html_content <- htmlTemplate(
