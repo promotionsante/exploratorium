@@ -1,3 +1,48 @@
+flat_doc_deploy_app.Rmd:
+  path: dev/flat_doc_deploy_app.Rmd
+  state: active
+  R: []
+  tests: []
+  vignettes: vignettes/deploy-the-app.Rmd
+  inflate:
+    flat_file: dev/flat_doc_deploy_app.Rmd
+    vignette_name: Deploy the app
+    open_vignette: true
+    check: false
+    document: true
+    overwrite: 'yes'
+flat_doc_general_overview.Rmd:
+  path: dev/flat_doc_general_overview.Rmd
+  state: active
+  R: []
+  tests: []
+  vignettes: vignettes/general-overview-of-the-app.Rmd
+  inflate:
+    flat_file: dev/flat_doc_general_overview.Rmd
+    vignette_name: General overview of the app
+    open_vignette: true
+    check: false
+    document: true
+    overwrite: 'yes'
+flat_fct_utils.Rmd:
+  path: dev/flat_fct_utils.Rmd
+  state: active
+  R:
+  - R/clean_id_project.R
+  - R/get_trad_title.R
+  - R/fct_utils.R
+  tests:
+  - tests/testthat/test-fct_utils.R
+  - tests/testthat/test-get_trad_title.R
+  - tests/testthat/test-clean_id_project.R
+  vignettes: []
+  inflate:
+    flat_file: dev/flat_fct_utils.Rmd
+    vignette_name: .na
+    open_vignette: true
+    check: false
+    document: true
+    overwrite: 'yes'
 flat_map.Rmd:
   path: dev/flat_map.Rmd
   state: active
@@ -57,6 +102,8 @@ flat_prepare_data_subfunctions.Rmd:
   - R/get_nb_cantons_influenced.R
   - R/get_prop_budget.R
   - R/import_raw_data.R
+  - R/prepare_one_project_card.R
+  - R/prepare_projects_cards.R
   - R/save_projects_data.R
   - R/translate_values_in_data.R
   tests:
@@ -70,6 +117,8 @@ flat_prepare_data_subfunctions.Rmd:
   - tests/testthat/test-get_prop_budget.R
   - tests/testthat/test-translate_values_in_data.R
   - tests/testthat/test-save_projects_data.R
+  - tests/testthat/test-prepare_one_project_card.R
+  - tests/testthat/test-prepare_projects_cards.R
   vignettes: []
   inflate:
     flat_file: dev/flat_prepare_data_subfunctions.Rmd

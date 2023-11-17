@@ -1,8 +1,18 @@
 articles:
-- title: Articles
-  navbar: ~
+- title: Introduction
+  navbar: Introduction
+  contents:
+  - general-overview-of-the-app
+- title: Modification of the data used by the app
+  navbar: Modification of the data used by the app
   contents:
   - prepare-update-data-used-by-the-app
+- title: Deployment
+  navbar: Deployment
+  contents:
+  - deploy-the-app
+- title: Other
+  contents:
   - draw-the-switzerland-maps-with-projects
 
 reference:
@@ -10,6 +20,7 @@ reference:
   desc: Prepare and update the data used by the app
 - contents:
   - prepare_projects_data
+  - prepare_projects_cards
 - title: Draw the Switzerland maps
   desc: Build the maps with projects
 - contents:

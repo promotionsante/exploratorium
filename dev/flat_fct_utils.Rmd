@@ -14,7 +14,7 @@ library(testthat)
 pkgload::load_all(export_all = FALSE)
 ```
 
-# Read Cantons Spatial Data
+# Read cantons spatial data
 
 ```{r function-read_cantons_sf}
 #' Read cantons polygons data
@@ -68,11 +68,63 @@ test_that("read_cantons_sf works", {
 })
 ```
 
+# Read projects data
+
+```{r function-read_projects_data}
+#' Read projects data
+#' @importFrom glue glue
+#' @filename fct_utils
+#' @noRd
+read_projects_data <- function(
+    language = c("de", "fr")
+    ){
+  
+  language <- match.arg(language)
+  
+  readRDS(
+    system.file(
+      "data-projects", 
+      glue("projects_{language}.rds"),
+      package = "observatoire"
+    )
+  )
+    
+}
+```
+  
+```{r tests-read_projects_data}
+test_that("Test that the reading of projects data works", {
+  
+  expect_error(
+    data_projects_fr <- read_projects_data(
+      language = "fr"
+    ), 
+    regexp = NA
+  )
+  
+  expect_true(
+    inherits(data_projects_fr, "data.frame")
+  )
+  
+   expect_error(
+    data_projects_de <- read_projects_data(
+      language = "de"
+    ), 
+    regexp = NA
+  )
+  
+  expect_true(
+    inherits(data_projects_de, "data.frame")
+  )
+  
+  
+})
+```
+  
 
 # Get PSCH colors
 
 ```{r function-colors}
-
 #' @filename fct_utils
 #' @noRd
 psch_blue <- function() {
@@ -85,6 +137,27 @@ psch_blue <- function() {
 psch_orange <- function() {
   # Corporate: Orange
   "#f59300"
+}
+
+#' @filename fct_utils
+#' @noRd
+psch_yellow <- function() {
+  # BGM: Gelb
+  "#fbbc00"
+}
+
+#' @filename fct_utils
+#' @noRd
+psch_bronce <- function() {
+  # Bronce
+  "#695b2e"
+}
+
+#' @filename fct_utils
+#' @noRd
+psch_green <- function() {
+  # Lindengrün
+  "#b1c000"
 }
 ```
 
@@ -101,6 +174,114 @@ test_that("psch color function return proper color",{
 })
 ```
 
+# Get the translation of a title
+    
+```{r function-get_trad_title}
+#' Get the translation of a title
+#' 
+#' @param title_id Character. Id of the title in the dictionary.
+#' @param language Character. Language ("de" or "fr").
+#' 
+#' @importFrom readr read_csv2 locale
+#' @importFrom dplyr filter pull 
+#' 
+#' @return A character. Translation. 
+#' 
+#' @noRd
+get_trad_title <- function(
+    title_id,
+    language) {
+  
+  dic_titles_pages <- read_csv2(
+    app_sys(
+      "data-dic",
+      "dic_titles_app.csv"
+    ), 
+    show_col_types = FALSE, 
+    locale = locale(decimal_mark = ",", grouping_mark = ".")
+  )
+  
+  dic_titles_pages |> 
+    filter(id == title_id) |> 
+    pull(language)
+  
+}
+```
+  
+```{r example-get_trad_title}
+get_trad_title(
+  title_id = "project_start_year_title",
+  language = "fr"
+)
+
+get_trad_title(
+  title_id = "project_start_year_title",
+  language = "de"
+)
+```
+  
+```{r tests-get_trad_title}
+test_that("Test that the translation of a title works", {
+  
+  expect_equal(
+    object = get_trad_title(
+      title_id = "project_start_year_title",
+      language = "fr"
+    ),
+    expected = "Année de lancement"
+  )
+  
+  expect_equal(
+    object = get_trad_title(
+      title_id = "project_start_year_title",
+      language = "de"
+    ),
+    expected = "Projektstart"
+  )
+
+})
+```
+  
+# Clean the id of a project
+
+```{r function-clean_id_project}
+#' Clean the id of a project
+#' 
+#' @return Character. The id cleaned.
+#' 
+#' @noRd
+clean_id_project <- function(
+    id_project
+    ){
+  
+    iconv(
+      gsub("[[:punct:]]| ", "", id_project), 
+      to = "ASCII//TRANSLIT"
+    )
+  
+}
+```
+  
+```{r tests-clean_id_project}
+test_that("Test that the cleaning of the id of a project works", {
+  
+  expect_equal(
+    object = clean_id_project(
+      id_project = "FM_ProPCC+"
+    ), 
+    expected = "FMProPCC"
+  )
+  
+  expect_equal(
+    object = clean_id_project(
+      id_project = "Sturzprävention/ in der Spitex"
+    ), 
+    expected = "SturzpraventioninderSpitex"
+  )
+
+})
+```
+  
 
 ```{r development-inflate, eval=FALSE}
 # Run but keep eval=FALSE to avoid infinite loop

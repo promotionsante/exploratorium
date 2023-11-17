@@ -13,37 +13,31 @@ knitr::opts_chunk$set(
 )
 ```
 
-# observatoire
+# {observatoire} <img src="man/figures/logo.png" align="right" alt="" width="120" /> {.unlisted}
 
 <!-- badges: start -->
 [![R build status](https://forge.thinkr.fr/promotionsante/observatoire/badges/main/pipeline.svg)](https://forge.thinkr.fr/promotionsante/observatoire/-/pipelines)
 [![Codecov test coverage](https://forge.thinkr.fr/promotionsante/observatoire/badges/main/coverage.svg)](https://forge.thinkr.fr/promotionsante/observatoire/commits/main)
 <!-- badges: end -->
 
-Ce projet a pour but de rendre accessible et valoriser les données d'investissement dans la promotion de la santé et de la prévention des maladies en Suisse est l'objectif de Promotion Santé Suisse. Fournir une plateforme de cette nature permettra à Promotion Santé Suisse de donner à voir les actions qu'ils coordonnent.
+# Overview
 
-## Développeur
+An attractive and	playful **platform** for citizens and the federal government to explore the **projects supported in the promotion of diseases in Switzerland**.
 
-### Déploiement 
+<img src="man/figures/screenshot_app.png" align="center" alt="" width="80%" />
 
-L'application est déployée en continue sur le compte prevention.shinyapps.io appartenant
-à Promotion Santé Suisse.
+# Access to the app
 
-* La branche `main` sur https://prevention.shinyapps.io/observatoire-dev/
-* La branche `production` sur https://prevention.shinyapps.io/observatoire/
+The app is deployed on shinyapps.io.
 
-### Variables d'Environement 
+The **prod** app: [prod version](https://prevention.shinyapps.io/observatoire/)
 
-Il est nécessaire de définir deux variables d'environement dans gilab CI ou dans `~/.Renviron`
-pour déployer en local.
+The **dev** app (only for the dev team and key business users): [dev version](https://prevention.shinyapps.io/observatoire-dev/)
 
-* `SHINYAPPS_IO_TOKEN`
-* `SHINYAPPS_IO_SECRET` 
+# Documentation
 
-Les valeurs se trouvent dans https://www.shinyapps.io/admin/#/tokens.
-Il vous faudra ensuite cliquer sur `Show` pour voir les deux variables.
+The technical documentation for the developers is available in the [pkgdown](https://promotionsante.pages.thinkr.fr/observatoire). You will find global information about: 
 
-### Debug
-
-Pour déployer l'app manuellement il est possible d'utiliser directement le script 
-utilisé par gitlab CI `dev/deploy_app.R` dans votre environement de développement.
+- The architecture of the app
+- How to **update and modify the data used by the app**
+- How to manually deploy the app on shinyapps.io

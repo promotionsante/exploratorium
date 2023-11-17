@@ -2,11 +2,11 @@
 % Please edit documentation in R/draw_map_focus_one_project.R
 \name{draw_map_focus_one_project}
 \alias{draw_map_focus_one_project}
-\title{Draw map of selected projects}
+\title{Draw the map focused on one project}
 \usage{
 draw_map_focus_one_project(
   projects_data_sf,
-  project_short_title,
+  id_project,
   cantons_sf = NULL,
   zoom_level = 8
 )
@@ -15,7 +15,7 @@ draw_map_focus_one_project(
 \item{projects_data_sf}{A sf data.frame containing coordinates of project 
 main organisation and project `short_title`.}
 
-\item{project_short_title}{Character. Id of the project.}
+\item{id_project}{Character. Id of the project.}
 
 \item{cantons_sf}{Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.}
 
@@ -26,7 +26,7 @@ default zoom level.}
 A leaflet object.
 }
 \description{
-Draw map of selected projects
+Draw the map focused on one project
 }
 \examples{
 data("toy_projects_data_sf")
@@ -34,7 +34,13 @@ data("toy_cantons_sf")
 
 draw_map_focus_one_project(
   projects_data_sf = toy_projects_data_sf,
-  project_short_title = "1+1=3  PGV03.038", 
+  id_project = "1+1=3  PGV03.038", 
+  cantons_sf = toy_cantons_sf
+)
+
+draw_map_focus_one_project(
+  projects_data_sf = toy_projects_data_sf,
+  id_project = "FM_ProPCC+", 
   cantons_sf = toy_cantons_sf
 )
 }
