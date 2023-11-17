@@ -169,33 +169,20 @@ ul {
 }
 
 /* Button go back to all projects*/
-.orange-arrow-button {
-  background-color: white;
+.orange-arrow-button,
+.orange-arrow-button:hover,
+.orange-arrow-button:focus {
+  background-color: transparent;
   border: none;
   padding: 0px;
 }
 
-.orange-arrow-button:active, .orange-arrow-button:focus {
-  background-color: white;
-  border: none;
-  padding: 0px;
-}
-
+.orange-arrow-button:focus,
+.orange-arrow-button:active,
 .orange-arrow-button:active:focus {
-  background-color: white;
+  background-color: transparent;
   border: none;
-  padding: 0px;
-}
-
-.orange-arrow-button {
-  &:active,
-  &:hover,
-  &:focus,
-  &:visited,
-  &:link,
-  &:active:focus,
-  &:disabled {
-  background-color: white;
-  border: none;
+  outline:none;
+  box-shadow: none;
   padding: 0px;
 }
