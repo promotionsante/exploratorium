@@ -58,8 +58,7 @@ mod_map_server <- function(id, r_global){
         } else {
           r_local$map_to_draw <- draw_map_focus_one_project(
             projects_data_sf = toy_projects_data_sf,
-            # project_short_title = "1+1=3  PGV03.038"
-            project_short_title = r_global$id_selected_project,
+            id_project = r_global$id_selected_project,
             zoom_level = r_global$zoom_level
           )
         }
