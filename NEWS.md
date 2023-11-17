@@ -1,3 +1,9 @@
+# observatoire 0.1.1
+
+* Add the project cards css to the custom.css used by the app
+* Add an orange arrow to go back to the main view
+* Remove the iframe and include the projects cards directly
+
 # observatoire 0.1.0
 
 * Enable the user to see all projects cards
