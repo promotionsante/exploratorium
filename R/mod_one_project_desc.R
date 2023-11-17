@@ -15,7 +15,7 @@ mod_one_project_desc_ui <- function(id){
       inputId = ns("back_to_project_selection_view"),
       label = "Back to project selection"
     ),
-    htmlOutput(
+    uiOutput(
       outputId = ns("project_card")
     )
   )
@@ -39,13 +39,6 @@ mod_one_project_desc_server <- function(id, r_global){
 
       })
 
-    add_resource_path(
-      "projectscardslibrary",
-      system.file(
-        "data-projects-cards",
-        package = "observatoire")
-    )
-
     observeEvent(
       r_global$id_selected_project,
       {
@@ -55,11 +48,12 @@ mod_one_project_desc_server <- function(id, r_global){
         )
 
         output$project_card <- renderUI({
-          tags$iframe(
-            seamless = "seamless",
-            src = glue("projectscardslibrary/project_card_{clean_id_project}_de.html"),
-            frameborder = "0",
-            style = "width:100vw;height:100vh;"
+          includeHTML(
+            system.file(
+              "data-projects-cards",
+              glue("project_card_{clean_id_project}_de.html"),
+              package = "observatoire"
+            )
           )
         })
 
