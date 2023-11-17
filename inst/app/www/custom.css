@@ -168,3 +168,34 @@ ul {
   margin: 0px;
 }
 
+/* Button go back to all projects*/
+.orange-arrow-button {
+  background-color: white;
+  border: none;
+  padding: 0px;
+}
+
+.orange-arrow-button:active, .orange-arrow-button:focus {
+  background-color: white;
+  border: none;
+  padding: 0px;
+}
+
+.orange-arrow-button:active:focus {
+  background-color: white;
+  border: none;
+  padding: 0px;
+}
+
+.orange-arrow-button {
+  &:active,
+  &:hover,
+  &:focus,
+  &:visited,
+  &:link,
+  &:active:focus,
+  &:disabled {
+  background-color: white;
+  border: none;
+  padding: 0px;
+}
