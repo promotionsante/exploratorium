@@ -4,17 +4,20 @@
 #' 
 #' @param data_projects_fr Tibble. Projects data in FR.
 #' @param data_projects_de Tibble. Projects data in DE.
+#' @param dic_titles_pages Tibble. Title of the pages dictionaries. Mainly used for examples and unit testing purpose.
 #' @param pkg_dir Character. Path to the package.
 #' 
 #' @importFrom dplyr pull
 #' @importFrom purrr walk
+#' @importFrom glue glue
+#' @importFrom cli cli_process_start cli_process_done
 #' 
 #' @return Nothing. Used for side effects. Create the project card.
-#' 
-#' @export
+#' @noRd
 #' @examples
 #' # Load the toy datasets
 #' data("toy_projects_data_sf")
+#' data("toy_dic_titles_pages")
 #'
 #' # Keep 2 projects
 #' toy_data <- toy_projects_data_sf[1:2, ]
@@ -40,6 +43,7 @@
 #' prepare_projects_cards(
 #'   data_projects_fr = toy_data,
 #'   data_projects_de = toy_data,
+#'   dic_titles_pages = toy_dic_titles_pages,
 #'   pkg_dir = my_temp_dir
 #' )
 #'
@@ -54,8 +58,13 @@
 prepare_projects_cards <- function(
     data_projects_fr = read_projects_data(language = "fr"),
     data_projects_de = read_projects_data(language = "de"),
+    dic_titles_pages = NULL,
     pkg_dir = system.file(package = "observatoire")
     ){
+  
+  cli_process_start(
+    "Start to prepare the projects cards"
+  )
   
   # Clean everything
   files_in_dir <- list.files(
@@ -88,6 +97,7 @@ prepare_projects_cards <- function(
           id_project = .x, 
           language = "fr", 
           data_projects = data_projects_fr,
+          dic_titles_pages = dic_titles_pages,
           pkg_dir = pkg_dir
       )
     )
@@ -99,8 +109,55 @@ prepare_projects_cards <- function(
           id_project = .x, 
           language = "de", 
           data_projects = data_projects_de,
+          dic_titles_pages = dic_titles_pages,
           pkg_dir = pkg_dir
       )
     )
+  
+  # Print a message about the time of modification
+  available_files_in_data <- list.files(
+    file.path(
+      pkg_dir, 
+      "data-projects-cards"
+    )
+  )
+  
+  nb_files_fr <- length(grep(
+    pattern = "_fr.html", 
+    x = available_files_in_data
+  ))
+  
+  nb_files_de <- length(grep(
+    pattern = "_de.html", 
+    x = available_files_in_data
+  ))
+  
+  if (nb_files_fr != 0 & nb_files_de != 0) {
+    
+    time_modif <- file.info(
+      file.path(
+        pkg_dir, 
+        'data-projects-cards', 
+        available_files_in_data[1]))$mtime
+    
+    message(
+      glue(
+        "{nb_files_de} projects cards in DE have been updated at {time_modif}",
+        "{nb_files_fr} projects cards in FR have been updated at {time_modif}", 
+        .sep = "\n"
+        )
+      )
+    
+  } else {
+    
+    stop(
+      "Something went wrong about the preparation of the projects cards"
+    )
+    
+  }
+  
+  cli_process_done(
+    "Finish to prepare the projects cards"
+  )
     
 }

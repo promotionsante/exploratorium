@@ -29,6 +29,16 @@ knitr::opts_chunk$set(
 
 *The aim of this article is to show you how to update the data used by the app.*
 
+The app uses 2 types of data: 
+
+- Projects data saved in a .rds format with all the data
+- Projects cards in a .hmlt format
+
+
+```{r echo = FALSE, eval = TRUE, fig.align = 'center'}
+knitr::include_graphics("../man/figures/type_data.png")
+```
+
 The data preparation workflow is shown below. **This data preparation process must be repeated each time the raw data is modified or each time a modification is required to the data dictionaries.**
 
 
@@ -94,18 +104,34 @@ The content of **"dic_values.csv"** is the following one:
 #TODO
 ```
 
+The content of **"dic_titles_app.csv"** is the following one:
+
+
+```{r echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
+DT::datatable(
+  readr::read_csv(
+    system.file(
+      "data-dic",
+      "dic_titles_app.csv", 
+      package = "observatoire"
+    )
+  )
+)
+```
+
 # Update the data used by the app
 
-Then, to update the data used by the application, you can use the `prepare_projects_data()` function as follows:
+Then, to update the data used by the application, you can use the `prepare_app_data()` function as follows:
 
 
   
 
-```{r example-prepare_projects_data, echo = FALSE}
+```{r example-prepare_app_data, echo = FALSE}
 # Load the toy datasets
 data("toy_data_pgv")
 data("toy_dic_variables")
 data("toy_dic_cantons")
+data("toy_dic_titles_pages")
 data("toy_cantons_sf")
 
 # Create a temp folder with data-projects-raw and ata-projects subfolder
@@ -113,6 +139,7 @@ my_temp_dir <- tempfile("test-prepare-data")
 dir.create(my_temp_dir)
 dir.create(file.path(my_temp_dir, "data-projects-raw"))
 dir.create(file.path(my_temp_dir, "data-projects"))
+dir.create(file.path(my_temp_dir, "data-projects-cards"))
 
 # Save the toy PGV file inside
 writexl::write_xlsx(
@@ -125,11 +152,12 @@ writexl::write_xlsx(
 )
 
 # Prepare the data
-prepare_projects_data(
+prepare_app_data(
   name_raw_file = "toy_PGV.xlsx",
   pkg_dir = my_temp_dir, 
   dic_variables = toy_dic_variables, 
   dic_cantons = toy_dic_cantons,
+  dic_titles_pages = toy_dic_titles_pages,
   cantons_sf = toy_cantons_sf
 )
 
@@ -138,6 +166,6 @@ unlink(my_temp_dir, recursive = TRUE)
 ```
 
 ```{r}
-prepare_projects_data()
+prepare_app_data()
 ```
 

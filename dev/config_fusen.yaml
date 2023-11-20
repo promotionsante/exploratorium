@@ -106,6 +106,7 @@ flat_prepare_data_subfunctions.Rmd:
   - R/import_raw_data.R
   - R/prepare_one_project_card.R
   - R/prepare_projects_cards.R
+  - R/prepare_projects_data.R
   - R/save_projects_data.R
   - R/translate_values_in_data.R
   tests:
@@ -119,6 +120,7 @@ flat_prepare_data_subfunctions.Rmd:
   - tests/testthat/test-get_prop_budget.R
   - tests/testthat/test-translate_values_in_data.R
   - tests/testthat/test-save_projects_data.R
+  - tests/testthat/test-prepare_projects_data.R
   - tests/testthat/test-prepare_one_project_card.R
   - tests/testthat/test-prepare_projects_cards.R
   vignettes: []

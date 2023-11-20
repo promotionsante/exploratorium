@@ -98,3 +98,21 @@ usethis::use_data(
 checkhelper::use_data_doc(
   name = "toy_projects_data_sf"
 )
+
+## code to prepare `toy_dic_titles_pages` ----
+toy_dic_titles_pages <- read_csv2(
+  app_sys("data-dic",
+          "dic_titles_app.csv"),
+  show_col_types = FALSE,
+  locale = locale(decimal_mark = ",", grouping_mark = ".")
+)
+
+usethis::use_data(
+  toy_dic_titles_pages,
+  overwrite = TRUE
+)
+
+checkhelper::use_data_doc(
+  name = "toy_dic_titles_pages"
+)
+

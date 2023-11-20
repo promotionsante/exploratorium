@@ -22,6 +22,15 @@ pkgload::load_all(export_all = FALSE)
 
 *The aim of this article is to show you how to update the data used by the app.*
 
+The app uses 2 types of data: 
+
+- Projects data saved in a .rds format with all the data
+- Projects cards in a .hmlt format
+
+```{r echo=FALSE, eval=TRUE, fig.align='center'}
+knitr::include_graphics("../man/figures/type_data.png")
+```
+
 The data preparation workflow is shown below. **This data preparation process must be repeated each time the raw data is modified or each time a modification is required to the data dictionaries.**
 
 ```{r echo=FALSE, eval=TRUE, fig.align='center'}
@@ -80,17 +89,32 @@ The content of **"dic_values.csv"** is the following one:
 #TODO
 ```
 
+The content of **"dic_titles_app.csv"** is the following one:
+
+```{r echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE}
+DT::datatable(
+  readr::read_csv(
+    system.file(
+      "data-dic",
+      "dic_titles_app.csv", 
+      package = "observatoire"
+    )
+  )
+)
+```
+
 # Update the data used by the app
 
-Then, to update the data used by the application, you can use the `prepare_projects_data()` function as follows:
+Then, to update the data used by the application, you can use the `prepare_app_data()` function as follows:
 
-```{r function-prepare_projects_data}
-#' Prepare the projects data in FR and DE to be included in the app as .rds files
+```{r function-prepare_app_data}
+#' Prepare the app data
 #' 
 #' @param name_raw_file Character. Name of the raw data file.
 #' @param pkg_dir Character. Path to the package (must contain a data-raw folder).
 #' @param dic_variables Tibble. Variables dictionaries. Mainly used for examples and unit testing purpose.
 #' @param dic_cantons Tibble. Canton dictionary. Mainly used for examples and unit testing purpose.
+#' @param dic_titles_pages Tibble. Title of the pages dictionaries. Mainly used for examples and unit testing purpose.
 #' @param cantons_sf Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.
 #' 
 #' @importFrom glue glue
@@ -100,83 +124,42 @@ Then, to update the data used by the application, you can use the `prepare_proje
 #' @return Nothing to return, used for side effect. A message is displayed in the console.
 #' 
 #' @export
-prepare_projects_data <- function(
+prepare_app_data <- function(
     name_raw_file = "PGV.xlsx",
     pkg_dir = system.file(package = "observatoire"),
     dic_variables = NULL, 
     dic_cantons = NULL,
+    dic_titles_pages = NULL,
     cantons_sf = NULL
   ){
   
-  cli_process_start(
-    "Start to prepare projects_fr.rds and projects_de.rds"
-  )
-
-  # Prepare the data and save them
-  cli_alert("Import the raw data")
-  data_import <- import_raw_data(
+  # Prepare the projects data
+  projects_data <- prepare_projects_data(
     name_raw_file = name_raw_file,
+    pkg_dir = pkg_dir,
+    dic_variables = dic_variables,
+    dic_cantons = dic_cantons,
+    cantons_sf = cantons_sf
+  )
+  
+  # Prepare the projects cards
+  prepare_projects_cards(
+    data_projects_fr = projects_data$data_fr,
+    data_projects_de = projects_data$data_de,
+    dic_titles_pages = dic_titles_pages,
     pkg_dir = pkg_dir
   )
   
-  cli_alert("Add the columns")
-  data_with_col <- data_import |>
-    add_col_raw_data(
-      dic_variables = dic_variables
-    ) 
   
-  cli_alert("Clean the data")
-  data_cleaned <- data_with_col |> 
-    clean_raw_data()
-  
-  cli_alert("Add the coordinates of the main organization")
-  data_with_coord <- data_cleaned |> 
-    get_coord_main_resp_orga(
-      cantons_sf = cantons_sf
-    ) 
-  
-  cli_alert("Add the canton of the main organization")
-  data_with_cantons <- data_with_coord |> 
-    get_canton_main_resp_orga(
-      cantons_sf = cantons_sf
-    )
-  
-  cli_alert("Detect the id of the cantons influenced")
-  data_with_id_cantons_influenced <- data_with_cantons |> 
-    get_id_cantons_influenced(
-      dic_cantons = dic_cantons
-    )
-  
-  cli_alert("Add the number of cantons influenced")
-  data_with_nb_cantons_influenced <- data_with_id_cantons_influenced |> 
-    get_nb_cantons_influenced() 
-  
-  cli_alert("Add the proportion of the budget")
-  data_with_prop_budget <- data_with_nb_cantons_influenced |> 
-    get_prop_budget()
-  
-  cli_alert("Translate the data")
-  data_translated <- data_with_prop_budget |> 
-    translate_values_in_data() 
-  
-  cli_alert("Save the data")
-  save_projects_data(
-    list_data_fr_de = data_translated,
-    pkg_dir = pkg_dir
-  )
-  
-  cli_process_done(
-    "Finish to prepare projects_fr.rds and projects_de.rds"
-  )
- 
 }
 ```
   
-```{r example-prepare_projects_data, echo=FALSE}
+```{r example-prepare_app_data, echo=FALSE}
 # Load the toy datasets
 data("toy_data_pgv")
 data("toy_dic_variables")
 data("toy_dic_cantons")
+data("toy_dic_titles_pages")
 data("toy_cantons_sf")
 
 # Create a temp folder with data-projects-raw and ata-projects subfolder
@@ -184,6 +167,7 @@ my_temp_dir <- tempfile("test-prepare-data")
 dir.create(my_temp_dir)
 dir.create(file.path(my_temp_dir, "data-projects-raw"))
 dir.create(file.path(my_temp_dir, "data-projects"))
+dir.create(file.path(my_temp_dir, "data-projects-cards"))
 
 # Save the toy PGV file inside
 writexl::write_xlsx(
@@ -196,11 +180,12 @@ writexl::write_xlsx(
 )
 
 # Prepare the data
-prepare_projects_data(
+prepare_app_data(
   name_raw_file = "toy_PGV.xlsx",
   pkg_dir = my_temp_dir, 
   dic_variables = toy_dic_variables, 
   dic_cantons = toy_dic_cantons,
+  dic_titles_pages = toy_dic_titles_pages,
   cantons_sf = toy_cantons_sf
 )
 
@@ -209,10 +194,10 @@ unlink(my_temp_dir, recursive = TRUE)
 ```
 
 ```{r}
-prepare_projects_data()
+prepare_app_data()
 ```
 
-```{r tests-prepare_projects_data}
+```{r tests-prepare_app_data}
 test_that("Test that the preparation of the projects data is ok", {
 
   # Load the toy datasets
@@ -220,12 +205,14 @@ test_that("Test that the preparation of the projects data is ok", {
   data("toy_dic_variables")
   data("toy_dic_cantons")
   data("toy_cantons_sf")
+  data("toy_dic_titles_pages")
   
   # Create a temp folder with data-projects-raw and ata-projects subfolder
   my_temp_dir <- tempfile("test-prepare-data")
   dir.create(my_temp_dir)
   dir.create(file.path(my_temp_dir, "data-projects-raw"))
   dir.create(file.path(my_temp_dir, "data-projects"))
+  dir.create(file.path(my_temp_dir, "data-projects-cards"))
   
   # Save the toy PGV file inside
   writexl::write_xlsx(toy_data_pgv,
@@ -234,11 +221,12 @@ test_that("Test that the preparation of the projects data is ok", {
                                 "toy_PGV.xlsx"))
   
   # Prepare the data
-  prepare_projects_data(
+  prepare_app_data(
     name_raw_file = "toy_PGV.xlsx",
     pkg_dir = my_temp_dir, 
     dic_variables = toy_dic_variables, 
     dic_cantons = toy_dic_cantons,
+    dic_titles_pages = toy_dic_titles_pages,
     cantons_sf = toy_cantons_sf
   )
   
@@ -297,4 +285,3 @@ fusen::inflate(
   overwrite = TRUE
 )
 ```
-

@@ -5,6 +5,7 @@
 #' @param id_project Character. ID of the project, 'short_title' in data.
 #' @param data_projects Tibble. Data projects.
 #' @param language Character. Language, 'fr' or 'de'.
+#' @param dic_titles_pages Tibble. Title of the pages dictionaries. Mainly used for examples and unit testing purpose.
 #' @param pkg_dir Character. Path to the package.
 #' 
 #' @importFrom htmltools htmlTemplate withTags
@@ -33,19 +34,40 @@
 #'     "template_projects_cards.html"
 #'     )
 #' )
-#'   
+#'
+#' # Load toy dataset
+#' data("toy_dic_titles_pages")
+#'
 #' prepare_one_project_card(
 #'   id_project = "1+1=3  PGV03.038", 
 #'   data_projects = read_projects_data(language = "de"),
 #'   language = "de", 
-#'   pkg_dir = my_temp_dir
+#'   pkg_dir = my_temp_dir, 
+#'   dic_titles_pages = toy_dic_titles_pages 
+#' )
+#'
+#' browseURL(
+#'   file.path(
+#'     my_temp_dir, 
+#'     "data-projects-cards", 
+#'     "project_card_113PGV03038_de.html"
+#'   )
 #' )
 #'
 #' prepare_one_project_card(
 #'   id_project = "1+1=3  PGV03.038", 
 #'   data_projects = read_projects_data(language = "fr"),
 #'   language = "fr", 
-#'   pkg_dir = my_temp_dir
+#'   pkg_dir = my_temp_dir, 
+#'   dic_titles_pages = toy_dic_titles_pages
+#' )
+#'
+#' browseURL(
+#'   file.path(
+#'     my_temp_dir, 
+#'     "data-projects-cards", 
+#'     "project_card_113PGV03038_fr.html"
+#'   )
 #' )
 #'
 #' unlink(my_temp_dir, recursive = TRUE)
@@ -53,6 +75,7 @@ prepare_one_project_card <- function(
     id_project,
     data_projects,
     language = c("de", "fr"),
+    dic_titles_pages = NULL,
     pkg_dir = system.file(package = "observatoire")
   ){
   
@@ -85,7 +108,8 @@ prepare_one_project_card <- function(
     map(
       ~ get_trad_title(
         title_id = .x,
-        language = language
+        language = language, 
+        dic_titles_pages = dic_titles_pages
       )
     ) |> 
     set_names(

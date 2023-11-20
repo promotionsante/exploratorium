@@ -4,6 +4,7 @@ test_that("Test that the preparation of all cards works", {
   
   # Load the toy datasets
   data("toy_projects_data_sf")
+  data("toy_dic_titles_pages")
   
   # Keep 2 projects
   toy_data <- toy_projects_data_sf[1:2,]
@@ -26,6 +27,7 @@ test_that("Test that the preparation of all cards works", {
   prepare_projects_cards(
     data_projects_fr = toy_data,
     data_projects_de = toy_data,
+    dic_titles_pages = toy_dic_titles_pages,
     pkg_dir = my_temp_dir
   )
   
