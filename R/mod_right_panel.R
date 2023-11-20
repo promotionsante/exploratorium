@@ -12,6 +12,22 @@
 mod_right_panel_ui <- function(id){
   ns <- NS(id)
   tagList(
+
+    fluidRow(
+        column(
+          8
+        ),
+        column(
+          4,
+          languageSwitchInput(
+            "language_switch",
+            label = NULL,
+            values = c("DE", "FR"),
+            selected = "de"
+          )
+        )
+    ),
+
     uiOutput(
       outputId = ns("right_panel_to_render")
     )
@@ -60,6 +76,7 @@ mod_right_panel_server <- function(id, r_global){
 
     mod_projects_selection_server("projects_selection_1")
     mod_one_project_server("one_project_1", r_global = r_global)
+
   })
 }
 

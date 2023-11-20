@@ -30,11 +30,13 @@ flat_fct_utils.Rmd:
   R:
   - R/clean_id_project.R
   - R/get_trad_title.R
+  - R/languageswitchinput.R
   - R/fct_utils.R
   tests:
   - tests/testthat/test-fct_utils.R
   - tests/testthat/test-get_trad_title.R
   - tests/testthat/test-clean_id_project.R
+  - tests/testthat/test-languageswitchinput.R
   vignettes: []
   inflate:
     flat_file: dev/flat_fct_utils.Rmd

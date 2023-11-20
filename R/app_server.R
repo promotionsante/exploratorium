@@ -10,7 +10,8 @@ app_server <- function(input, output, session) {
   r_global <- reactiveValues(
     zoom_level = NULL,
     # Set initial condition: no focus project is selected
-    id_selected_project = NULL
+    id_selected_project = NULL,
+    language = NULL
   )
 
   observeEvent(
@@ -24,6 +25,7 @@ app_server <- function(input, output, session) {
       }
       change_language(language)
       localize("html")
+      r_global$language <- language
     })
 
   observeEvent(

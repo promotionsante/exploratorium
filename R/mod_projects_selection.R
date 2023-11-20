@@ -10,20 +10,7 @@
 mod_projects_selection_ui <- function(id){
   ns <- NS(id)
   tagList(
-    fluidRow(
-      column(9),
-      column(
-        3,
-        tags$div(
-          materialSwitch(
-            inputId = "language_switch",
-            label = "DE",
-            inline = TRUE
-          ),
-          tags$span("FR")
-        )
-      )
-    ),
+
     fluidRow(
       h2("Hallo!") |>
         with_i18n("app-title"),

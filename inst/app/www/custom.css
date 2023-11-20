@@ -168,7 +168,7 @@ ul {
   margin: 0px;
 }
 
-/* Button go back to all projects*/
+/* Button go back to all projects */
 .orange-arrow-button,
 .orange-arrow-button:hover,
 .orange-arrow-button:focus {
@@ -185,4 +185,66 @@ ul {
   outline:none;
   box-shadow: none;
   padding: 0px;
+}
+
+/* Language switch input */
+.switch-container {
+  display: flex;
+  align-items: flex-end; /* Align items to the end of the flex container */
+  width: 100px;
+}
+
+.switch-label {
+  margin-left: 5px; /* Adjust the margin between the switch and labels */
+  margin-right: 5px; /* Adjust the margin between the switch and labels */
+  margin-bottom: 0; /* Remove the bottom margin */
+  font-family: DINPro;
+  color: #ccc;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 30px; /* Adjust the width for a smaller switch */
+  height: 24px; /* Adjust the height for a taller grey part */
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 50%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto; /* Center the slider horizontally */
+  background-color: #ccc; /* Adjust the background color for the default state */
+  height: 18px; /* Adjust the height of the grey part */
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 9px; /* Adjust the border-radius for a rounder appearance */
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px; /* Adjust the height for a smaller switch */
+  width: 14px; /* Adjust the width for a smaller switch */
+  left: 3px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(12px); /* Adjust the translation for the checked state */
+  -ms-transform: translateX(12px);
+  transform: translateX(12px);
 }
