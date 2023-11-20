@@ -1,3 +1,7 @@
+# observatoire 0.1.2
+
+* Include the language switch in both views 
+
 # observatoire 0.1.1
 
 * Add the project cards css to the custom.css used by the app
