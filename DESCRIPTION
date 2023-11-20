@@ -25,6 +25,7 @@ Imports:
     purrr,
     readr,
     readxl,
+    scales,
     sf,
     shiny (>= 1.7.3),
     shinyWidgets,

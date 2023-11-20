@@ -1466,6 +1466,7 @@ test_that("Test that the preparation of the projects data is ok", {
 #' @importFrom purrr map set_names
 #' @importFrom dplyr filter
 #' @importFrom lubridate year
+#' @importFrom scales number
 #' 
 #' @return Nothing. Used for side effects. Create the project card.
 #' 
@@ -1531,7 +1532,17 @@ prepare_one_project_card <- function(
   status_color <- possible_col_status[status_value]
   
   start_year_value <- year(data_one_project[["project_start"]])
-  project_manager_value <- data_one_project[["project_support_gfch"]]
+  
+  project_manager <- data_one_project[["project_support_gfch"]]
+  project_manager_url <- 
+    paste0(
+      "https://promotionsante.ch/fondation/equipe?views_search_api_fulltext=",
+      project_manager
+    )
+  project_manager_value <- glue(
+    '<a href="{project_manager_url}">{project_manager}</a>'
+  )
+    
   main_orga_value <- data_one_project[["main_resp_orga"]]
   description_value <- data_one_project[["description"]]
   theme_value <- paste0(
@@ -1551,7 +1562,10 @@ prepare_one_project_card <- function(
     "</li>"
   )
     
-  budget_value <- data_one_project[["budget_value"]]
+  budget_value <- number(
+    as.numeric(data_one_project[["total_budget"]]), 
+    suffix = " CHF"
+  )
   
   # Generate the html content
   html_content <- htmlTemplate(
@@ -1567,7 +1581,7 @@ prepare_one_project_card <- function(
     project_project_manager_title = list_titles[["project_project_manager_title"]],
     project_main_orga_title = list_titles[["project_main_orga_title"]],
     start_year_value = start_year_value,
-    project_manager_value = project_manager_value,
+    project_manager_value = withTags(HTML(project_manager_value)),
     main_orga_value = main_orga_value,
     project_description_title = list_titles[["project_description_title"]],
     description_value = description_value,
