@@ -11,7 +11,7 @@ mod_projects_selection_ui <- function(id){
   ns <- NS(id)
   tagList(
 
-    fluidRow(
+    div(
       h2("Hallo!") |>
         with_i18n("app-title"),
       checkboxGroupInput(

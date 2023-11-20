@@ -15,7 +15,7 @@ mod_one_project_ui <- function(id){
       inputId = ns("back_to_project_selection_view"),
       label = NULL,
       icon = NULL,
-      width = "15%",
+      width = "0%",
       class = "orange-arrow-button",
       HTML(
         '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="13" viewBox="0 0 15 13" fill="none">
