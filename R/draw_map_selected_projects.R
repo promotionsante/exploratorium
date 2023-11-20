@@ -23,7 +23,8 @@ draw_map_selected_projects <- function(
     projects_data_sf,
     zoom_level = 8
 ){
-  draw_map_base(zoom_level) |> 
+  
+  my_map <- draw_map_base(zoom_level) |> 
     addPolygons(
       data = read_cantons_sf(),
       weight = 1,
@@ -39,4 +40,9 @@ draw_map_selected_projects <- function(
       layerId = ~ short_title,
       label = ~ as.character(short_title)
     )
+  
+  class(my_map) <- c("all-projects", class(my_map))
+  
+  return(my_map)
+  
 }

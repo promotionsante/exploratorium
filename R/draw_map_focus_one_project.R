@@ -112,7 +112,7 @@ draw_map_focus_one_project <- function(
     
   }
     
-  map_with_influenced_cantons |>
+  my_map <- map_with_influenced_cantons |>
     addCircleMarkers(
       data = coord_sf_project,
       color = psch_orange(),
@@ -120,5 +120,9 @@ draw_map_focus_one_project <- function(
       fillOpacity = 0.8,
       label = ~ as.character(short_title)
     )
+  
+  class(my_map) <- c("one-project", class(my_map))
+  
+  return(my_map)
   
 }

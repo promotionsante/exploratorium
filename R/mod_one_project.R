@@ -38,10 +38,19 @@ mod_one_project_server <- function(id, r_global){
     ns <- session$ns
 
   observeEvent(
-    input$back_to_project_selection_view,
+      input$back_to_project_selection_view,
       {
+    r_global$id_selected_project <- NULL
+    output$project_card <- NULL
+  })
+
+  observeEvent(
+    r_global$click_map,
+    {
+      if (r_global$click_map == "click-on-map-in-project-view") {
         r_global$id_selected_project <- NULL
         output$project_card <- NULL
+      }
     })
 
     mod_one_project_desc_server("project_1", r_global = r_global)

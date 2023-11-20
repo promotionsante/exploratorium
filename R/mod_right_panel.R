@@ -18,13 +18,16 @@ mod_right_panel_ui <- function(id){
           8
         ),
         column(
-          4,
+          3,
           languageSwitchInput(
             "language_switch",
             label = NULL,
             values = c("DE", "FR"),
             selected = "de"
           )
+        ),
+        column(
+          1
         )
     ),
 

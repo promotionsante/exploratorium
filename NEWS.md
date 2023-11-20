@@ -1,6 +1,7 @@
 # observatoire 0.1.2
 
 * Include the language switch in both views 
+* Give the possibility to click on the map to go back to the general view
 
 # observatoire 0.1.1
 

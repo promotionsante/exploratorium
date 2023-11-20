@@ -70,6 +70,23 @@ mod_map_server <- function(id, r_global){
     })
 
     observeEvent(
+      input$map_click, {
+
+        if (
+          inherits(r_local$map_to_draw, "all-projects")
+        ) {
+          r_global$click_map <- "click-on-map-in-general-view"
+        }
+
+        if (
+          inherits(r_local$map_to_draw, "one-project")
+        ) {
+          r_global$click_map <- "click-on-map-in-project-view"
+        }
+
+      })
+
+    observeEvent(
       input$map_marker_click$id,
       ignoreNULL = TRUE,
       ignoreInit = TRUE, {

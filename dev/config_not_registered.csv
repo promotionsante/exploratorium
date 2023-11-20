@@ -18,7 +18,6 @@
 "R","R/mod_right_panel.R","No existing source path found."
 "R","R/run_app.R","No existing source path found."
 "test","tests/testthat/test-fct_i18n.R","No existing source path found."
-"test","tests/testthat/test-languageswitch.R","Possibly deprecated file. Please check its link with detected flat source: dev/flat_fct_utils.Rmd"
 "test","tests/testthat/test-map.R","Possibly deprecated file. Please check its link with detected flat source: dev/flat_map_subfunctions.Rmd"
 "test","tests/testthat/test-mod_map.R","No existing source path found."
 "test","tests/testthat/test-mod_one_project.R","No existing source path found."
