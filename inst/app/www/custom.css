@@ -29,13 +29,14 @@
 }
 
 .globalcard {
-    height: auto;
-    padding: 15px;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 5px;
-    display: grid;
-    grid-agp: 16px;
+  height: auto;
+  padding: 15px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 5px;
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(1, 1fr);
 }
 
 .shorttitle {
@@ -78,11 +79,12 @@
 }
 
 .placemaininfotitle {
-    width: 100%;
-    height: 49px;
-    justify-content: space-around;
-    display: grid;
-    grid-template-columns: 30% 5% 5% 0px 30% 5% 5% 0px 30% 5%;
+  width: 100%;
+  height: 49px;
+  justify-content: space-around;
+  display: grid;
+  grid-template-columns: 30% 0% 30% 0% 30%;
+  gap: 0px;
 }
 
 .maininfotitle {
@@ -97,11 +99,12 @@
 }
 
 .placemaininfotext {
-  justify-content: flex-start;
-  align-items: center;
-  gap: 31px;
-  display: inline-flex;
-  margin-bottom: 20px;
+  width: 100%;
+  height: 49px;
+  justify-content: space-around;
+  display: grid;
+  grid-template-columns: 30% 0% 30% 0% 30%;
+  gap: 0px;
 }
 
 .maininfotext {
@@ -159,6 +162,19 @@
 
 ul {
   margin: 0px;
+}
+
+a {
+  color: #f59300;
+  text-decoration: none;
+}
+
+a:focus {
+  color: #f59300;
+}
+
+a:hover {
+  color: #f59300;
 }
 
 /* Button go back to all projects */
