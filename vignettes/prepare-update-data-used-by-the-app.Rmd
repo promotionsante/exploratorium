@@ -32,7 +32,7 @@ knitr::opts_chunk$set(
 The app uses 2 types of data: 
 
 - Projects data saved in a .rds format with all the data
-- Projects cards in a .hmlt format
+- Projects cards in a .html format
 
 
 ```{r echo = FALSE, eval = TRUE, fig.align = 'center'}

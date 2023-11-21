@@ -41,7 +41,10 @@ draw_map_selected_projects <- function(
       label = ~ as.character(short_title)
     )
   
-  class(my_map) <- c("all-projects", class(my_map))
+  class(my_map) <- c(
+    class(my_map),
+    "all-projects"
+  )
   
   return(my_map)
   

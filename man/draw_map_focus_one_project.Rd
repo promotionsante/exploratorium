@@ -37,10 +37,4 @@ draw_map_focus_one_project(
   id_project = "1+1=3  PGV03.038", 
   cantons_sf = toy_cantons_sf
 )
-
-draw_map_focus_one_project(
-  projects_data_sf = toy_projects_data_sf,
-  id_project = "FM_ProPCC+", 
-  cantons_sf = toy_cantons_sf
-)
 }

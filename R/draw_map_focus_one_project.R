@@ -10,10 +10,7 @@
 #' default zoom level.
 #' 
 #' @importFrom leaflet addCircleMarkers addPolygons addPolylines labelOptions
-#' @importFrom dplyr filter select mutate rename
-#' @importFrom tibble as_tibble
-#' @importFrom tidyr separate_rows
-#' @importFrom sf st_drop_geometry st_centroid st_union st_cast
+#' @importFrom dplyr filter
 #'  
 #' @return A leaflet object.
 #' 
@@ -27,12 +24,6 @@
 #'   id_project = "1+1=3  PGV03.038", 
 #'   cantons_sf = toy_cantons_sf
 #' )
-#'
-#' draw_map_focus_one_project(
-#'   projects_data_sf = toy_projects_data_sf,
-#'   id_project = "FM_ProPCC+", 
-#'   cantons_sf = toy_cantons_sf
-#' )
 draw_map_focus_one_project <- function(
     projects_data_sf,
     id_project,
@@ -44,63 +35,37 @@ draw_map_focus_one_project <- function(
     cantons_sf <- read_cantons_sf()
   }
   
-  # Create a coord_sf_project object
-  projects_data_sf_filtered <- projects_data_sf |> 
-    filter(short_title == id_project) 
-  
-  coord_sf_project <- projects_data_sf_filtered |> 
-    select(short_title, geometry)
-  
-  # Extract target cantons from project_data_sf
-  project_data_cantons_sf <- projects_data_sf_filtered |> 
-    st_drop_geometry() |> 
-    select(short_title, geo_range_id) |> 
-    separate_rows(
-      geo_range_id, 
-      sep = ", "
-    )
-  
-  # Create a cantons_sf_project object with column target_cantons (TRUE/FALSE)
-  cantons_sf_project <- left_join(
-    x = cantons_sf |> 
-      select(HASC_1, NAME_1, geometry),
-    y = project_data_cantons_sf |> 
-      rename(HASC_1 = geo_range_id), 
-    by = "HASC_1"
-  ) |> 
-    mutate(
-      target_cantons = ifelse(
-        is.na(short_title),
-        FALSE, 
-        TRUE
-      )
-    ) |> 
-    select(- short_title)
+  # Extract the elements needed for the map
+  ## The coordinates of the project
+  ## The polygons of the canton with the info influenced/not influenced
+  ## If appropriate, the lines between the projects and the cantons influenced
+  geo_elements_influence <- get_influence_project(
+    projects_data_sf = projects_data_sf,
+    id_project = id_project,
+    cantons_sf = cantons_sf
+  )
   
   # Draw the map
-  # Display target cantons in psch orange / others psch blue
-  # Display selected project in psch orange
-  # Nice to have
-  # Display lines radiating from project to centroid of target cantons
-  map_with_not_influenced_cantons <- draw_map_base(zoom_level) |> 
+  ## Add the cantons not influenced
+  map_with_cantons_not_influenced <- draw_map_base(zoom_level) |> 
     addPolygons(
-      data = cantons_sf_project |> 
+      data = geo_elements_influence$cantons_sf_project |> 
         filter(
           target_cantons == FALSE
-        ),
+          ),
       weight = 1,
       color = psch_blue(),
       fillColor = psch_blue(),
       fillOpacity = 0.2
     ) 
-  
-  if (nrow(cantons_sf_project |> 
-        filter(target_cantons == TRUE)) > 0) {
+   
+  ## Add the cantons influenced if appropriate and the lines between the project and them
+  if (!is.null(geo_elements_influence$cantons_influenced_lines)) {
     
     # Print the cantons in orange
-    map_with_influenced_cantons <- map_with_not_influenced_cantons |> 
+    map_with_cantons_influenced <- map_with_cantons_not_influenced |> 
       addPolygons(
-      data = cantons_sf_project |> 
+      data = geo_elements_influence$cantons_sf_project |> 
         filter(
           target_cantons == TRUE
         ),
@@ -114,46 +79,34 @@ draw_map_focus_one_project <- function(
         )
       ) 
     
-    # Add the lines
-    cantons_centroid <- cantons_sf_project |>
-      filter(
-        target_cantons == TRUE
-      ) |>
-      st_centroid() |> 
-      mutate(
-        project = coord_sf_project$geometry
-      )
-    
-    cantons_centroid_linestring <- st_union(
-      cantons_centroid$geometry, 
-      cantons_centroid$project
-    ) |> 
-    st_cast("LINESTRING")
-    
-    map_with_influenced_cantons <- map_with_influenced_cantons |> 
+    # Print the lines in orange
+    map_geo_influence <- map_with_cantons_influenced |> 
       addPolylines(
-       data = cantons_centroid_linestring, 
+       data = geo_elements_influence$cantons_influenced_lines, 
        color = psch_orange(), 
        weight = 2
       )
       
   } else {
     
-    map_with_influenced_cantons <- map_with_not_influenced_cantons
+    map_geo_influence <- map_with_cantons_not_influenced
     
   }
     
-  my_map <- map_with_influenced_cantons |>
+  map_project_and_geo_influence <- map_geo_influence |>
     addCircleMarkers(
-      data = coord_sf_project,
+      data = geo_elements_influence$coord_sf_project,
       color = psch_orange(),
       stroke = FALSE,
       fillOpacity = 0.8,
       label = ~ as.character(short_title)
     )
   
-  class(my_map) <- c("one-project", class(my_map))
+  class(map_project_and_geo_influence) <- c(
+    class(map_project_and_geo_influence),
+    "one-project"
+  )
   
-  return(my_map)
+  return(map_project_and_geo_influence)
   
 }

@@ -68,9 +68,11 @@ flat_map_subfunctions.Rmd:
   R:
   - R/map_utils.R
   - R/draw_map_base.R
+  - R/get_influence_project.R
   tests:
   - tests/testthat/test-map_utils.R
   - tests/testthat/test-draw_map_base.R
+  - tests/testthat/test-get_influence_project.R
   vignettes: []
   inflate:
     flat_file: dev/flat_map_subfunctions.Rmd
