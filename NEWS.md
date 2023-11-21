@@ -1,3 +1,7 @@
+# observatoire 0.2.2
+
+* Adapt the color of the main panel to the color of the map
+
 # observatoire 0.2.1
 
 * Use a PSCH flavicon
