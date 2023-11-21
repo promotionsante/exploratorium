@@ -189,7 +189,7 @@ draw_map_focus_one_project <- function(
       color = psch_orange(),
       fillColor = psch_orange(),
       fillOpacity = 0.5,
-      label = ~ as.character(HASC_1), 
+      label = ~ gsub("^CH\\.", "", as.character(HASC_1)), 
       labelOptions = labelOptions(
         style = list("font-size" = "12px")  # Adjust the font size here
         )
