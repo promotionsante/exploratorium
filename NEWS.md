@@ -1,3 +1,7 @@
+# observatoire 0.1.3
+
+* Make the project card responsive
+
 # observatoire 0.1.2
 
 * Include the language switch in both views 
