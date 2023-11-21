@@ -1,3 +1,7 @@
+# observatoire 0.2.1
+
+* Use a PSCH flavicon
+
 # observatoire 0.2.0
 
 * Add lines between the project and the cantons influenced
