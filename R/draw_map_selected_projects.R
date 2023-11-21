@@ -30,7 +30,7 @@ draw_map_selected_projects <- function(
       weight = 1,
       color = psch_blue(),
       fillColor = psch_blue(),
-      fillOpacity = 0.3
+      fillOpacity = 0.2
     ) |>
     addCircleMarkers(
       data = projects_data_sf,

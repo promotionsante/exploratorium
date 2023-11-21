@@ -54,7 +54,7 @@ draw_map_selected_projects <- function(
       weight = 1,
       color = psch_blue(),
       fillColor = psch_blue(),
-      fillOpacity = 0.3
+      fillOpacity = 0.2
     ) |>
     addCircleMarkers(
       data = projects_data_sf,
@@ -105,12 +105,12 @@ To create the map with a project as a point and the cantons of influence, you ca
 #' @param zoom_level An integer. The zoom level for the map. Defines
 #' default zoom level.
 #' 
-#' @importFrom leaflet addCircleMarkers addPolygons
+#' @importFrom leaflet addCircleMarkers addPolygons addPolylines labelOptions
 #' @importFrom dplyr filter select mutate rename
 #' @importFrom tibble as_tibble
 #' @importFrom tidyr separate_rows
-#' @importFrom sf st_drop_geometry
-#' 
+#' @importFrom sf st_drop_geometry st_centroid st_union st_cast
+#'  
 #' @return A leaflet object.
 #' 
 #' @export
@@ -166,27 +166,58 @@ draw_map_focus_one_project <- function(
   map_with_not_influenced_cantons <- draw_map_base(zoom_level) |> 
     addPolygons(
       data = cantons_sf_project |> 
-        filter(target_cantons == FALSE),
+        filter(
+          target_cantons == FALSE
+        ),
       weight = 1,
       color = psch_blue(),
       fillColor = psch_blue(),
-      fillOpacity = 0.1
+      fillOpacity = 0.2
     ) 
   
   if (nrow(cantons_sf_project |> 
         filter(target_cantons == TRUE)) > 0) {
     
+    # Print the cantons in orange
     map_with_influenced_cantons <- map_with_not_influenced_cantons |> 
       addPolygons(
       data = cantons_sf_project |> 
-        filter(target_cantons == TRUE),
+        filter(
+          target_cantons == TRUE
+        ),
       weight = 1,
       color = psch_orange(),
       fillColor = psch_orange(),
       fillOpacity = 0.5,
-      label = ~ as.character(NAME_1)
-    ) 
+      label = ~ as.character(HASC_1), 
+      labelOptions = labelOptions(
+        style = list("font-size" = "12px")  # Adjust the font size here
+        )
+      ) 
     
+    # Add the lines
+    cantons_centroid <- cantons_sf_project |>
+      filter(
+        target_cantons == TRUE
+      ) |>
+      st_centroid() |> 
+      mutate(
+        project = coord_sf_project$geometry
+      )
+    
+    cantons_centroid_linestring <- st_union(
+      cantons_centroid$geometry, 
+      cantons_centroid$project
+    ) |> 
+    st_cast("LINESTRING")
+    
+    map_with_influenced_cantons <- map_with_influenced_cantons |> 
+      addPolylines(
+       data = cantons_centroid_linestring, 
+       color = psch_orange(), 
+       weight = 2
+      )
+      
   } else {
     
     map_with_influenced_cantons <- map_with_not_influenced_cantons
