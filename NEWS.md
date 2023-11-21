@@ -1,3 +1,7 @@
+# observatoire 0.2.0
+
+* Add lines between the project and the cantons influenced
+
 # observatoire 0.1.3
 
 * Make the project card responsive
