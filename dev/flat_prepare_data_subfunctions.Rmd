@@ -1540,7 +1540,7 @@ prepare_one_project_card <- function(
       project_manager
     )
   project_manager_value <- glue(
-    '<a href="{project_manager_url}">{project_manager}</a>'
+    '<a href="{project_manager_url}" target="_blank">{project_manager}</a>'
   )
     
   main_orga_value <- data_one_project[["main_resp_orga"]]
