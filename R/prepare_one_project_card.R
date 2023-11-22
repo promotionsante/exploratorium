@@ -5,6 +5,7 @@
 #' @param id_project Character. ID of the project, 'short_title' in data.
 #' @param data_projects Tibble. Data projects.
 #' @param language Character. Language, 'fr' or 'de'.
+#' @param dic_titles_pages Tibble. Title of the pages dictionaries. Mainly used for examples and unit testing purpose.
 #' @param pkg_dir Character. Path to the package.
 #' 
 #' @importFrom htmltools htmlTemplate withTags
@@ -12,6 +13,7 @@
 #' @importFrom purrr map set_names
 #' @importFrom dplyr filter
 #' @importFrom lubridate year
+#' @importFrom scales number
 #' 
 #' @return Nothing. Used for side effects. Create the project card.
 #' 
@@ -33,19 +35,40 @@
 #'     "template_projects_cards.html"
 #'     )
 #' )
-#'   
+#'
+#' # Load toy dataset
+#' data("toy_dic_titles_pages")
+#'
 #' prepare_one_project_card(
 #'   id_project = "1+1=3  PGV03.038", 
 #'   data_projects = read_projects_data(language = "de"),
 #'   language = "de", 
-#'   pkg_dir = my_temp_dir
+#'   pkg_dir = my_temp_dir, 
+#'   dic_titles_pages = toy_dic_titles_pages 
+#' )
+#'
+#' browseURL(
+#'   file.path(
+#'     my_temp_dir, 
+#'     "data-projects-cards", 
+#'     "project_card_113PGV03038_de.html"
+#'   )
 #' )
 #'
 #' prepare_one_project_card(
 #'   id_project = "1+1=3  PGV03.038", 
 #'   data_projects = read_projects_data(language = "fr"),
 #'   language = "fr", 
-#'   pkg_dir = my_temp_dir
+#'   pkg_dir = my_temp_dir, 
+#'   dic_titles_pages = toy_dic_titles_pages
+#' )
+#'
+#' browseURL(
+#'   file.path(
+#'     my_temp_dir, 
+#'     "data-projects-cards", 
+#'     "project_card_113PGV03038_fr.html"
+#'   )
 #' )
 #'
 #' unlink(my_temp_dir, recursive = TRUE)
@@ -53,6 +76,7 @@ prepare_one_project_card <- function(
     id_project,
     data_projects,
     language = c("de", "fr"),
+    dic_titles_pages = NULL,
     pkg_dir = system.file(package = "observatoire")
   ){
   
@@ -85,7 +109,8 @@ prepare_one_project_card <- function(
     map(
       ~ get_trad_title(
         title_id = .x,
-        language = language
+        language = language, 
+        dic_titles_pages = dic_titles_pages
       )
     ) |> 
     set_names(
@@ -108,13 +133,23 @@ prepare_one_project_card <- function(
   status_color <- possible_col_status[status_value]
   
   start_year_value <- year(data_one_project[["project_start"]])
-  project_manager_value <- data_one_project[["project_support_gfch"]]
+  
+  project_manager <- data_one_project[["project_support_gfch"]]
+  project_manager_url <- 
+    paste0(
+      "https://promotionsante.ch/fondation/equipe?views_search_api_fulltext=",
+      project_manager
+    )
+  project_manager_value <- glue(
+    '<a href="{project_manager_url}">{project_manager}</a>'
+  )
+    
   main_orga_value <- data_one_project[["main_resp_orga"]]
   description_value <- data_one_project[["description"]]
   theme_value <- paste0(
     "<li>",
     gsub(
-      pattern = ",* ", "</li><li>", 
+      pattern = ",*\r\n|, ", "</li><li>", 
       data_one_project[["topic"]]
     ),
     "</li>"
@@ -122,13 +157,16 @@ prepare_one_project_card <- function(
   risk_value <- paste0(
     "<li>",
     gsub(
-      pattern = ",* ", "</li><li>", 
+      pattern = ",*\r\n|, ", "</li><li>", 
       data_one_project[["risk_factors"]]
     ),
     "</li>"
   )
     
-  budget_value <- data_one_project[["budget_value"]]
+  budget_value <- number(
+    as.numeric(data_one_project[["total_budget"]]), 
+    suffix = " CHF"
+  )
   
   # Generate the html content
   html_content <- htmlTemplate(
@@ -141,17 +179,17 @@ prepare_one_project_card <- function(
     status_color = status_color,
     status_value = status_value,
     project_start_year_title = list_titles[["project_start_year_title"]],
-    project_project_manager_title = list_titles[["project_project_manager_title"]],
+    project_project_manager_title = HTML(list_titles[["project_project_manager_title"]]),
     project_main_orga_title = list_titles[["project_main_orga_title"]],
     start_year_value = start_year_value,
-    project_manager_value = project_manager_value,
+    project_manager_value = HTML(project_manager_value),
     main_orga_value = main_orga_value,
     project_description_title = list_titles[["project_description_title"]],
     description_value = description_value,
     project_theme_title = list_titles[["project_theme_title"]],
-    theme_value = withTags(HTML(theme_value)),
+    theme_value = HTML(theme_value),
     project_risk_title = list_titles[["project_risk_title"]],
-    risk_value = withTags(HTML(risk_value)),
+    risk_value = HTML(risk_value),
     project_budget_title = list_titles[["project_budget_title"]],
     budget_value = budget_value,
     project_prop_budget_title = list_titles[["project_prop_budget_title"]]

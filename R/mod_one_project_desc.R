@@ -11,13 +11,11 @@ mod_one_project_desc_ui <- function(id){
   ns <- NS(id)
 
   tagList(
-    actionButton(
-      inputId = ns("back_to_project_selection_view"),
-      label = "Back to project selection"
-    ),
-    htmlOutput(
+
+    uiOutput(
       outputId = ns("project_card")
     )
+
   )
 }
 
@@ -27,45 +25,38 @@ mod_one_project_desc_ui <- function(id){
 #'
 #' @noRd
 mod_one_project_desc_server <- function(id, r_global){
+
   moduleServer( id, function(input, output, session){
 
     ns <- session$ns
 
     observeEvent(
-      input$back_to_project_selection_view,
-      {
-        r_global$id_selected_project <- NULL
-        output$project_card <- NULL
-
-      })
-
-    add_resource_path(
-      "projectscardslibrary",
-      system.file(
-        "data-projects-cards",
-        package = "observatoire")
-    )
-
-    observeEvent(
-      r_global$id_selected_project,
+      c(
+        r_global$id_selected_project,
+        r_global$language
+      ),
       {
 
         clean_id_project <- clean_id_project(
           id_project = r_global$id_selected_project
         )
 
+        language <- r_global$language
+
         output$project_card <- renderUI({
-          tags$iframe(
-            seamless = "seamless",
-            src = glue("projectscardslibrary/project_card_{clean_id_project}_de.html"),
-            frameborder = "0",
-            style = "width:100vw;height:100vh;"
+          includeHTML(
+            system.file(
+              "data-projects-cards",
+              glue("project_card_{clean_id_project}_{language}.html"),
+              package = "observatoire"
+            )
           )
         })
 
       })
 
   })
+
 }
 
 ## To be copied in the UI

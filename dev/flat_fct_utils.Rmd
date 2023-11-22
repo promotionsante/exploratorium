@@ -181,6 +181,7 @@ test_that("psch color function return proper color",{
 #' 
 #' @param title_id Character. Id of the title in the dictionary.
 #' @param language Character. Language ("de" or "fr").
+#' @param dic_titles_pages Tibble. Title of the pages dictionaries. Mainly used for examples and unit testing purpose.
 #' 
 #' @importFrom readr read_csv2 locale
 #' @importFrom dplyr filter pull 
@@ -190,16 +191,18 @@ test_that("psch color function return proper color",{
 #' @noRd
 get_trad_title <- function(
     title_id,
-    language) {
+    language, 
+    dic_titles_pages = NULL
+    ) {
   
-  dic_titles_pages <- read_csv2(
-    app_sys(
-      "data-dic",
-      "dic_titles_app.csv"
-    ), 
-    show_col_types = FALSE, 
-    locale = locale(decimal_mark = ",", grouping_mark = ".")
-  )
+  if (is.null(dic_titles_pages)) {
+    dic_titles_pages <- read_csv2(
+      app_sys("data-dic",
+              "dic_titles_app.csv"),
+      show_col_types = FALSE,
+      locale = locale(decimal_mark = ",", grouping_mark = ".")
+    )
+  }
   
   dic_titles_pages |> 
     filter(id == title_id) |> 
@@ -209,24 +212,31 @@ get_trad_title <- function(
 ```
   
 ```{r example-get_trad_title}
+data("toy_dic_titles_pages")
+
 get_trad_title(
   title_id = "project_start_year_title",
-  language = "fr"
+  language = "fr", 
+  dic_titles_pages = toy_dic_titles_pages
 )
 
 get_trad_title(
   title_id = "project_start_year_title",
-  language = "de"
+  language = "de", 
+  dic_titles_pages = toy_dic_titles_pages
 )
 ```
   
 ```{r tests-get_trad_title}
 test_that("Test that the translation of a title works", {
   
+  data("toy_dic_titles_pages")
+
   expect_equal(
     object = get_trad_title(
       title_id = "project_start_year_title",
-      language = "fr"
+      language = "fr", 
+      dic_titles_pages = toy_dic_titles_pages
     ),
     expected = "Année de lancement"
   )
@@ -234,7 +244,8 @@ test_that("Test that the translation of a title works", {
   expect_equal(
     object = get_trad_title(
       title_id = "project_start_year_title",
-      language = "de"
+      language = "de", 
+      dic_titles_pages = toy_dic_titles_pages
     ),
     expected = "Projektstart"
   )
@@ -282,7 +293,45 @@ test_that("Test that the cleaning of the id of a project works", {
 })
 ```
   
-
+# Create a custom toggl switch for the language 
+    
+```{r function-languageSwitchInput}
+#' Create a custom toggl switch for the language 
+#' 
+#' @param inputId Character. InputId
+#' @param label Character. label
+#' @param values Character. values
+#' @param selected Character. selected
+#' 
+#' @return A shiny input
+#' 
+#' @noRd
+languageSwitchInput <- function(inputId, label, values, selected) {
+  tags$div(
+    id = inputId,
+    class = "switch-container",
+    tags$span(class = "switch-label", label),
+    tags$span(class = "switch-label", values[1]),
+    tags$label(
+      class = "switch",
+      tags$input(type = "checkbox", id = inputId, value = selected),
+      tags$span(class = "slider")
+    ),
+    tags$span(class = "switch-label", values[2])
+  )
+  
+}
+```
+  
+```{r example-languageSwitchInput}
+```
+  
+```{r tests-languageSwitchInput}
+test_that("languageSwitchInput works", {
+  expect_true(inherits(languageSwitchInput, "function")) 
+})
+```
+  
 ```{r development-inflate, eval=FALSE}
 # Run but keep eval=FALSE to avoid infinite loop
 # Execute in the console directly

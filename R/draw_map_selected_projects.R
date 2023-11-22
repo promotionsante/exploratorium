@@ -23,13 +23,14 @@ draw_map_selected_projects <- function(
     projects_data_sf,
     zoom_level = 8
 ){
-  draw_map_base(zoom_level) |> 
+  
+  my_map <- draw_map_base(zoom_level) |> 
     addPolygons(
       data = read_cantons_sf(),
       weight = 1,
       color = psch_blue(),
       fillColor = psch_blue(),
-      fillOpacity = 0.3
+      fillOpacity = 0.2
     ) |>
     addCircleMarkers(
       data = projects_data_sf,
@@ -39,4 +40,12 @@ draw_map_selected_projects <- function(
       layerId = ~ short_title,
       label = ~ as.character(short_title)
     )
+  
+  class(my_map) <- c(
+    class(my_map),
+    "all-projects"
+  )
+  
+  return(my_map)
+  
 }

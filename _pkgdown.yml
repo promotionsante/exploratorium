@@ -19,8 +19,7 @@ reference:
 - title: Data used by the app
   desc: Prepare and update the data used by the app
 - contents:
-  - prepare_projects_data
-  - prepare_projects_cards
+  - prepare_app_data
 - title: Draw the Switzerland maps
   desc: Build the maps with projects
 - contents:
@@ -37,3 +36,4 @@ reference:
   - toy_dic_variables
   - toy_dic_cantons
   - toy_projects_data_sf
+  - toy_dic_titles_pages

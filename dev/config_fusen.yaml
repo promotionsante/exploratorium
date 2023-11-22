@@ -30,11 +30,13 @@ flat_fct_utils.Rmd:
   R:
   - R/clean_id_project.R
   - R/get_trad_title.R
+  - R/languageswitchinput.R
   - R/fct_utils.R
   tests:
   - tests/testthat/test-fct_utils.R
   - tests/testthat/test-get_trad_title.R
   - tests/testthat/test-clean_id_project.R
+  - tests/testthat/test-languageswitchinput.R
   vignettes: []
   inflate:
     flat_file: dev/flat_fct_utils.Rmd
@@ -66,9 +68,11 @@ flat_map_subfunctions.Rmd:
   R:
   - R/map_utils.R
   - R/draw_map_base.R
+  - R/get_influence_project.R
   tests:
   - tests/testthat/test-map_utils.R
   - tests/testthat/test-draw_map_base.R
+  - tests/testthat/test-get_influence_project.R
   vignettes: []
   inflate:
     flat_file: dev/flat_map_subfunctions.Rmd
@@ -104,6 +108,7 @@ flat_prepare_data_subfunctions.Rmd:
   - R/import_raw_data.R
   - R/prepare_one_project_card.R
   - R/prepare_projects_cards.R
+  - R/prepare_projects_data.R
   - R/save_projects_data.R
   - R/translate_values_in_data.R
   tests:
@@ -117,6 +122,7 @@ flat_prepare_data_subfunctions.Rmd:
   - tests/testthat/test-get_prop_budget.R
   - tests/testthat/test-translate_values_in_data.R
   - tests/testthat/test-save_projects_data.R
+  - tests/testthat/test-prepare_projects_data.R
   - tests/testthat/test-prepare_one_project_card.R
   - tests/testthat/test-prepare_projects_cards.R
   vignettes: []

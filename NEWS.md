@@ -1,3 +1,34 @@
+# observatoire 0.2.3
+
+* Fix the regex in the topics and topics
+
+# observatoire 0.2.2
+
+* Adapt the color of the main panel to the color of the map
+
+# observatoire 0.2.1
+
+* Use a PSCH flavicon
+
+# observatoire 0.2.0
+
+* Add lines between the project and the cantons influenced
+
+# observatoire 0.1.3
+
+* Make the project card responsive
+
+# observatoire 0.1.2
+
+* Include the language switch in both views 
+* Give the possibility to click on the map to go back to the general view
+
+# observatoire 0.1.1
+
+* Add the project cards css to the custom.css used by the app
+* Add an orange arrow to go back to the main view
+* Remove the iframe and include the projects cards directly
+
 # observatoire 0.1.0
 
 * Enable the user to see all projects cards

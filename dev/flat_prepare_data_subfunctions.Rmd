@@ -1247,6 +1247,209 @@ test_that("Test that the saving of the data in inst works", {
 })
 ```
 
+# Prepare the projects data (FR and DE versions) with `prepare_projects_data()`
+
+```{r function-prepare_projects_data}
+#' Prepare the projects data in FR and DE to be included in the app as .rds files
+#' 
+#' @param name_raw_file Character. Name of the raw data file.
+#' @param pkg_dir Character. Path to the package (must contain a data-raw folder).
+#' @param dic_variables Tibble. Variables dictionaries. Mainly used for examples and unit testing purpose.
+#' @param dic_cantons Tibble. Canton dictionary. Mainly used for examples and unit testing purpose.
+#' @param cantons_sf Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.
+#' 
+#' @importFrom glue glue
+#' @importFrom here here
+#' @importFrom cli cli_process_start cli_alert cli_process_done
+#' 
+#' @return A list with the projects data in FR and DE.
+prepare_projects_data <- function(
+    name_raw_file = "PGV.xlsx",
+    pkg_dir = system.file(package = "observatoire"),
+    dic_variables = NULL, 
+    dic_cantons = NULL,
+    cantons_sf = NULL
+  ){
+  
+  cli_process_start(
+    "Start to prepare projects_fr.rds and projects_de.rds"
+  )
+
+  # Prepare the data and save them
+  cli_alert("Import the raw data")
+  data_import <- import_raw_data(
+    name_raw_file = name_raw_file,
+    pkg_dir = pkg_dir
+  )
+  
+  cli_alert("Add the columns")
+  data_with_col <- data_import |>
+    add_col_raw_data(
+      dic_variables = dic_variables
+    ) 
+  
+  cli_alert("Clean the data")
+  data_cleaned <- data_with_col |> 
+    clean_raw_data()
+  
+  cli_alert("Add the coordinates of the main organization")
+  data_with_coord <- data_cleaned |> 
+    get_coord_main_resp_orga(
+      cantons_sf = cantons_sf
+    ) 
+  
+  cli_alert("Add the canton of the main organization")
+  data_with_cantons <- data_with_coord |> 
+    get_canton_main_resp_orga(
+      cantons_sf = cantons_sf
+    )
+  
+  cli_alert("Detect the id of the cantons influenced")
+  data_with_id_cantons_influenced <- data_with_cantons |> 
+    get_id_cantons_influenced(
+      dic_cantons = dic_cantons
+    )
+  
+  cli_alert("Add the number of cantons influenced")
+  data_with_nb_cantons_influenced <- data_with_id_cantons_influenced |> 
+    get_nb_cantons_influenced() 
+  
+  cli_alert("Add the proportion of the budget")
+  data_with_prop_budget <- data_with_nb_cantons_influenced |> 
+    get_prop_budget()
+  
+  cli_alert("Translate the data")
+  data_translated <- data_with_prop_budget |> 
+    translate_values_in_data() 
+  
+  cli_alert("Save the data")
+  save_projects_data(
+    list_data_fr_de = data_translated,
+    pkg_dir = pkg_dir
+  )
+  
+  cli_process_done(
+    "Finish to prepare projects_fr.rds and projects_de.rds"
+  )
+  
+  return(
+    data_translated
+  )
+ 
+}
+```
+  
+```{r example-prepare_projects_data, echo=FALSE}
+# Load the toy datasets
+data("toy_data_pgv")
+data("toy_dic_variables")
+data("toy_dic_cantons")
+data("toy_cantons_sf")
+
+# Create a temp folder with data-projects-raw and ata-projects subfolder
+my_temp_dir <- tempfile("test-prepare-data")
+dir.create(my_temp_dir)
+dir.create(file.path(my_temp_dir, "data-projects-raw"))
+dir.create(file.path(my_temp_dir, "data-projects"))
+
+# Save the toy PGV file inside
+writexl::write_xlsx(
+  toy_data_pgv, 
+  file.path(
+    my_temp_dir, 
+    "data-projects-raw", 
+    "toy_PGV.xlsx"
+  )
+)
+
+# Prepare the data
+prepare_projects_data(
+  name_raw_file = "toy_PGV.xlsx",
+  pkg_dir = my_temp_dir, 
+  dic_variables = toy_dic_variables, 
+  dic_cantons = toy_dic_cantons,
+  cantons_sf = toy_cantons_sf
+)
+
+# Delete the tempdir
+unlink(my_temp_dir, recursive = TRUE)
+```
+
+```{r tests-prepare_projects_data}
+test_that("Test that the preparation of the projects data is ok", {
+
+  # Load the toy datasets
+  data("toy_data_pgv")
+  data("toy_dic_variables")
+  data("toy_dic_cantons")
+  data("toy_cantons_sf")
+  
+  # Create a temp folder with data-projects-raw and ata-projects subfolder
+  my_temp_dir <- tempfile("test-prepare-data")
+  dir.create(my_temp_dir)
+  dir.create(file.path(my_temp_dir, "data-projects-raw"))
+  dir.create(file.path(my_temp_dir, "data-projects"))
+  
+  # Save the toy PGV file inside
+  writexl::write_xlsx(toy_data_pgv,
+                      file.path(my_temp_dir,
+                                "data-projects-raw",
+                                "toy_PGV.xlsx"))
+  
+  # Prepare the data
+  prepare_projects_data(
+    name_raw_file = "toy_PGV.xlsx",
+    pkg_dir = my_temp_dir, 
+    dic_variables = toy_dic_variables, 
+    dic_cantons = toy_dic_cantons,
+    cantons_sf = toy_cantons_sf
+  )
+  
+  # Read the created data
+  projects_data_fr <- readRDS(
+    file.path(
+      my_temp_dir,
+      "data-projects",
+      "projects_fr.rds"
+    )
+  )
+  
+  # Perform usage checks on the data
+  
+  #' @description Testing that the number of rows is the same than in the raw data
+  expect_equal(
+    object = nrow(projects_data_fr), 
+    expected = nrow(toy_data_pgv) - 1 # remove the first line with FR variables names
+  )
+  
+  #' @description Testing that the object contains geometry of points (SF)
+  expect_true(
+    inherits(projects_data_fr |>
+               select(geometry), 
+             "sf")
+  )
+  
+  #' @description Testing that the object contains geometry of points with crs = 4326
+  expect_equal(
+    object = sf::st_crs(
+      projects_data_fr |>
+        select(geometry)
+      )$input, 
+    expected = "EPSG:4326"
+  )
+  
+  #' @description Testing that the object contains a column geo_range_id
+  expect_true(
+    "geo_range_id" %in% colnames(projects_data_fr)
+  )
+  
+  
+  # Delete the tempdir
+  unlink(my_temp_dir, recursive = TRUE)
+
+})
+```
+
 # Prepare the project card for one project and one language with `prepare_one_project_card()`
 
 ```{r function-prepare_one_project_card}
@@ -1255,6 +1458,7 @@ test_that("Test that the saving of the data in inst works", {
 #' @param id_project Character. ID of the project, 'short_title' in data.
 #' @param data_projects Tibble. Data projects.
 #' @param language Character. Language, 'fr' or 'de'.
+#' @param dic_titles_pages Tibble. Title of the pages dictionaries. Mainly used for examples and unit testing purpose.
 #' @param pkg_dir Character. Path to the package.
 #' 
 #' @importFrom htmltools htmlTemplate withTags
@@ -1262,6 +1466,7 @@ test_that("Test that the saving of the data in inst works", {
 #' @importFrom purrr map set_names
 #' @importFrom dplyr filter
 #' @importFrom lubridate year
+#' @importFrom scales number
 #' 
 #' @return Nothing. Used for side effects. Create the project card.
 #' 
@@ -1270,6 +1475,7 @@ prepare_one_project_card <- function(
     id_project,
     data_projects,
     language = c("de", "fr"),
+    dic_titles_pages = NULL,
     pkg_dir = system.file(package = "observatoire")
   ){
   
@@ -1302,7 +1508,8 @@ prepare_one_project_card <- function(
     map(
       ~ get_trad_title(
         title_id = .x,
-        language = language
+        language = language, 
+        dic_titles_pages = dic_titles_pages
       )
     ) |> 
     set_names(
@@ -1325,13 +1532,23 @@ prepare_one_project_card <- function(
   status_color <- possible_col_status[status_value]
   
   start_year_value <- year(data_one_project[["project_start"]])
-  project_manager_value <- data_one_project[["project_support_gfch"]]
+  
+  project_manager <- data_one_project[["project_support_gfch"]]
+  project_manager_url <- 
+    paste0(
+      "https://promotionsante.ch/fondation/equipe?views_search_api_fulltext=",
+      project_manager
+    )
+  project_manager_value <- glue(
+    '<a href="{project_manager_url}">{project_manager}</a>'
+  )
+    
   main_orga_value <- data_one_project[["main_resp_orga"]]
   description_value <- data_one_project[["description"]]
   theme_value <- paste0(
     "<li>",
     gsub(
-      pattern = ",* ", "</li><li>", 
+      pattern = ",*\r\n|, ", "</li><li>", 
       data_one_project[["topic"]]
     ),
     "</li>"
@@ -1339,13 +1556,16 @@ prepare_one_project_card <- function(
   risk_value <- paste0(
     "<li>",
     gsub(
-      pattern = ",* ", "</li><li>", 
+      pattern = ",*\r\n|, ", "</li><li>", 
       data_one_project[["risk_factors"]]
     ),
     "</li>"
   )
     
-  budget_value <- data_one_project[["budget_value"]]
+  budget_value <- number(
+    as.numeric(data_one_project[["total_budget"]]), 
+    suffix = " CHF"
+  )
   
   # Generate the html content
   html_content <- htmlTemplate(
@@ -1358,17 +1578,17 @@ prepare_one_project_card <- function(
     status_color = status_color,
     status_value = status_value,
     project_start_year_title = list_titles[["project_start_year_title"]],
-    project_project_manager_title = list_titles[["project_project_manager_title"]],
+    project_project_manager_title = HTML(list_titles[["project_project_manager_title"]]),
     project_main_orga_title = list_titles[["project_main_orga_title"]],
     start_year_value = start_year_value,
-    project_manager_value = project_manager_value,
+    project_manager_value = HTML(project_manager_value),
     main_orga_value = main_orga_value,
     project_description_title = list_titles[["project_description_title"]],
     description_value = description_value,
     project_theme_title = list_titles[["project_theme_title"]],
-    theme_value = withTags(HTML(theme_value)),
+    theme_value = HTML(theme_value),
     project_risk_title = list_titles[["project_risk_title"]],
-    risk_value = withTags(HTML(risk_value)),
+    risk_value = HTML(risk_value),
     project_budget_title = list_titles[["project_budget_title"]],
     budget_value = budget_value,
     project_prop_budget_title = list_titles[["project_prop_budget_title"]]
@@ -1411,19 +1631,40 @@ file.copy(
     "template_projects_cards.html"
     )
 )
-  
+
+# Load toy dataset
+data("toy_dic_titles_pages")
+
 prepare_one_project_card(
   id_project = "1+1=3  PGV03.038", 
   data_projects = read_projects_data(language = "de"),
   language = "de", 
-  pkg_dir = my_temp_dir
+  pkg_dir = my_temp_dir, 
+  dic_titles_pages = toy_dic_titles_pages 
+)
+
+browseURL(
+  file.path(
+    my_temp_dir, 
+    "data-projects-cards", 
+    "project_card_113PGV03038_de.html"
+  )
 )
 
 prepare_one_project_card(
   id_project = "1+1=3  PGV03.038", 
   data_projects = read_projects_data(language = "fr"),
   language = "fr", 
-  pkg_dir = my_temp_dir
+  pkg_dir = my_temp_dir, 
+  dic_titles_pages = toy_dic_titles_pages
+)
+
+browseURL(
+  file.path(
+    my_temp_dir, 
+    "data-projects-cards", 
+    "project_card_113PGV03038_fr.html"
+  )
 )
 
 unlink(my_temp_dir, recursive = TRUE)
@@ -1433,6 +1674,7 @@ unlink(my_temp_dir, recursive = TRUE)
 test_that("Test that the preparation of a project card works", {
   
   data("toy_projects_data_sf")
+  data("toy_dic_titles_pages")
   
   # Create a temp folder with data-projects-cards subfolder
   my_temp_dir <- tempfile("test-create-project-card")
@@ -1455,7 +1697,8 @@ test_that("Test that the preparation of a project card works", {
     id_project = "1+1=3  PGV03.038",
     data_projects = toy_projects_data_sf,
     language = "de", 
-    pkg_dir = my_temp_dir
+    pkg_dir = my_temp_dir, 
+    dic_titles_pages = toy_dic_titles_pages
   )
   
   expect_true(
@@ -1480,19 +1723,25 @@ test_that("Test that the preparation of a project card works", {
 #' 
 #' @param data_projects_fr Tibble. Projects data in FR.
 #' @param data_projects_de Tibble. Projects data in DE.
+#' @param dic_titles_pages Tibble. Title of the pages dictionaries. Mainly used for examples and unit testing purpose.
 #' @param pkg_dir Character. Path to the package.
 #' 
 #' @importFrom dplyr pull
 #' @importFrom purrr walk
+#' @importFrom glue glue
+#' @importFrom cli cli_process_start cli_process_done
 #' 
 #' @return Nothing. Used for side effects. Create the project card.
-#' 
-#' @export
 prepare_projects_cards <- function(
     data_projects_fr = read_projects_data(language = "fr"),
     data_projects_de = read_projects_data(language = "de"),
+    dic_titles_pages = NULL,
     pkg_dir = system.file(package = "observatoire")
     ){
+  
+  cli_process_start(
+    "Start to prepare the projects cards"
+  )
   
   # Clean everything
   files_in_dir <- list.files(
@@ -1525,6 +1774,7 @@ prepare_projects_cards <- function(
           id_project = .x, 
           language = "fr", 
           data_projects = data_projects_fr,
+          dic_titles_pages = dic_titles_pages,
           pkg_dir = pkg_dir
       )
     )
@@ -1536,9 +1786,56 @@ prepare_projects_cards <- function(
           id_project = .x, 
           language = "de", 
           data_projects = data_projects_de,
+          dic_titles_pages = dic_titles_pages,
           pkg_dir = pkg_dir
       )
     )
+  
+  # Print a message about the time of modification
+  available_files_in_data <- list.files(
+    file.path(
+      pkg_dir, 
+      "data-projects-cards"
+    )
+  )
+  
+  nb_files_fr <- length(grep(
+    pattern = "_fr.html", 
+    x = available_files_in_data
+  ))
+  
+  nb_files_de <- length(grep(
+    pattern = "_de.html", 
+    x = available_files_in_data
+  ))
+  
+  if (nb_files_fr != 0 & nb_files_de != 0) {
+    
+    time_modif <- file.info(
+      file.path(
+        pkg_dir, 
+        'data-projects-cards', 
+        available_files_in_data[1]))$mtime
+    
+    message(
+      glue(
+        "{nb_files_de} projects cards in DE have been updated at {time_modif}",
+        "{nb_files_fr} projects cards in FR have been updated at {time_modif}", 
+        .sep = "\n"
+        )
+      )
+    
+  } else {
+    
+    stop(
+      "Something went wrong about the preparation of the projects cards"
+    )
+    
+  }
+  
+  cli_process_done(
+    "Finish to prepare the projects cards"
+  )
     
 }
 ```
@@ -1546,6 +1843,7 @@ prepare_projects_cards <- function(
 ```{r example-prepare_projects_cards}
 # Load the toy datasets
 data("toy_projects_data_sf")
+data("toy_dic_titles_pages")
 
 # Keep 2 projects
 toy_data <- toy_projects_data_sf[1:2, ]
@@ -1571,6 +1869,7 @@ file.copy(
 prepare_projects_cards(
   data_projects_fr = toy_data,
   data_projects_de = toy_data,
+  dic_titles_pages = toy_dic_titles_pages,
   pkg_dir = my_temp_dir
 )
 
@@ -1589,6 +1888,7 @@ test_that("Test that the preparation of all cards works", {
   
   # Load the toy datasets
   data("toy_projects_data_sf")
+  data("toy_dic_titles_pages")
   
   # Keep 2 projects
   toy_data <- toy_projects_data_sf[1:2,]
@@ -1611,6 +1911,7 @@ test_that("Test that the preparation of all cards works", {
   prepare_projects_cards(
     data_projects_fr = toy_data,
     data_projects_de = toy_data,
+    dic_titles_pages = toy_dic_titles_pages,
     pkg_dir = my_temp_dir
   )
   
