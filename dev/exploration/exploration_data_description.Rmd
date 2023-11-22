@@ -1,0 +1,52 @@
+---
+title: "Exploration des données descriptions"
+output: html_document
+date: "2023-11-22"
+---
+
+
+```{r}
+library(readxl)
+library(dplyr)
+library(here)
+```
+```{r}
+data_psch <- read_excel(
+  path = here("inst/data-projects-raw/PGV.xlsx"), 
+)
+```
+
+
+```{r}
+data_desc <- read_excel(
+  path = here("inst/data-projects-raw/Liste des projets_PGV.xlsx"),
+  sheet = "Feuil1"
+  )
+```
+
+Est-ce que les champs titres sont les mêmes ? 
+Il est nécessaire qu'ils le soient car cela sert de identifiant unique au sein de l'app
+
+```{r}
+setdiff(
+  data_psch$Kurztitel,
+  data_desc$Kurztitel
+)
+```
+
+```{r}
+setdiff(
+  data_desc$Kurztitel,
+  data_psch$Kurztitel
+)
+```
+
+Les titres sont les mêmes par rapport au jeu de données original.
+
+```{r}
+data.frame(
+  psch = sort(data_psch$Kurztitel),
+  desc = sort(data_desc$Kurztitel)
+)
+```
+
