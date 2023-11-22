@@ -149,7 +149,7 @@ prepare_one_project_card <- function(
   theme_value <- paste0(
     "<li>",
     gsub(
-      pattern = ",* ", "</li><li>", 
+      pattern = ",*\r\n|, ", "</li><li>", 
       data_one_project[["topic"]]
     ),
     "</li>"
@@ -157,7 +157,7 @@ prepare_one_project_card <- function(
   risk_value <- paste0(
     "<li>",
     gsub(
-      pattern = ",* ", "</li><li>", 
+      pattern = ",*\r\n|, ", "</li><li>", 
       data_one_project[["risk_factors"]]
     ),
     "</li>"
