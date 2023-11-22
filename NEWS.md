@@ -1,3 +1,7 @@
+# observatoire 0.2.3
+
+* Fix the regex in the topics and topics
+
 # observatoire 0.2.2
 
 * Adapt the color of the main panel to the color of the map
