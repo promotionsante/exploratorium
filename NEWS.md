@@ -1,6 +1,11 @@
+# observatoire 0.2.4
+
+* Fix the language switch in the corner
+* Open the page of the project manager in a new tab
+
 # observatoire 0.2.3
 
-* Fix the regex in the topics and topics
+* Fix the regex in the topics and risk factors to correspond to the regex used to separe elements in the raw data
 
 # observatoire 0.2.2
 

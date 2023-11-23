@@ -13,22 +13,13 @@ mod_right_panel_ui <- function(id){
   ns <- NS(id)
   tagList(
 
-    fluidRow(
-        column(
-          8
-        ),
-        column(
-          3,
-          languageSwitchInput(
-            "language_switch",
-            label = NULL,
-            values = c("DE", "FR"),
-            selected = "de"
-          )
-        ),
-        column(
-          1
-        )
+    div(
+      languageSwitchInput(
+        "language_switch",
+        label = NULL,
+        values = c("DE", "FR"),
+        selected = "de"
+      )
     ),
 
     uiOutput(

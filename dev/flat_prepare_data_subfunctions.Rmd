@@ -1272,7 +1272,7 @@ prepare_projects_data <- function(
   ){
   
   cli_process_start(
-    "Start to prepare projects_fr.rds and projects_de.rds"
+    "Prepare projects_fr.rds and projects_de.rds"
   )
 
   # Prepare the data and save them
@@ -1329,7 +1329,7 @@ prepare_projects_data <- function(
   )
   
   cli_process_done(
-    "Finish to prepare projects_fr.rds and projects_de.rds"
+    "Prepare projects_fr.rds and projects_de.rds"
   )
   
   return(
@@ -1540,7 +1540,7 @@ prepare_one_project_card <- function(
       project_manager
     )
   project_manager_value <- glue(
-    '<a href="{project_manager_url}">{project_manager}</a>'
+    '<a href="{project_manager_url}" target="_blank">{project_manager}</a>'
   )
     
   main_orga_value <- data_one_project[["main_resp_orga"]]
@@ -1740,7 +1740,7 @@ prepare_projects_cards <- function(
     ){
   
   cli_process_start(
-    "Start to prepare the projects cards"
+    "Prepare the projects cards"
   )
   
   # Clean everything
@@ -1834,7 +1834,7 @@ prepare_projects_cards <- function(
   }
   
   cli_process_done(
-    "Finish to prepare the projects cards"
+    "Prepare the projects cards"
   )
     
 }

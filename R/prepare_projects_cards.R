@@ -63,7 +63,7 @@ prepare_projects_cards <- function(
     ){
   
   cli_process_start(
-    "Start to prepare the projects cards"
+    "Prepare the projects cards"
   )
   
   # Clean everything
@@ -157,7 +157,7 @@ prepare_projects_cards <- function(
   }
   
   cli_process_done(
-    "Finish to prepare the projects cards"
+    "Prepare the projects cards"
   )
     
 }
