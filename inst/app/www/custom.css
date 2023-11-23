@@ -202,6 +202,7 @@ a:hover {
   display: flex;
   align-items: flex-end; /* Align items to the end of the flex container */
   width: 100px;
+  float: right;
 }
 
 .switch-label {
