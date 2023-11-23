@@ -259,3 +259,16 @@ input:checked + .slider:before {
   -ms-transform: translateX(12px);
   transform: translateX(12px);
 }
+
+.marker-cluster-small {
+background-color: rgb(245, 147, 0, 0.6);
+}
+.marker-cluster-small div {
+background-color: rgb(245, 147, 0, 0.6);
+}
+.marker-cluster-medium {
+background-color: rgb(245, 147, 0, 0.6);
+}
+.marker-cluster-medium div {
+background-color: rgb(245, 147, 0, 0.6);
+}
