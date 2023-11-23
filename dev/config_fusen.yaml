@@ -45,6 +45,23 @@ flat_fct_utils.Rmd:
     check: false
     document: true
     overwrite: 'yes'
+flat_filter_project_data.Rmd:
+  path: dev/flat_filter_project_data.Rmd
+  state: active
+  R:
+  - R/filter_projects_data.R
+  - R/load_projects_data.R
+  tests:
+  - tests/testthat/test-load_projects_data.R
+  - tests/testthat/test-filter_projects_data.R
+  vignettes: []
+  inflate:
+    flat_file: dev/flat_filter_project_data.Rmd
+    vignette_name: .na
+    open_vignette: true
+    check: false
+    document: true
+    overwrite: 'yes'
 flat_map.Rmd:
   path: dev/flat_map.Rmd
   state: active

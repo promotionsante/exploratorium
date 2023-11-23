@@ -38,7 +38,7 @@ mod_map_server <- function(id, r_global){
       once = TRUE, {
         req(r_global$zoom_level)
         r_local$map_to_draw <- draw_map_selected_projects(
-          projects_data_sf = toy_projects_data_sf,
+          projects_data_sf = r_global$selected_projects_sf,
           zoom_level = r_global$zoom_level
         )
       })
@@ -52,12 +52,12 @@ mod_map_server <- function(id, r_global){
           is.null(r_global$id_selected_project)
         ) {
           r_local$map_to_draw <- draw_map_selected_projects(
-            projects_data_sf = toy_projects_data_sf,
+            projects_data_sf = r_global$selected_projects_sf,
             zoom_level = r_global$zoom_level
           )
         } else {
           r_local$map_to_draw <- draw_map_focus_one_project(
-            projects_data_sf = toy_projects_data_sf,
+            projects_data_sf = r_global$selected_projects_sf,
             id_project = r_global$id_selected_project,
             zoom_level = r_global$zoom_level
           )

@@ -65,9 +65,22 @@ mod_projects_selection_ui <- function(id){
 #' projects_selection Server Functions
 #'
 #' @noRd
-mod_projects_selection_server <- function(id){
+mod_projects_selection_server <- function(id, r_global){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
+
+    # Set initial condition: all projects are displayed
+    observeEvent(
+      TRUE,
+      once = TRUE, {
+        r_global$selected_projects_sf <- r_global$projects_data_sf
+      })
+    observeEvent(
+      input$filter_projects, {
+        r_global$selected_projects_sf <- filter_projects_data(
+          projects_data_sf = r_global$projects_data_sf
+        )
+      })
 
   })
 }

@@ -11,7 +11,8 @@ app_server <- function(input, output, session) {
     zoom_level = NULL,
     # Set initial condition: no focus project is selected
     id_selected_project = NULL,
-    language = NULL
+    language = NULL,
+    projects_data = NULL
   )
 
   observeEvent(
@@ -26,6 +27,9 @@ app_server <- function(input, output, session) {
       change_language(language)
       localize("html")
       r_global$language <- language
+      r_global$projects_data_sf <- load_projects_data(
+        language = language
+      )
     })
 
   observeEvent(
