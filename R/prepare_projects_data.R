@@ -57,7 +57,7 @@ prepare_projects_data <- function(
   ){
   
   cli_process_start(
-    "Start to prepare projects_fr.rds and projects_de.rds"
+    "Prepare projects_fr.rds and projects_de.rds"
   )
 
   # Prepare the data and save them
@@ -114,7 +114,7 @@ prepare_projects_data <- function(
   )
   
   cli_process_done(
-    "Finish to prepare projects_fr.rds and projects_de.rds"
+    "Prepare projects_fr.rds and projects_de.rds"
   )
   
   return(
