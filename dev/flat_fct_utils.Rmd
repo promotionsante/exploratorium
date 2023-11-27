@@ -331,7 +331,88 @@ test_that("languageSwitchInput works", {
   expect_true(inherits(languageSwitchInput, "function")) 
 })
 ```
+
+# Create the skeleton of a dictionnary dataset
+
+```{r function-create_skeleton_dic}
+#' Create the skeleton of a dictionnary dataset
+#' 
+#' @importFrom readr wite_csv2
+#' 
+#' @return Nothing. Used for side effect to create the skeleton of a dictionary in a csv format.
+#' 
+#' @noRd
+create_skeleton_dic <- function(
+    data,
+    cols, 
+    sep = ",*\r\n|, |;",
+    path_file
+    ){
   
+  data_dic <-  tibble(
+    value = paste(
+      unlist(data[, cols]), 
+      collapse = ", "
+      ) |> 
+      gsub(
+        pattern = sep, 
+        replacement = ", "
+      ) |> 
+      strsplit(split = ", ") |> 
+      unlist() |> 
+      unique(), 
+  de = value, 
+  fr = "todo"
+  )
+  
+  write_csv2(
+    data_dic, 
+    path_file
+  )
+
+}
+```
+  
+```{r example-create_skeleton_dic}
+data("toy_data_pgv")
+data("toy_dic_variables") 
+
+# Create a temp folder with data-projects-cards subfolder
+my_temp_dir <- tempfile("test-create-skeleton-dic")
+dir.create(my_temp_dir)
+
+data = toy_data_pgv |> 
+  add_col_raw_data(
+    dic_variables = toy_dic_variables
+  ) 
+
+create_skeleton_dic(
+  data = data, 
+  cols = c("status", "topic", "risk_factors"),
+  path_file = file.path(
+    my_temp_dir, 
+    "dic_values.csv"
+  )
+)
+
+readr::read_csv2(
+  file.path(
+    my_temp_dir, 
+    "dic_values.csv"
+  )
+)
+
+unlink(my_temp_dir, recursive = TRUE)
+```
+  
+```{r tests-create_skeleton_dic}
+test_that("create_skeleton_dic works", {
+  expect_true(inherits(create_skeleton_dic, "function")) 
+})
+```
+  
+
+
 ```{r development-inflate, eval=FALSE}
 # Run but keep eval=FALSE to avoid infinite loop
 # Execute in the console directly
