@@ -1,3 +1,8 @@
+# observatoire 0.4.0
+
+* Translate the values in status / risk factors/ topic in DE and FR
+* Show them in the projects cards
+
 # observatoire 0.3.0
 
 * Add the description of the projects in DE and FR
