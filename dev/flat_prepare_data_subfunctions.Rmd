@@ -1062,8 +1062,70 @@ test_that("Test that the computation of the prop of the budget is ok", {
 #' 
 #' @noRd
 translate_values_in_data <- function(
-    data
+    data, 
+    dic_values = NULL, 
+    cols_to_translate, 
+    sep = ",*\r\n|, |;"
     ){
+  
+  # Import the values dictionary saved in the package
+  if (is.null(dic_values)) {
+    dic_values <- read_csv2(
+      system.file(
+        "data-dic", 
+        "dic_values.csv", 
+        package = "observatoire"
+      ),
+      show_col_types = FALSE
+    )
+  }
+  
+  # Translate the data in FR
+  col_to_translate <- cols_to_translate[2]
+  language <- "fr"
+  
+  data_values_translated <- data |> 
+    rename(
+      "col_to_translate" = col_to_translate
+      ) |> 
+    select(short_title, col_to_translate) |> 
+    separate_rows(
+      col_to_translate, 
+      sep = sep
+    ) |> 
+    left_join(
+      dic_values |> 
+        select(value, language) |> 
+        rename("language" = language), 
+      by = c("col_to_translate" = "value")
+    ) |> 
+    group_by(
+      short_title
+    ) |> 
+    mutate(
+      col_translated = paste(
+        language, 
+        collapse = ", "
+      )
+    ) |> 
+    select(
+      short_title, 
+      col_translated
+      ) |> 
+    distinct()
+  
+  data_translated <- data |> 
+    left_join(
+      data_values_translated, 
+      by = "short_title"
+    ) |> 
+    select(- col_to_translate)
+  
+  colnames(data_translated)[
+    which(colnames(data_translated) == "col_translated")
+  ] <- col_to_translate
+  
+
   
   #TODO
   list(
@@ -1075,14 +1137,25 @@ translate_values_in_data <- function(
 ```
   
 ```{r example-translate_values_in_data}
+# Load the toy datasets
+data("toy_data_pgv")
+data("toy_dic_variables")
+data("toy_dic_values")
+
 # Import the raw data and perform the first preparations
-raw_data <- import_raw_data() |> 
-  add_col_raw_data() |> 
+raw_data <- toy_data_pgv |> 
+  add_col_raw_data(
+    dic_variables = toy_dic_variables
+  ) |> 
   clean_raw_data()
 
 # Get the translated data in FR and DE
 raw_data |> 
   translate_values_in_data()
+
+data = raw_data
+dic_values = toy_dic_values
+cols_to_translate = c("status", "topic", "risk_factors")
 ```
   
 ```{r tests-translate_values_in_data}
