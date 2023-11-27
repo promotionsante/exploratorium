@@ -1051,22 +1051,44 @@ test_that("Test that the computation of the prop of the budget is ok", {
 })
 ```
   
-# Translate the data (values in the table) in FR and DE with `translate_values_in_data()`
+# Translate the value of a given column with `translate_values_in_col()`
 
-```{r function-translate_values_in_data}
-#' Translate the data (values in the table) in FR and DE
+```{r function-translate_values_in_col}
+#' Translate the value of a given column with
 #' 
-#' @param data Tibble. Raw data about projects, with the good columns names.
+#' @param data Tibble. Data to be translated.
+#' @param col_to_translate Character. Column to be translated.
+#' @param dic_values Tibble. Values dictionaries. Mainly used for examples and unit testing purpose.
+#' @param language Character. Language. Should be "fr" or "de".
+#' @param sep Character. Regex used in the raw data to separate words in the columns.
 #' 
-#' @return A list of 2 tibbles (FR and DE)
+#' @importFrom readr read_csv2 
+#' @importFrom glue glue
+#' @importFrom dplyr rename select group_by mutate
+#' @importFrom tidyr separate_rows
+#' @importFrom sf st_join st_drop_geometry
+#' 
+#' @return Data with the column translated.
 #' 
 #' @noRd
-translate_values_in_data <- function(
+translate_values_in_col <- function(
     data, 
-    dic_values = NULL, 
-    cols_to_translate, 
+    col_to_translate, 
+    dic_values = NULL,
+    language = c("de", "fr"), 
     sep = ",*\r\n|, |;"
     ){
+  
+  language <- match.arg(language)
+    
+  # Check if the column is present
+  is_col_in_data <- col_to_translate %in% colnames(data)
+  
+  if (isFALSE(is_col_in_data)) {
+    stop(
+      glue("The column {col_to_translate} is not present in the data")
+    )
+  }
   
   # Import the values dictionary saved in the package
   if (is.null(dic_values)) {
@@ -1080,11 +1102,9 @@ translate_values_in_data <- function(
     )
   }
   
-  # Translate the data in FR
-  col_to_translate <- cols_to_translate[2]
-  language <- "fr"
-  
+  # Translate the column
   data_values_translated <- data |> 
+    st_drop_geometry() |> 
     rename(
       "col_to_translate" = col_to_translate
       ) |> 
@@ -1125,12 +1145,189 @@ translate_values_in_data <- function(
     which(colnames(data_translated) == "col_translated")
   ] <- col_to_translate
   
-
+  return(data_translated)
   
-  #TODO
+}
+```
+  
+```{r example-translate_values_in_col}
+# Load the toy datasets
+data("toy_data_pgv")
+data("toy_dic_variables")
+data("toy_dic_values")
+
+# Import the raw data and perform the first preparations
+raw_data <- toy_data_pgv |> 
+  add_col_raw_data(
+    dic_variables = toy_dic_variables
+  ) |> 
+  clean_raw_data()
+
+# Translate the column status
+translate_values_in_col(
+  data = raw_data, 
+  col_to_translate = "status", 
+  dic_values = toy_dic_values, 
+  language = "fr"
+)$status
+
+translate_values_in_col(
+  data = raw_data, 
+  col_to_translate = "status", 
+  dic_values = toy_dic_values, 
+  language = "de"
+)$status
+
+# Translate the column topic
+translate_values_in_col(
+  data = raw_data, 
+  col_to_translate = "topic", 
+  dic_values = toy_dic_values, 
+  language = "fr"
+)$topic
+
+translate_values_in_col(
+  data = raw_data, 
+  col_to_translate = "topic", 
+  dic_values = toy_dic_values, 
+  language = "de"
+)$topic
+```
+  
+```{r tests-translate_values_in_col}
+test_that("Test that the translation of a column works", {
+  
+  # Load the toy datasets
+  data("toy_data_pgv")
+  data("toy_dic_variables")
+  data("toy_dic_values")
+  
+  # Import the raw data and perform the first preparations
+  raw_data <- toy_data_pgv |>
+    add_col_raw_data(
+      dic_variables = toy_dic_variables
+    ) |>
+    clean_raw_data()
+  
+  # Translate the column status
+  col_status_fr <- translate_values_in_col(
+    data = raw_data,
+    col_to_translate = "status",
+    dic_values = toy_dic_values,
+    language = "fr"
+  )$status |> unique()
+  
+  expect_equal(
+    object = col_status_fr, 
+    expected = c(
+      "Termin\u00e9", 
+      "En cours"
+    )
+  )
+  
+  col_status_de <- translate_values_in_col(
+    data = raw_data,
+    col_to_translate = "status",
+    dic_values = toy_dic_values,
+    language = "de"
+  )$status |> unique()
+  
+  expect_equal(
+    object = col_status_de, 
+    expected = c(
+      "Abschluss", 
+      "Umsetzung"
+    )
+  )
+  
+  # Translate the column topic
+  col_topic_fr <- translate_values_in_col(
+    data = raw_data,
+    col_to_translate = "topic",
+    dic_values = toy_dic_values,
+    language = "fr"
+  )$topic |> unique()
+  
+  expect_equal(
+    object = col_topic_fr, 
+    expected = c(
+      "D\u00e9pendances", 
+      "Diab\u00e8tes",
+      "Autres th\u00e8mes, Maladies mentales", 
+      "Autres th\u00e8mes, Maladies respiratoires, Cancers, Maladies musculo-squelettiques, D\u00e9pendances"
+    )
+  )
+  
+})
+```
+
+# Translate the data (values in the table) in FR and DE with `translate_values_in_data()`
+
+```{r function-translate_values_in_data}
+#' Translate the data (values in the table) in FR and DE
+#' 
+#' @param data Tibble. Raw data about projects, with the good columns names.
+#' @param cols_to_translate Character. Columns to be translated.
+#' @param dic_values Tibble. Values dictionaries. Mainly used for examples and unit testing purpose.
+#' @param sep Character. Regex used in the raw data to separate words in the columns.
+#' 
+#' @importFrom readr read_csv2
+#' 
+#' @return A list of 2 tibbles (FR and DE), with mandatory columns translated.
+#' 
+#' @noRd
+translate_values_in_data <- function(
+    data, 
+    dic_values = NULL, 
+    cols_to_translate, 
+    sep = ",*\r\n|, |;"
+    ){
+  
+  # Import the values dictionary saved in the package
+  if (is.null(dic_values)) {
+    dic_values <- read_csv2(
+      system.file(
+        "data-dic", 
+        "dic_values.csv", 
+        package = "observatoire"
+      ),
+      show_col_types = FALSE
+    )
+  }
+  
+  # Translate the data in DE
+  data_de <- data
+  
+  for (i in 1:length(cols_to_translate)) {
+    
+    data_de <- translate_values_in_col(
+      data = data_de, 
+      col_to_translate = cols_to_translate[i], 
+      dic_values = dic_values, 
+      language = "de", 
+      sep = sep
+    )
+    
+  }
+  
+  # Translate the data in FR
+  data_fr <- data
+  
+  for (i in 1:length(cols_to_translate)) {
+    
+    data_fr <- translate_values_in_col(
+      data = data_fr, 
+      col_to_translate = cols_to_translate[i], 
+      dic_values = dic_values, 
+      language = "fr", 
+      sep = sep
+    )
+    
+  }
+  
   list(
-    data_fr = data, 
-    data_de = data
+    data_fr = data_fr, 
+    data_de = data_de
   )
     
 }
@@ -1151,16 +1348,77 @@ raw_data <- toy_data_pgv |>
 
 # Get the translated data in FR and DE
 raw_data |> 
-  translate_values_in_data()
-
-data = raw_data
-dic_values = toy_dic_values
-cols_to_translate = c("status", "topic", "risk_factors")
+  translate_values_in_data(
+    cols_to_translate = c(
+      "status", 
+      "topic", 
+      "risk_factors"
+    ), 
+    dic_values = toy_dic_values
+  )
 ```
   
 ```{r tests-translate_values_in_data}
 test_that("Test that the translation of the data is ok", {
-  #TODO
+  
+  # Load the toy datasets
+  data("toy_data_pgv")
+  data("toy_dic_variables")
+  data("toy_dic_values")
+  
+  # Import the raw data and perform the first preparations
+  raw_data <- toy_data_pgv |>
+    add_col_raw_data(
+      dic_variables = toy_dic_variables
+    ) |>
+    clean_raw_data()
+  
+  # Get the translated data in FR and DE
+  res_translated_data <- raw_data |>
+    translate_values_in_data(
+      cols_to_translate = c(
+        "status",
+        "topic",
+        "risk_factors"
+      ),
+      dic_values = toy_dic_values
+    )
+  
+  toy_data_fr <- res_translated_data$data_fr
+  toy_data_de <- res_translated_data$data_de
+  
+  expect_equal(
+    object = toy_data_fr |> 
+      dplyr::select(-c(status, topic, risk_factors)),
+    expected = raw_data |> 
+      dplyr::select(-c(status, topic, risk_factors))
+  )
+  
+  expect_equal(
+    object = toy_data_fr |> 
+      dplyr::select(-c(status, topic, risk_factors)),
+    expected = toy_data_de |> 
+      dplyr::select(-c(status, topic, risk_factors))
+  )
+  
+  expect_equal(
+    object = lengths(
+      gregexpr(", ", toy_data_fr$topic, fixed = TRUE)
+      ), 
+    expected = lengths(
+      gregexpr(", ", toy_data_de$topic, fixed = TRUE)
+      )
+  )
+
+  expect_equal(
+    object = lengths(
+      gregexpr(", ", toy_data_fr$risk_factors, fixed = TRUE)
+      ), 
+    expected = lengths(
+      gregexpr(", ", toy_data_de$risk_factors, fixed = TRUE)
+      )
+  )
+  
 })
 ```
 
@@ -1393,7 +1651,13 @@ prepare_projects_data <- function(
   
   cli_alert("Translate the data")
   data_translated <- data_with_prop_budget |> 
-    translate_values_in_data() 
+    translate_values_in_data(
+      cols_to_translate = c(
+        "status", 
+        "topic", 
+        "risk_factors"
+      )
+    ) 
   
   cli_alert("Save the data")
   save_projects_data(
@@ -1596,11 +1860,19 @@ prepare_one_project_card <- function(
   short_title_value <- data_one_project[["short_title"]]
   status_value <- data_one_project[["status"]]
   
-  possible_col_status <- c(
-    "Abschluss" = psch_yellow(), 
-    "Umsetzung" = psch_green(), 
-    "Abbruch" = psch_bronce()
-  )
+  if (language == "de") {
+    possible_col_status <- c(
+      "Abschluss" = psch_yellow(), 
+      "Umsetzung" = psch_green(), 
+      "Abbruch" = psch_bronce()
+    )
+  } else if (language == "fr") {
+    possible_col_status <- c(
+      "Termin\u00e9" = psch_yellow(), 
+      "En cours" = psch_green(), 
+      "Annul\u00e9" = psch_bronce()
+    )
+  }
   
   status_color <- possible_col_status[status_value]
   

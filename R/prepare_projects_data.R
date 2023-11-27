@@ -105,7 +105,13 @@ prepare_projects_data <- function(
   
   cli_alert("Translate the data")
   data_translated <- data_with_prop_budget |> 
-    translate_values_in_data() 
+    translate_values_in_data(
+      cols_to_translate = c(
+        "status", 
+        "topic", 
+        "risk_factors"
+      )
+    ) 
   
   cli_alert("Save the data")
   save_projects_data(

@@ -11,5 +11,9 @@ globalVariables(unique(c(
   # get_id_cantons_influenced:
   "de", "geo_range_id", "id",
   # mod_map_server:
-  "toy_projects_data_sf"
+  "toy_projects_data_sf",
+  # create_skeleton_dic
+  "value",
+  # translate_values_in_col
+  "col_translated"
 )))

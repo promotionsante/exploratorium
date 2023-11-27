@@ -124,11 +124,19 @@ prepare_one_project_card <- function(
   short_title_value <- data_one_project[["short_title"]]
   status_value <- data_one_project[["status"]]
   
-  possible_col_status <- c(
-    "Abschluss" = psch_yellow(), 
-    "Umsetzung" = psch_green(), 
-    "Abbruch" = psch_bronce()
-  )
+  if (language == "de") {
+    possible_col_status <- c(
+      "Abschluss" = psch_yellow(), 
+      "Umsetzung" = psch_green(), 
+      "Abbruch" = psch_bronce()
+    )
+  } else if (language == "fr") {
+    possible_col_status <- c(
+      "Termin\u00e9" = psch_yellow(), 
+      "En cours" = psch_green(), 
+      "Annul\u00e9" = psch_bronce()
+    )
+  }
   
   status_color <- possible_col_status[status_value]
   

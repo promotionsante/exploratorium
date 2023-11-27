@@ -2,7 +2,7 @@
 
 #' Create the skeleton of a dictionnary dataset
 #' 
-#' @importFrom readr wite_csv2
+#' @importFrom readr write_csv2
 #' 
 #' @return Nothing. Used for side effect to create the skeleton of a dictionary in a csv format.
 #' 
