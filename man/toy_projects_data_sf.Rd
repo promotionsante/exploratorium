@@ -5,7 +5,7 @@
 \alias{toy_projects_data_sf}
 \title{toy_projects_data_sf}
 \format{
-A data frame with 67 rows and 47 variables:
+A data frame with 67 rows and 51 variables:
 \describe{
   \item{ short_title }{  character }
   \item{ status }{  character }
@@ -45,6 +45,10 @@ A data frame with 67 rows and 47 variables:
   \item{ target_groups }{  character }
   \item{ multipliers }{  character }
   \item{ settings }{  character }
+  \item{ desc_fr }{  character }
+  \item{ desc_de }{  character }
+  \item{ title_de }{  character }
+  \item{ title_fr }{  character }
   \item{ latitude }{  numeric }
   \item{ longitude }{  numeric }
   \item{ geometry }{  sfc_POINT,sfc }

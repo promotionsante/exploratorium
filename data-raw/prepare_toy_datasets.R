@@ -3,7 +3,9 @@
 #           EXAMPLES AND UNIT TESTS            #
 ################################################
 
+pkgload::load_all()
 library(readr)
+library(dplyr)
 
 ## code to prepare `toy_data_pgv` ----
 

@@ -2,7 +2,7 @@
 #'
 #' Description.
 #'
-#' @format A data frame with 38 rows and 3 variables:
+#' @format A data frame with 42 rows and 3 variables:
 #' \describe{
 #'   \item{ de }{  character }
 #'   \item{ fr }{  character }

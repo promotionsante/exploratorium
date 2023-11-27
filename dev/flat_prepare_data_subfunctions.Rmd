@@ -269,7 +269,7 @@ clean_raw_data <- function(
     mutate(
       across(
         contains("budget"),
-        ~ gsub("^CHF\\s+|\\'", "", .x)
+        ~ gsub("^CHF\\s+|\\\'", "", .x)
       )
     )
   
@@ -322,7 +322,7 @@ test_that("Test that the cleaning of the raw data is ok", {
       dplyr::filter(
         dplyr::if_any(
           tidyselect::starts_with("budget"),
-          ~ grepl("^CHF|\\'", .x))) |>
+          ~ grepl("^CHF|\\\'", .x))) |>
       nrow(), 
     expected = 0
   )
@@ -452,12 +452,12 @@ test_that("Test that the geocoding of the data is ok", {
     structure(
       list(
         city_code_main_resp_orga = c(
-          "Zürich",
+          "Z\u00fcrich",
           "Sion",
           "St. Gallen",
           NA,
           "Le Cerneux-Veusil",
-          "Genève"
+          "Gen\u00e8ve"
         ), 
         zip_code_main_resp_orga = c(
           "8000",
@@ -610,8 +610,8 @@ test_that("Test that the detection of the canton is ok", {
       list(
         short_title = c(
           "1+1=3  PGV03.038",
-          "Action Diabète PGV01.057",
-          "Angehörigen-Expert/innen PGV03.078",
+          "Action Diab\u00e8te PGV01.057",
+          "Angeh\u00f6rigen-Expert/innen PGV03.078",
           "DZ SUCHT",
           "EMIA"
         ),
@@ -949,8 +949,8 @@ test_that("Test that the computation of the nb of cantons is ok", {
         geo_range = c(
           "Aargau,\r\nSt. Gallen",
           "Wallis",
-          "Appenzell Ausserrhoden,\r\nAppenzell Innerrhoden,\r\nBasel-Landschaft,\r\nBasel-Stadt,\r\nBern,\r\nGenf,\r\nLuzern,\r\nNidwalden,\r\nObwalden,\r\nSt. Gallen,\r\nThurgau,\r\nWaadt,\r\nZürich",
-          "Zürich"
+          "Appenzell Ausserrhoden,\r\nAppenzell Innerrhoden,\r\nBasel-Landschaft,\r\nBasel-Stadt,\r\nBern,\r\nGenf,\r\nLuzern,\r\nNidwalden,\r\nObwalden,\r\nSt. Gallen,\r\nThurgau,\r\nWaadt,\r\nZ\u00fcrich",
+          "Z\u00fcrich"
         )
       ),
       row.names = c(NA, -4L),
@@ -1158,7 +1158,7 @@ save_projects_data <- function(
         if (isTRUE(.x %in% available_files_in_data)) {
           message(
             glue(
-              "{.x} has been updated at {file.info(file.path(pkg_dir, 'data-projects', .x))$mtime}"
+              "{.x} has been updated at {file.info(file.path(pkg_dir, \'data-projects\', .x))$mtime}"
               )
             )
           } else {
@@ -1487,7 +1487,7 @@ prepare_one_project_card <- function(
   if (isFALSE(check_project_in_data)) {
     stop(
       glue(
-        "Project {id_project} is not found in {glue('projects_{language}.rds')}",
+        "Project {id_project} is not found in {glue(\'projects_{language}.rds\')}",
         "Please check the data before to try again", 
         .sep = "\n")
     )
@@ -1540,11 +1540,23 @@ prepare_one_project_card <- function(
       project_manager
     )
   project_manager_value <- glue(
-    '<a href="{project_manager_url}" target="_blank">{project_manager}</a>'
+    '<a href=\"{project_manager_url}\" target=\"_blank\">{project_manager}</a>'
   )
     
   main_orga_value <- data_one_project[["main_resp_orga"]]
-  description_value <- data_one_project[["description"]]
+  
+  description_value <- data_one_project[[glue("desc_{language}")]]
+  
+  if (language == "de") {
+    
+    more_description_value <- 'Weitere informationen finden sie auf der <a href=\"https://gesundheitsfoerderung.ch/praevention-in-der-gesundheitsversorgung/projektfoerderung/gefoerderte-projekte\" target=\"_blank\">website von Gesundheitf\u00f6rdernung Schweiz</a>'
+    
+  } else if (language == "fr") {
+    
+    more_description_value <- 'Vous trouverez des informations compl\u00e9mentaires  sur le <a href=\"https://promotionsante.ch/prevention-dans-le-domaine-des-soins/soutien-de-projets/projets-soutenus\" target=\"_blank\">site de Promotion Sant\u00e9 Suisse</a>'
+    
+  }
+  
   theme_value <- paste0(
     "<li>",
     gsub(
@@ -1585,6 +1597,7 @@ prepare_one_project_card <- function(
     main_orga_value = main_orga_value,
     project_description_title = list_titles[["project_description_title"]],
     description_value = description_value,
+    more_description_value = HTML(more_description_value),
     project_theme_title = list_titles[["project_theme_title"]],
     theme_value = HTML(theme_value),
     project_risk_title = list_titles[["project_risk_title"]],
@@ -1729,7 +1742,7 @@ test_that("Test that the preparation of a project card works", {
 #' @importFrom dplyr pull
 #' @importFrom purrr walk
 #' @importFrom glue glue
-#' @importFrom cli cli_process_start cli_process_done
+#' @importFrom cli cli_process_start cli_process_done cli_alert
 #' 
 #' @return Nothing. Used for side effects. Create the project card.
 prepare_projects_cards <- function(
@@ -1740,6 +1753,10 @@ prepare_projects_cards <- function(
     ){
   
   cli_process_start(
+    "Prepare the projects cards"
+  )
+  
+  cli_alert(
     "Prepare the projects cards"
   )
   

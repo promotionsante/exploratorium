@@ -93,7 +93,7 @@ save_projects_data <- function(
         if (isTRUE(.x %in% available_files_in_data)) {
           message(
             glue(
-              "{.x} has been updated at {file.info(file.path(pkg_dir, 'data-projects', .x))$mtime}"
+              "{.x} has been updated at {file.info(file.path(pkg_dir, \'data-projects\', .x))$mtime}"
               )
             )
           } else {

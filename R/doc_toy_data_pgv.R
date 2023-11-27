@@ -2,7 +2,7 @@
 #'
 #' Description.
 #'
-#' @format A data frame with 5 rows and 38 variables:
+#' @format A data frame with 5 rows and 42 variables:
 #' \describe{
 #'   \item{ Kurztitel }{  character }
 #'   \item{ Status }{  character }
@@ -42,6 +42,10 @@
 #'   \item{ Zielgruppe }{  character }
 #'   \item{ Multiplikatoren }{  character }
 #'   \item{ Settings }{  character }
+#'   \item{ desc_FR }{  character }
+#'   \item{ desc_DE }{  character }
+#'   \item{ Titre_DE }{  character }
+#'   \item{ Titre_FR }{  character }
 #' }
 #' @source Source
 "toy_data_pgv"

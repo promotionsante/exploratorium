@@ -8,8 +8,8 @@ test_that("Test that the computation of the nb of cantons is ok", {
         geo_range = c(
           "Aargau,\r\nSt. Gallen",
           "Wallis",
-          "Appenzell Ausserrhoden,\r\nAppenzell Innerrhoden,\r\nBasel-Landschaft,\r\nBasel-Stadt,\r\nBern,\r\nGenf,\r\nLuzern,\r\nNidwalden,\r\nObwalden,\r\nSt. Gallen,\r\nThurgau,\r\nWaadt,\r\nZürich",
-          "Zürich"
+          "Appenzell Ausserrhoden,\r\nAppenzell Innerrhoden,\r\nBasel-Landschaft,\r\nBasel-Stadt,\r\nBern,\r\nGenf,\r\nLuzern,\r\nNidwalden,\r\nObwalden,\r\nSt. Gallen,\r\nThurgau,\r\nWaadt,\r\nZ\u00fcrich",
+          "Z\u00fcrich"
         )
       ),
       row.names = c(NA, -4L),

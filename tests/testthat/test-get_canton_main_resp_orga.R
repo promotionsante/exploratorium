@@ -7,8 +7,8 @@ test_that("Test that the detection of the canton is ok", {
       list(
         short_title = c(
           "1+1=3  PGV03.038",
-          "Action Diabète PGV01.057",
-          "Angehörigen-Expert/innen PGV03.078",
+          "Action Diab\u00e8te PGV01.057",
+          "Angeh\u00f6rigen-Expert/innen PGV03.078",
           "DZ SUCHT",
           "EMIA"
         ),

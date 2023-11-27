@@ -88,7 +88,7 @@ prepare_one_project_card <- function(
   if (isFALSE(check_project_in_data)) {
     stop(
       glue(
-        "Project {id_project} is not found in {glue('projects_{language}.rds')}",
+        "Project {id_project} is not found in {glue(\'projects_{language}.rds\')}",
         "Please check the data before to try again", 
         .sep = "\n")
     )
@@ -141,11 +141,23 @@ prepare_one_project_card <- function(
       project_manager
     )
   project_manager_value <- glue(
-    '<a href="{project_manager_url}" target="_blank">{project_manager}</a>'
+    '<a href=\"{project_manager_url}\" target=\"_blank\">{project_manager}</a>'
   )
     
   main_orga_value <- data_one_project[["main_resp_orga"]]
-  description_value <- data_one_project[["description"]]
+  
+  description_value <- data_one_project[[glue("desc_{language}")]]
+  
+  if (language == "de") {
+    
+    more_description_value <- 'Weitere informationen finden sie auf der <a href=\"https://gesundheitsfoerderung.ch/praevention-in-der-gesundheitsversorgung/projektfoerderung/gefoerderte-projekte\" target=\"_blank\">website von Gesundheitf\u00f6rdernung Schweiz</a>'
+    
+  } else if (language == "fr") {
+    
+    more_description_value <- 'Vous trouverez des informations compl\u00e9mentaires  sur le <a href=\"https://promotionsante.ch/prevention-dans-le-domaine-des-soins/soutien-de-projets/projets-soutenus\" target=\"_blank\">site de Promotion Sant\u00e9 Suisse</a>'
+    
+  }
+  
   theme_value <- paste0(
     "<li>",
     gsub(
@@ -186,6 +198,7 @@ prepare_one_project_card <- function(
     main_orga_value = main_orga_value,
     project_description_title = list_titles[["project_description_title"]],
     description_value = description_value,
+    more_description_value = HTML(more_description_value),
     project_theme_title = list_titles[["project_theme_title"]],
     theme_value = HTML(theme_value),
     project_risk_title = list_titles[["project_risk_title"]],

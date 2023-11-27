@@ -6,12 +6,12 @@ test_that("Test that the geocoding of the data is ok", {
     structure(
       list(
         city_code_main_resp_orga = c(
-          "Zürich",
+          "Z\u00fcrich",
           "Sion",
           "St. Gallen",
           NA,
           "Le Cerneux-Veusil",
-          "Genève"
+          "Gen\u00e8ve"
         ), 
         zip_code_main_resp_orga = c(
           "8000",

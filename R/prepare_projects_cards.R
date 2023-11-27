@@ -10,7 +10,7 @@
 #' @importFrom dplyr pull
 #' @importFrom purrr walk
 #' @importFrom glue glue
-#' @importFrom cli cli_process_start cli_process_done
+#' @importFrom cli cli_process_start cli_process_done cli_alert
 #' 
 #' @return Nothing. Used for side effects. Create the project card.
 #' @noRd
@@ -63,6 +63,10 @@ prepare_projects_cards <- function(
     ){
   
   cli_process_start(
+    "Prepare the projects cards"
+  )
+  
+  cli_alert(
     "Prepare the projects cards"
   )
   
