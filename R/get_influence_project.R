@@ -8,7 +8,7 @@
 #' @param cantons_sf Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.
 #' 
 #' @importFrom dplyr filter select left_join mutate rename
-#' @importFrom sf st_drop_geometry st_centroid st_union st_cast
+#' @importFrom sf st_drop_geometry st_centroid st_union st_cast st_agr<-
 #' @importFrom tidyr separate_rows
 #' 
 #' @return A list with 3 elements. The coord of the projetc, the polygons of the cantons and the info influenced/not influenced, the lines between the point anf the center of gravity of the cantons influenced.
@@ -65,6 +65,8 @@ get_influence_project <- function(
   # Add the lines from the centroid
   if (nrow(cantons_sf_project |>
            filter(target_cantons == TRUE)) > 0) {
+    
+    st_agr(cantons_sf_project) <- "constant"
     
     cantons_centroid <- cantons_sf_project |>
       filter(

@@ -1,3 +1,8 @@
+# observatoire 0.4.1
+
+* Fix missing cities and zip codes in raw data
+* Fix a warning in the calculation of centroids
+
 # observatoire 0.4.0
 
 * Translate the values in status / risk factors/ topic in DE and FR
