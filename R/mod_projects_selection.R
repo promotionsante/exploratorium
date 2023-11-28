@@ -9,56 +9,133 @@
 #' @importFrom shiny NS tagList
 mod_projects_selection_ui <- function(id){
   ns <- NS(id)
+
   tagList(
 
     div(
-      h2("Hallo!") |>
+
+      class = "globalpanel",
+
+      div(
+        class = "apptitle",
+        "init"
+      ) |>
         with_i18n("app-title"),
-      checkboxGroupInput(
-        inputId = ns("theme"),
-        label = "Thema(e)" |>
+
+      div(
+        class = "appdesc",
+        "init"
+      ) |>
+        with_i18n("app-desc"),
+
+      div(
+
+        div(
+          class = "alltitle",
+          "init"
+        ) |>
           with_i18n("theme"),
-        choices = letters[1:10],
-        inline = TRUE
+
+        div(
+          style = "margin-top: 10px",
+          checkboxGroupInput(
+            inputId = ns("theme"),
+            label = NULL,
+            choices =
+              c(
+                sort(
+                  c(
+                    "Erkrankungen der Atemwege",
+                    "Diabetes",
+                    "Herz-Kreislauf-Erkrankungen",
+                    "Krebserkrankungen",
+                    "Muskuloskelettale Erkrankungen",
+                    "Psychische Krankheiten",
+                    "Süchte"
+                  )
+                ),
+                "Andere NCDs",
+                "Andere"
+              ),
+            inline = TRUE
+          )
+        )
+
       ),
-      sliderInput(
-        inputId = ns("budget"),
-        label = "Budget" |>
-          with_i18n("budget"),
-        min = 0,
-        max = 10^7,
-        value = 10^5,
-        width = "95%"
+
+      div(
+
+        checkboxGroupInput(
+          inputId = ns("pi1"),
+          label = "init" |>
+            with_i18n("pi1"),
+          choices =
+            sort(
+              c(
+                "Schnittstellen",
+                "Gesundheitspfade",
+                "Selbstmgmt"
+              )
+            ),
+          inline = TRUE
+        ),
+
+        checkboxGroupInput(
+          inputId = ns("pi2"),
+          label = "init" |>
+            with_i18n("pi2"),
+          choices =
+            sort(
+              c(
+                "AWF-bildung",
+                "Neue Tech",
+                "Wirschaftl"
+              )
+            ),
+          inline = TRUE
+        ),
+
+        sliderInput(
+          inputId = ns("budget"),
+          label = "init" |>
+            with_i18n("budget"),
+          min = 0,
+          max = 10^7,
+          value = 10^5,
+          width = "95%"
+        ),
+        sliderInput(
+          inputId = ns("prop_self_funded"),
+          label = "init"|>
+            with_i18n("prop_self_funded"),
+          min = 0,
+          max = 10^7,
+          value = 10^5,
+          width = "95%"
+        ),
+        selectInput(
+          inputId = ns("cantons_main_org"),
+          label = "init" |>
+            with_i18n("cantons_main_org"),
+          choices = letters[1:5],
+          multiple = TRUE,
+          width = "95%"
+        )
       ),
-      sliderInput(
-        inputId = ns("prop_self_funded"),
-        label = "Selbstfinanzierter Anteil des Budgets"|>
-          with_i18n("prop_self_funded"),
-        min = 0,
-        max = 10^7,
-        value = 10^5,
-        width = "95%"
-      ),
-      selectInput(
-        inputId = ns("cantons_main_org"),
-        label = "Kanton(e) der Hauptorganisation" |>
-          with_i18n("cantons_main_org"),
-        choices = letters[1:5],
-        multiple = TRUE,
-        width = "95%"
-      )
-    ),
-    fluidRow(
-      column(8),
-      column(
-        4,
-        actionButton(
-          inputId = ns("filter_projects"),
-          label = "Projekte filtern" |>
-            with_i18n("filter_projects")
+      fluidRow(
+        column(8),
+        column(
+          4,
+          actionButton(
+            inputId = ns("filter_projects"),
+            label = "Projekte filtern" |>
+              with_i18n("filter_projects")
+          )
         )
       )
+
     )
+
   )
 }
 

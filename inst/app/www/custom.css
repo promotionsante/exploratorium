@@ -23,6 +23,41 @@
   height: 100vh;
 }
 
+/* Main panel */
+.globalpanel {
+  height: auto;
+  padding: 15px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 40px;
+  gap: 5px;
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.apptitle {
+  color: #578397;
+  font-size: 1vw;
+  text-align: center;
+  font-family: DINPro;
+  font-weight: 1000;
+  text-transform: uppercase;
+  line-height: 18px;
+  word-wrap: break-word;
+}
+
+.appdesc {
+  text-align: center;
+  color: #57544C;
+  font-size: 11px;
+  font-family: DINPro;
+  font-weight: 600;
+  line-height: 12px;
+  word-wrap: break-word;
+  margin-bottom: 20px;
+}
+
 /* Projects cards */
 @font-face {
   font-family: "DINPro";
