@@ -3,7 +3,9 @@
 #           EXAMPLES AND UNIT TESTS            #
 ################################################
 
+pkgload::load_all()
 library(readr)
+library(dplyr)
 
 ## code to prepare `toy_data_pgv` ----
 
@@ -116,3 +118,19 @@ checkhelper::use_data_doc(
   name = "toy_dic_titles_pages"
 )
 
+## code to prepare `toy_dic_values` ----
+toy_dic_values <- read_csv2(
+  app_sys("data-dic",
+          "dic_values.csv"),
+  show_col_types = FALSE,
+  locale = locale(decimal_mark = ",", grouping_mark = ".")
+)
+
+usethis::use_data(
+  toy_dic_values,
+  overwrite = TRUE
+)
+
+checkhelper::use_data_doc(
+  name = "toy_dic_values"
+)

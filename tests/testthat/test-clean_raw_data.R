@@ -19,7 +19,7 @@ test_that("Test that the cleaning of the raw data is ok", {
       dplyr::filter(
         dplyr::if_any(
           tidyselect::starts_with("budget"),
-          ~ grepl("^CHF|\\'", .x))) |>
+          ~ grepl("^CHF|\\\'", .x))) |>
       nrow(), 
     expected = 0
   )

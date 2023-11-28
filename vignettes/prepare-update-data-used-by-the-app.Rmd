@@ -101,7 +101,15 @@ The content of **"dic_values.csv"** is the following one:
 
 
 ```{r echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
-#TODO
+DT::datatable(
+  readr::read_csv(
+    system.file(
+      "data-dic",
+      "dic_values.csv", 
+      package = "observatoire"
+    )
+  )
+)
 ```
 
 The content of **"dic_titles_app.csv"** is the following one:

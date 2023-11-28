@@ -3,27 +3,90 @@
 #' Translate the data (values in the table) in FR and DE
 #' 
 #' @param data Tibble. Raw data about projects, with the good columns names.
+#' @param cols_to_translate Character. Columns to be translated.
+#' @param dic_values Tibble. Values dictionaries. Mainly used for examples and unit testing purpose.
+#' @param sep Character. Regex used in the raw data to separate words in the columns.
 #' 
-#' @return A list of 2 tibbles (FR and DE)
+#' @importFrom readr read_csv2
+#' 
+#' @return A list of 2 tibbles (FR and DE), with mandatory columns translated.
 #' 
 #' @noRd
 #' @examples
+#' # Load the toy datasets
+#' data("toy_data_pgv")
+#' data("toy_dic_variables")
+#' data("toy_dic_values")
+#'
 #' # Import the raw data and perform the first preparations
-#' raw_data <- import_raw_data() |> 
-#'   add_col_raw_data() |> 
+#' raw_data <- toy_data_pgv |> 
+#'   add_col_raw_data(
+#'     dic_variables = toy_dic_variables
+#'   ) |> 
 #'   clean_raw_data()
 #'
 #' # Get the translated data in FR and DE
 #' raw_data |> 
-#'   translate_values_in_data()
+#'   translate_values_in_data(
+#'     cols_to_translate = c(
+#'       "status", 
+#'       "topic", 
+#'       "risk_factors"
+#'     ), 
+#'     dic_values = toy_dic_values
+#'   )
 translate_values_in_data <- function(
-    data
+    data, 
+    dic_values = NULL, 
+    cols_to_translate, 
+    sep = ",*\r\n|, |;"
     ){
   
-  #TODO
+  # Import the values dictionary saved in the package
+  if (is.null(dic_values)) {
+    dic_values <- read_csv2(
+      system.file(
+        "data-dic", 
+        "dic_values.csv", 
+        package = "observatoire"
+      ),
+      show_col_types = FALSE
+    )
+  }
+  
+  # Translate the data in DE
+  data_de <- data
+  
+  for (i in 1:length(cols_to_translate)) {
+    
+    data_de <- translate_values_in_col(
+      data = data_de, 
+      col_to_translate = cols_to_translate[i], 
+      dic_values = dic_values, 
+      language = "de", 
+      sep = sep
+    )
+    
+  }
+  
+  # Translate the data in FR
+  data_fr <- data
+  
+  for (i in 1:length(cols_to_translate)) {
+    
+    data_fr <- translate_values_in_col(
+      data = data_fr, 
+      col_to_translate = cols_to_translate[i], 
+      dic_values = dic_values, 
+      language = "fr", 
+      sep = sep
+    )
+    
+  }
+  
   list(
-    data_fr = data, 
-    data_de = data
+    data_fr = data_fr, 
+    data_de = data_de
   )
     
 }

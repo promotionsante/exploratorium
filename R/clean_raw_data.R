@@ -38,7 +38,7 @@ clean_raw_data <- function(
     mutate(
       across(
         contains("budget"),
-        ~ gsub("^CHF\\s+|\\'", "", .x)
+        ~ gsub("^CHF\\s+|\\\'", "", .x)
       )
     )
   

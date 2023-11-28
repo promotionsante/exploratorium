@@ -29,6 +29,7 @@ flat_fct_utils.Rmd:
   state: active
   R:
   - R/clean_id_project.R
+  - R/create_skeleton_dic.R
   - R/get_trad_title.R
   - R/languageswitchinput.R
   - R/fct_utils.R
@@ -37,6 +38,7 @@ flat_fct_utils.Rmd:
   - tests/testthat/test-get_trad_title.R
   - tests/testthat/test-clean_id_project.R
   - tests/testthat/test-languageswitchinput.R
+  - tests/testthat/test-create_skeleton_dic.R
   vignettes: []
   inflate:
     flat_file: dev/flat_fct_utils.Rmd
