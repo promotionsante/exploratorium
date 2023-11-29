@@ -21,7 +21,12 @@ mod_right_panel_ui <- function(id){
         selected = "de"
       )
     ),
-
+    div(
+      mod_projects_selection_ui(
+        ns("projects_selection_1")
+      ),
+      id = "project_selection_panel",
+    ),
     uiOutput(
       outputId = ns("right_panel_to_render")
     )
@@ -30,21 +35,14 @@ mod_right_panel_ui <- function(id){
 
 #' right_panel Server Functions
 #'
+#' @importFrom golem invoke_js
+#'
 #' @noRd
 mod_right_panel_server <- function(id, r_global){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
     r_local <- reactiveValues()
-
-    # Set initial view: project selection
-    observeEvent(
-      TRUE,
-      once = TRUE, {
-        r_local$right_panel_to_render <- mod_projects_selection_ui(
-          ns("projects_selection_1")
-        )
-      })
 
     observeEvent(
       r_global$id_selected_project,
@@ -53,10 +51,15 @@ mod_right_panel_server <- function(id, r_global){
         if (
           is.null(r_global$id_selected_project)
         ) {
-          r_local$right_panel_to_render <- mod_projects_selection_ui(
-            ns("projects_selection_1")
+          invoke_js(
+            fun = "showid",
+            "project_selection_panel"
           )
         } else {
+          invoke_js(
+            fun = "hideid",
+            "project_selection_panel"
+          )
           r_local$right_panel_to_render <- mod_one_project_ui(
             ns("one_project_1")
           )
