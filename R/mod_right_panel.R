@@ -15,7 +15,7 @@ mod_right_panel_ui <- function(id){
 
     div(
       languageSwitchInput(
-        "language_switch",
+        ns("language_switch"),
         label = NULL,
         values = c("DE", "FR"),
         selected = "de"
@@ -43,6 +43,23 @@ mod_right_panel_server <- function(id, r_global){
     ns <- session$ns
 
     r_local <- reactiveValues()
+
+    observeEvent(
+      input$language_switch, {
+        language <- if (
+          isTRUE(input$language_switch)
+        ) {
+          "fr"
+        } else {
+          "de"
+        }
+        change_language(language)
+        localize("html")
+        r_global$language <- language
+        r_global$projects_data_sf <- load_projects_data(
+          language = language
+        )
+      })
 
     observeEvent(
       r_global$id_selected_project,
