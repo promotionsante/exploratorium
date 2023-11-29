@@ -69,11 +69,20 @@ test_that("load_projects_data() returns an error if unknow language provided", {
 # filter_projects_data
 
 ```{r function-filter_projects_data}
-#' Title
+#' Filter projects data
 #' 
-#' Description
+#' Main function that powers the filtering of  mod_projects_selection_*()
 #' 
-#' @return
+#' @param projects_data_sf A sf data.frame. 
+#' @param vec_topics A character vector of topics 
+#' @param range_budget A numeric vector of size two defining the lower and 
+#' upper bound of budget.
+#' @param range_self_funded_budget A numeric vector of size two defining the lower and
+#'  upper bound of self-funded budget.
+#' @param canton_main_resp_orga A character vector containing the names of the 
+#' cantons of interest.
+#'
+#' @return A sf data.frame
 #' 
 #' @noRd
 filter_projects_data <- function(
