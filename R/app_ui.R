@@ -22,7 +22,6 @@ app_ui <- function(request) {
         div(
           class = "container-project",
           mod_right_panel_ui("right_panel_1"),
-          # mod_one_project_ui("one_project_1")
         )
       )
     )
