@@ -12,7 +12,6 @@
 mod_right_panel_ui <- function(id){
   ns <- NS(id)
   tagList(
-
     div(
       languageSwitchInput(
         ns("language_switch"),
@@ -26,10 +25,10 @@ mod_right_panel_ui <- function(id){
         ns("projects_selection_1")
       ),
       id = "project_selection_panel",
-    ),
-    uiOutput(
-      outputId = ns("right_panel_to_render")
-    )
+    ) ,
+      mod_one_project_ui(
+        ns("one_project_1")
+      )
   )
 }
 
@@ -64,6 +63,7 @@ mod_right_panel_server <- function(id, r_global){
     observeEvent(
       r_global$id_selected_project,
       ignoreNULL = FALSE,
+      priority = -1,
       {
         if (
           is.null(r_global$id_selected_project)
@@ -77,16 +77,9 @@ mod_right_panel_server <- function(id, r_global){
             fun = "hideid",
             "project_selection_panel"
           )
-          r_local$right_panel_to_render <- mod_one_project_ui(
-            ns("one_project_1")
-          )
         }
       }
     )
-
-    output$right_panel_to_render <- renderUI({
-      r_local$right_panel_to_render
-    })
 
     mod_projects_selection_server("projects_selection_1", r_global = r_global)
     mod_one_project_server("one_project_1", r_global = r_global)
