@@ -1,3 +1,7 @@
+# observatoire 0.4.1
+
+* Start to implement a custom design system on the main panel
+
 # observatoire 0.4.0
 
 * Translate the values in status / risk factors/ topic in DE and FR
