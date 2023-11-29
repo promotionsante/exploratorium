@@ -32,12 +32,13 @@ mod_projects_selection_ui <- function(id){
 
         div(
           class = "alltitle",
+          style = "margin-bottom: 20px",
           "init"
         ) |>
           with_i18n("theme"),
 
         div(
-          style = "margin-top: 10px",
+          class = "custom-checkbox",
           checkboxGroupInput(
             inputId = ns("theme"),
             label = NULL,
@@ -51,13 +52,12 @@ mod_projects_selection_ui <- function(id){
                     "Krebserkrankungen",
                     "Muskuloskelettale Erkrankungen",
                     "Psychische Krankheiten",
-                    "Süchte"
+                    "S\u00fcchte"
                   )
                 ),
                 "Andere NCDs",
                 "Andere"
-              ),
-            inline = TRUE
+              )
           )
         )
 
@@ -65,72 +65,129 @@ mod_projects_selection_ui <- function(id){
 
       div(
 
-        checkboxGroupInput(
-          inputId = ns("pi1"),
-          label = "init" |>
-            with_i18n("pi1"),
-          choices =
-            sort(
-              c(
-                "Schnittstellen",
-                "Gesundheitspfade",
-                "Selbstmgmt"
-              )
-            ),
-          inline = TRUE
-        ),
+        div(
+          class = "alltitle",
+          style = "margin-bottom: 20px",
+          "init"
+        ) |>
+          with_i18n("pi1"),
 
-        checkboxGroupInput(
-          inputId = ns("pi2"),
-          label = "init" |>
-            with_i18n("pi2"),
-          choices =
-            sort(
-              c(
-                "AWF-bildung",
-                "Neue Tech",
-                "Wirschaftl"
+        div(
+          class = "custom-checkbox",
+          checkboxGroupInput(
+            inputId = ns("pi1"),
+            label = NULL,
+            choices =
+              sort(
+                c(
+                  "Schnittstellen",
+                  "Gesundheitspfade",
+                  "Selbstmgmt"
+                )
               )
-            ),
-          inline = TRUE
-        ),
-
-        sliderInput(
-          inputId = ns("budget"),
-          label = "init" |>
-            with_i18n("budget"),
-          min = 0,
-          max = 10^7,
-          value = 10^5,
-          width = "95%"
-        ),
-        sliderInput(
-          inputId = ns("prop_self_funded"),
-          label = "init"|>
-            with_i18n("prop_self_funded"),
-          min = 0,
-          max = 10^7,
-          value = 10^5,
-          width = "95%"
-        ),
-        selectInput(
-          inputId = ns("cantons_main_org"),
-          label = "init" |>
-            with_i18n("cantons_main_org"),
-          choices = letters[1:5],
-          multiple = TRUE,
-          width = "95%"
-        )
-      ),
-      fluidRow(
-        column(8),
-        column(
-          4,
-          actionButton(
-            inputId = ns("filter_projects"),
-            label = "Projekte filtern" |>
-              with_i18n("filter_projects")
           )
+        )
+
+      ),
+
+      div(
+
+        div(
+          class = "alltitle",
+          style = "margin-bottom: 20px",
+          "init"
+        ) |>
+          with_i18n("pi2"),
+
+        div(
+          class = "custom-checkbox",
+          checkboxGroupInput(
+            inputId = ns("pi2"),
+            label = NULL,
+            choices =
+              sort(
+                c(
+                  "AWF-bildung",
+                  "Neue Tech",
+                  "Wirschaftl"
+                )
+              )
+          )
+        )
+
+      ),
+
+      div(
+
+        div(
+          class = "alltitle",
+          style = "margin-bottom: 20px",
+          "init"
+        ) |>
+          with_i18n("budget"),
+
+        div(
+          sliderInput(
+            inputId = ns("budget"),
+            label = NULL,
+            min = 0,
+            max = 10^7,
+            value = 10^5,
+            width = "95%"
+          )
+        )
+
+      ),
+
+      div(
+
+        div(
+          class = "alltitle",
+          style = "margin-bottom: 20px",
+          "init"
+        ) |>
+          with_i18n("prop_self_funded"),
+
+        div(
+          sliderInput(
+            inputId = ns("prop_self_funded"),
+            label = NULL,
+            min = 0,
+            max = 10^7,
+            value = 10^5,
+            width = "95%"
+          )
+        )
+
+      ),
+
+      div(
+
+        div(
+          class = "alltitle",
+          style = "margin-bottom: 20px",
+          "init"
+        ) |>
+          with_i18n("cantons_main_org"),
+
+        div(
+          selectInput(
+            inputId = ns("cantons_main_org"),
+            label = NULL,
+            choices = letters[1:5],
+            multiple = TRUE,
+            width = "95%"
+          )
+        )
+
+      ),
+
+      div(
+        actionButton(
+          inputId = ns("filter_projects"),
+          label = "Projekte filtern" |>
+            with_i18n("filter_projects"),
+          class = "filter-projects-button"
         )
       )
 
