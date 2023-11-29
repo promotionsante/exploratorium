@@ -68,7 +68,7 @@ mod_right_panel_server <- function(id, r_global){
       r_local$right_panel_to_render
     })
 
-    mod_projects_selection_server("projects_selection_1")
+    mod_projects_selection_server("projects_selection_1", r_global = r_global)
     mod_one_project_server("one_project_1", r_global = r_global)
 
   })

@@ -10,7 +10,7 @@
 #' 
 #' @return A leaflet object.
 #' 
-#' @importFrom leaflet addCircleMarkers  addPolygons
+#' @importFrom leaflet addCircleMarkers  addPolygons markerClusterOptions
 #' 
 #' @export
 #' @examples
@@ -38,7 +38,17 @@ draw_map_selected_projects <- function(
       stroke = FALSE,
       fillOpacity = 0.8,
       layerId = ~ short_title,
-      label = ~ as.character(short_title)
+      label = ~ as.character(short_title),
+      clusterOptions = markerClusterOptions(
+        showCoverageOnHover = FALSE,
+        zoomToBoundsOnClick = FALSE,
+        spiderLegPolylineOptions = list(
+          weight = 1.5, 
+          color = psch_orange(), 
+          opacity = 0.5
+        ),
+        freezeAtZoom = zoom_level
+      )
     )
   
   class(my_map) <- c(

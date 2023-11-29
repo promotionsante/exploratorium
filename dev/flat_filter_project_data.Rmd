@@ -1,0 +1,147 @@
+---
+title: "flat_filter_project_data.Rmd empty"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r development, include=FALSE}
+library(testthat)
+library(dplyr)
+```
+
+```{r development-load}
+# Load already included functions if relevant
+pkgload::load_all(export_all = FALSE)
+```
+
+# Load projects data
+
+```{r function-load_projects_data}
+#' Load projects data from disk
+#' 
+#' @param language A characer. Either "fr" or "de"
+#' 
+#' @return A sf data.frame
+#' 
+#' @noRd
+load_projects_data <- function(language) {
+  stopifnot(
+    "Unknown language provided" = language %in% c("fr", "de")
+  )
+  readRDS(
+    file = app_sys(
+      "data-projects",
+      sprintf("projects_%s.rds", language)
+    )
+  )
+}
+```
+
+```{r example-load_projects_data}
+load_projects_data(
+  language = "fr"
+)
+```
+
+```{r tests-load_projects_data}
+test_that("load_projects_data() returns sf objects", {
+  projects_de <- load_projects_data(
+    language = "de"
+  )
+  projects_fr <- load_projects_data(
+    language = "fr"
+  )
+  expect_s3_class(projects_de, "sf")
+  expect_s3_class(projects_fr, "sf")
+})
+
+test_that("load_projects_data() returns an error if unknow language provided", {
+  expect_error(
+    load_projects_data(
+      language = "es"
+    ),
+    regexp = "Unknown language provided"
+  )
+})
+```
+
+# filter_projects_data
+
+```{r function-filter_projects_data}
+#' Filter projects data
+#' 
+#' Main function that powers the filtering of  mod_projects_selection_*()
+#' 
+#' @param projects_data_sf A sf data.frame. 
+#' @param vec_topics A character vector of topics 
+#' @param range_budget A numeric vector of size two defining the lower and 
+#' upper bound of budget.
+#' @param range_self_funded_budget A numeric vector of size two defining the lower and
+#'  upper bound of self-funded budget.
+#' @param canton_main_resp_orga A character vector containing the names of the 
+#' cantons of interest.
+#'
+#' @return A sf data.frame
+#' 
+#' @noRd
+filter_projects_data <- function(
+    projects_data_sf,
+    vec_topics,
+    range_budget,
+    range_self_funded_budget,
+    canton_main_resp_orga
+){
+#   projects_data_sf |> 
+#     separate_rows(
+#       geo_range_id, 
+#       sep = ", "
+#     ) |> 
+#   filter(
+#     topic %in% vec_topics,
+#     total_budget |> between(
+#       min(range_budget), 
+#       max(range_budget)
+#     ),
+#     budget_orga |> 
+#       between(
+#         min(range_self_funded_budget), 
+#         max(range_self_funded_budget)
+#       ),
+#    geo_range_id %in% canton_main_resp_orga
+#   )
+  return(projects_data_sf)
+}
+```
+
+
+```{r example-filter_projects_data}
+
+```
+
+
+```{r tests-filter_projects_data}
+test_that("filter_projects_data() returns sf objects", {
+  projects_de <- load_projects_data(
+    language = "de"
+  )
+  projects_fr <- load_projects_data(
+    language = "fr"
+  )
+  expect_s3_class(filter_projects_data(projects_de), "sf")
+  expect_s3_class(filter_projects_data(projects_fr), "sf")
+})
+```
+
+
+```{r development-inflate, eval=FALSE}
+# Run but keep eval=FALSE to avoid infinite loop
+# Execute in the console directly
+fusen::inflate(
+  flat_file = "dev/flat_filter_project_data.Rmd", 
+  vignette_name = NA,
+  overwrite = TRUE,
+  check = FALSE
+)
+```
+
