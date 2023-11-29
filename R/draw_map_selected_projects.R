@@ -42,6 +42,11 @@ draw_map_selected_projects <- function(
       clusterOptions = markerClusterOptions(
         showCoverageOnHover = FALSE,
         zoomToBoundsOnClick = FALSE,
+        spiderLegPolylineOptions = list(
+          weight = 1.5, 
+          color = psch_orange(), 
+          opacity = 0.5
+        ),
         freezeAtZoom = zoom_level
       )
     )
