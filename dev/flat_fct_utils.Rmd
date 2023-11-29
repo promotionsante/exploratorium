@@ -411,6 +411,37 @@ test_that("create_skeleton_dic works", {
 })
 ```
   
+# Get back arrow html
+    
+```{r function-get_back_arrow_html}
+#' Reads file containing back arrow svg 
+#' 
+#' Back arrow svg is stored in an html file in inst/
+#'  
+#' @return A HTML element
+#' 
+#' @noRd
+get_back_arrow_html <- function(){
+  app_sys("back_arrow_svg.html") |>
+    readLines() |>
+    paste(collapse = "\n") |>
+    HTML()
+}
+```
+  
+```{r example-get_back_arrow_html}
+get_back_arrow_html()
+```
+  
+```{r tests-get_back_arrow_html}
+test_that("get_back_arrow_html works", {
+  expect_s3_class(
+    get_back_arrow_html(),
+    c("html", "character")
+  )
+})
+```
+  
 
 
 ```{r development-inflate, eval=FALSE}
