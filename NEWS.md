@@ -2,6 +2,7 @@
 
 * Fix missing cities and zip codes in raw data
 * Fix a warning in the calculation of centroids
+* Start to implement a custom design system on the main panel
 
 # observatoire 0.4.0
 

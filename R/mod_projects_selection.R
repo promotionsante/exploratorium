@@ -9,56 +9,190 @@
 #' @importFrom shiny NS tagList
 mod_projects_selection_ui <- function(id){
   ns <- NS(id)
+
   tagList(
 
     div(
-      h2("Hallo!") |>
+
+      class = "globalpanel",
+
+      div(
+        class = "apptitle",
+        "init"
+      ) |>
         with_i18n("app-title"),
-      checkboxGroupInput(
-        inputId = ns("theme"),
-        label = "Thema(e)" |>
+
+      div(
+        class = "appdesc",
+        "init"
+      ) |>
+        with_i18n("app-desc"),
+
+      div(
+
+        div(
+          class = "alltitle",
+          style = "margin-bottom: 20px",
+          "init"
+        ) |>
           with_i18n("theme"),
-        choices = letters[1:10],
-        inline = TRUE
+
+        div(
+          class = "custom-checkbox",
+          checkboxGroupInput(
+            inputId = ns("theme"),
+            label = NULL,
+            choices =
+              c(
+                sort(
+                  c(
+                    "Erkrankungen der Atemwege",
+                    "Diabetes",
+                    "Herz-Kreislauf-Erkrankungen",
+                    "Krebserkrankungen",
+                    "Muskuloskelettale Erkrankungen",
+                    "Psychische Krankheiten",
+                    "S\u00fcchte"
+                  )
+                ),
+                "Andere NCDs",
+                "Andere"
+              )
+          )
+        )
+
       ),
-      sliderInput(
-        inputId = ns("budget"),
-        label = "Budget" |>
+
+      div(
+
+        div(
+          class = "alltitle",
+          style = "margin-bottom: 20px",
+          "init"
+        ) |>
+          with_i18n("pi1"),
+
+        div(
+          class = "custom-checkbox",
+          checkboxGroupInput(
+            inputId = ns("pi1"),
+            label = NULL,
+            choices =
+              sort(
+                c(
+                  "Schnittstellen",
+                  "Gesundheitspfade",
+                  "Selbstmgmt"
+                )
+              )
+          )
+        )
+
+      ),
+
+      div(
+
+        div(
+          class = "alltitle",
+          style = "margin-bottom: 20px",
+          "init"
+        ) |>
+          with_i18n("pi2"),
+
+        div(
+          class = "custom-checkbox",
+          checkboxGroupInput(
+            inputId = ns("pi2"),
+            label = NULL,
+            choices =
+              sort(
+                c(
+                  "AWF-bildung",
+                  "Neue Tech",
+                  "Wirschaftl"
+                )
+              )
+          )
+        )
+
+      ),
+
+      div(
+
+        div(
+          class = "alltitle",
+          style = "margin-bottom: 20px",
+          "init"
+        ) |>
           with_i18n("budget"),
-        min = 0,
-        max = 10^7,
-        value = 10^5,
-        width = "95%"
+
+        div(
+          sliderInput(
+            inputId = ns("budget"),
+            label = NULL,
+            min = 0,
+            max = 10^7,
+            value = 10^5,
+            width = "95%"
+          )
+        )
+
       ),
-      sliderInput(
-        inputId = ns("prop_self_funded"),
-        label = "Selbstfinanzierter Anteil des Budgets"|>
+
+      div(
+
+        div(
+          class = "alltitle",
+          style = "margin-bottom: 20px",
+          "init"
+        ) |>
           with_i18n("prop_self_funded"),
-        min = 0,
-        max = 10^7,
-        value = 10^5,
-        width = "95%"
+
+        div(
+          sliderInput(
+            inputId = ns("prop_self_funded"),
+            label = NULL,
+            min = 0,
+            max = 10^7,
+            value = 10^5,
+            width = "95%"
+          )
+        )
+
       ),
-      selectInput(
-        inputId = ns("cantons_main_org"),
-        label = "Kanton(e) der Hauptorganisation" |>
+
+      div(
+
+        div(
+          class = "alltitle",
+          style = "margin-bottom: 20px",
+          "init"
+        ) |>
           with_i18n("cantons_main_org"),
-        choices = letters[1:5],
-        multiple = TRUE,
-        width = "95%"
-      )
-    ),
-    fluidRow(
-      column(8),
-      column(
-        4,
+
+        div(
+          selectInput(
+            inputId = ns("cantons_main_org"),
+            label = NULL,
+            choices = letters[1:5],
+            multiple = TRUE,
+            width = "95%"
+          )
+        )
+
+      ),
+
+      div(
         actionButton(
           inputId = ns("filter_projects"),
           label = "Projekte filtern" |>
-            with_i18n("filter_projects")
+            with_i18n("filter_projects"),
+          class = "filter-projects-button"
         )
       )
+
     )
+
   )
 }
 

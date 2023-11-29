@@ -1,21 +1,27 @@
 {
     "de": {
         "translation": {
-            "app-title": "Hallo!",
-            "theme": "Thema(e)",
+            "app-title": "Exploratorium des Fonds zur Finanzierung der Prävention im Pflegebereich in der Schweiz",
+            "app-desc": "Eine attraktive und spielerische Bürger- und Bundesplattform zur räumlichen und typologischen Erkundung der unterstützten Projekte zur Förderung von Krankheiten in der Schweiz",
+            "theme": "Themen",
+            "pi1": "Prioritäre Interventionsbereiche",
+            "pi2": "Optionale Interventionsbereiche",
             "budget": "Budget",
             "prop_self_funded" : "Selbstfinanzierter Anteil des Budgets",
-            "cantons_main_org" : "Kanton(e) der Hauptorganisation",
+            "cantons_main_org" : "Kanton.e der Hauptorganisation",
             "filter_projects" : "Projekte filtern"
         }
     },
     "fr": {
         "translation": {
-            "app-title": "Bonjour !",
-            "theme": "Thème(s)",
+            "app-title": "Exploratoire du fonds de financement de la prévention dans le domaine des soins en Suisse",
+            "app-desc": "Une plateforme citoyenne et fédérale, attractive et ludique, pour explorer spatialement et typologiquement les projets soutenus dans la promotion des maladies en Suisse",
+            "theme": "Thème.s",
+            "pi1": "Domaines d'intervention prioritaires",
+            "pi2": "Domaines d'intervention optionnels",
             "budget": "Budget",
             "prop_self_funded" : "Proportion du budget auto-financée",
-            "cantons_main_org" : "Canton(s) de l'organisation principale",
+            "cantons_main_org" : "Canton.s de l'organisation principale",
             "filter_projects" : "Filtrer les projets"
         }
     }
