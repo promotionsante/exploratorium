@@ -1,3 +1,8 @@
+# observatoire 0.5.0
+
+* Display real project data in project selection map
+* Use marker clusters to display project with the same coordinates
+
 # observatoire 0.4.1
 
 * Fix missing cities and zip codes in raw data
