@@ -16,23 +16,6 @@ app_server <- function(input, output, session) {
   )
 
   observeEvent(
-    input$language_switch, {
-      language <- if (
-        isTRUE(input$language_switch)
-      ) {
-        "fr"
-      } else {
-        "de"
-      }
-      change_language(language)
-      localize("html")
-      r_global$language <- language
-      r_global$projects_data_sf <- load_projects_data(
-        language = language
-      )
-    })
-
-  observeEvent(
     input$screen_width,
     once = TRUE,
     {
