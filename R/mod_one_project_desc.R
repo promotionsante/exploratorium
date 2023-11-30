@@ -27,6 +27,10 @@ mod_one_project_desc_server <- function(id, r_global){
 
     ns <- session$ns
 
+    r_local <- reactiveValues(
+      card_ui = NULL
+    )
+
     observeEvent(
       input$back_to_project_selection_view,
       {
@@ -54,11 +58,12 @@ mod_one_project_desc_server <- function(id, r_global){
 
         language <- r_global$language
 
-        output$project_card <- renderUI({
-          if(is.null(r_global$id_selected_project)) {
-            return(NULL)
-          }
-          tagList(
+        if (
+          is.null(r_global$id_selected_project)
+        ) {
+          r_local$card_ui <- tags$script('$("#project_selection_panel").show()')
+        } else {
+          r_local$card_ui <- tagList(
             actionButton(
               inputId = ns("back_to_project_selection_view"),
               label = NULL,
@@ -73,11 +78,16 @@ mod_one_project_desc_server <- function(id, r_global){
                 glue("project_card_{clean_id_project}_{language}.html"),
                 package = "observatoire"
               )
-            )
+            ),
+            tags$script('$("#project_selection_panel").hide()')
           )
-        })
+        }
 
       })
+
+    output$project_card <- renderUI({
+      r_local$card_ui
+    })
 
   })
 

@@ -60,27 +60,6 @@ mod_right_panel_server <- function(id, r_global){
         )
       })
 
-    observeEvent(
-      r_global$id_selected_project,
-      ignoreNULL = FALSE,
-      priority = -1,
-      {
-        if (
-          is.null(r_global$id_selected_project)
-        ) {
-          invoke_js(
-            fun = "showid",
-            "project_selection_panel"
-          )
-        } else {
-          invoke_js(
-            fun = "hideid",
-            "project_selection_panel"
-          )
-        }
-      }
-    )
-
     mod_projects_selection_server("projects_selection_1", r_global = r_global)
     mod_one_project_server("one_project_1", r_global = r_global)
 
