@@ -23,23 +23,23 @@ filter_projects_data <- function(
     range_self_funded_budget,
     canton_main_resp_orga
 ){
-#   projects_data_sf |> 
-#     separate_rows(
-#       geo_range_id, 
-#       sep = ", "
-#     ) |> 
-#   filter(
-#     topic %in% vec_topics,
-#     total_budget |> between(
-#       min(range_budget), 
-#       max(range_budget)
-#     ),
-#     budget_orga |> 
-#       between(
-#         min(range_self_funded_budget), 
-#         max(range_self_funded_budget)
-#       ),
-#    geo_range_id %in% canton_main_resp_orga
-#   )
+  #   projects_data_sf |> 
+  #     separate_rows(
+  #       geo_range_id, 
+  #       sep = ", "
+  #     ) |> 
+  #   filter(
+  #     topic %in% vec_topics,
+  #     total_budget |> between(
+  #       min(range_budget), 
+  #       max(range_budget)
+  #     ),
+  #     budget_orga |> 
+  #       between(
+  #         min(range_self_funded_budget), 
+  #         max(range_self_funded_budget)
+  #       ),
+  #    geo_range_id %in% canton_main_resp_orga
+  #   )
   return(projects_data_sf)
 }

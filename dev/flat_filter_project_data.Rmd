@@ -66,7 +66,7 @@ test_that("load_projects_data() returns an error if unknow language provided", {
 })
 ```
 
-# filter_projects_data
+# Filter projects data
 
 ```{r function-filter_projects_data}
 #' Filter projects data
@@ -92,24 +92,24 @@ filter_projects_data <- function(
     range_self_funded_budget,
     canton_main_resp_orga
 ){
-#   projects_data_sf |> 
-#     separate_rows(
-#       geo_range_id, 
-#       sep = ", "
-#     ) |> 
-#   filter(
-#     topic %in% vec_topics,
-#     total_budget |> between(
-#       min(range_budget), 
-#       max(range_budget)
-#     ),
-#     budget_orga |> 
-#       between(
-#         min(range_self_funded_budget), 
-#         max(range_self_funded_budget)
-#       ),
-#    geo_range_id %in% canton_main_resp_orga
-#   )
+  #   projects_data_sf |> 
+  #     separate_rows(
+  #       geo_range_id, 
+  #       sep = ", "
+  #     ) |> 
+  #   filter(
+  #     topic %in% vec_topics,
+  #     total_budget |> between(
+  #       min(range_budget), 
+  #       max(range_budget)
+  #     ),
+  #     budget_orga |> 
+  #       between(
+  #         min(range_self_funded_budget), 
+  #         max(range_self_funded_budget)
+  #       ),
+  #    geo_range_id %in% canton_main_resp_orga
+  #   )
   return(projects_data_sf)
 }
 ```
@@ -132,6 +132,106 @@ test_that("filter_projects_data() returns sf objects", {
   expect_s3_class(filter_projects_data(projects_fr), "sf")
 })
 ```
+
+
+# Get unique topics to display
+
+```{r function-get_topics_to_display}
+#' Get unique topics to display 
+#'
+#' and put "other" topics at the end.
+#' 
+#' @param projects_data_sf A sf data.frame holding the column `topic`.
+#'
+#' @return A character vector ending with "Other" (andere/autre) topics
+#' 
+#' @noRd
+get_topics_to_display <- function(projects_data_sf) {
+  
+  topics <- projects_data_sf |>
+    getElement("topic") |>
+    strsplit(", ") |>
+    unlist() |>
+    unique()
+  
+  # Isolate other topics in both FR and DE
+  id_other_topics <- grep("Andere|Autre", topics)
+  main_topics <- topics[-id_other_topics]
+  other_topics <- topics[id_other_topics]
+  
+  topics_to_diplay <- c(
+    sort(
+      main_topics
+    ),
+    # Other topics should appear last
+    other_topics
+  )
+  return(topics_to_diplay)
+}
+```
+
+```{r example-get_topics_to_display}
+projects_data_sf <- load_projects_data(
+  language = "fr"
+)
+get_topics_to_display(
+  projects_data_sf = projects_data_sf
+)
+```
+
+```{r tests-get_topics_to_display}
+test_that("get_topics_to_display() works in FR", {
+  projects_data_sf <- load_projects_data(
+    language = "fr"
+  )
+  topics_to_display <- get_topics_to_display(
+    projects_data_sf = projects_data_sf
+  )
+  
+  expect_type(
+    topics_to_display,
+    "character"
+  )
+  
+  # Other topics are featured at the very end of the vector
+  id_other_topics <- grep("Andere|Autre", topics_to_display)
+  expect_setequal(
+    id_other_topics,
+    seq(
+      from = length(topics_to_display), 
+      length.out = length(id_other_topics), 
+      by = -1
+    )
+  )
+})
+
+test_that("get_topics_to_display() works in DE", {
+  projects_data_sf <- load_projects_data(
+    language = "de"
+  )
+  topics_to_display <- get_topics_to_display(
+    projects_data_sf = projects_data_sf
+  )
+  
+  expect_type(
+    topics_to_display,
+    "character"
+  )
+  
+  # Other topics are featured at the very end of the vector
+  id_other_topics <- grep("Andere|Autre", topics_to_display)
+  expect_setequal(
+    id_other_topics,
+    seq(
+      from = length(topics_to_display), 
+      length.out = length(id_other_topics), 
+      by = -1
+    )
+  )
+})
+
+```
+
 
 
 ```{r development-inflate, eval=FALSE}

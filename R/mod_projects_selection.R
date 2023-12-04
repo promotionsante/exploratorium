@@ -42,22 +42,22 @@ mod_projects_selection_ui <- function(id){
           checkboxGroupInput(
             inputId = ns("theme"),
             label = NULL,
-            choices =
-              c(
-                sort(
-                  c(
-                    "Erkrankungen der Atemwege",
-                    "Diabetes",
-                    "Herz-Kreislauf-Erkrankungen",
-                    "Krebserkrankungen",
-                    "Muskuloskelettale Erkrankungen",
-                    "Psychische Krankheiten",
-                    "S\u00fcchte"
-                  )
-                ),
-                "Andere NCDs",
-                "Andere"
-              )
+            choices = NULL,
+            # c(
+            #   sort(
+            #     c(
+            #       "Erkrankungen der Atemwege",
+            #       "Diabetes",
+            #       "Herz-Kreislauf-Erkrankungen",
+            #       "Krebserkrankungen",
+            #       "Muskuloskelettale Erkrankungen",
+            #       "Psychische Krankheiten",
+            #       "S\u00fcchte"
+            #     )
+            #   ),
+            #   "Andere NCDs",
+            #   "Andere"
+            # )
           )
         )
 
@@ -216,6 +216,30 @@ mod_projects_selection_server <- function(id, r_global){
         )
       })
 
+    observeEvent(
+      r_global$projects_data_sf, {
+        updateCheckboxGroupInput(
+          inputId = "theme",
+          choices = get_topics_to_display(
+            projects_data_sf = r_global$projects_data_sf
+          )
+        )
+        # updateCheckboxGroupInput(
+        #   inputId = "pi1",
+        #   choices =
+        # )
+        # updateCheckboxGroupInput()
+        # updateSliderInput()
+        # updateSliderInput()
+        # updateSelectInput()
+      })
+
+
+    # inputId = ns("pi1"),
+    # inputId = ns("pi2"),
+    # inputId = ns("budget"),
+    # inputId = ns("prop_self_funded"),
+    # inputId = ns("cantons_main_org"),
   })
 }
 
