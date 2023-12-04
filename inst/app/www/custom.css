@@ -61,7 +61,7 @@
   font-family: var(--font);
   font-weight: 1000;
   text-transform: uppercase;
-  line-height: 18px;
+  line-height: 25px;
   word-wrap: break-word;
 }
 
@@ -71,7 +71,7 @@
   font-size: 11px;
   font-family: var(--font);
   font-weight: 600;
-  line-height: 12px;
+  line-height: 18px;
   word-wrap: break-word;
   margin-bottom: 20px;
 }
