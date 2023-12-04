@@ -51,7 +51,7 @@
   gap: 5px;
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(200px, auto));
 }
 
 .apptitle {
@@ -111,23 +111,35 @@
 
 .awesome-checkbox label::after:focus {
   box-shadow: none !important;
-  border-color: transparent !important;
+  border-color: #f0f0f0
 }
 
 .awesome-checkbox label::before {
   background-color: var(--beige-background);
   color: transparent;
-  border: none;
+  border-color: #f0f0f0
 }
 
 .awesome-checkbox label::after {
   width: 20px;
   height: 20px;
   background-color: var(--beige-background);
+  border-color: #f0f0f0
 }
 
 .checkbox-warning input[type="checkbox"]:checked+label::after, .checkbox-warning input[type="radio"]:checked+label::after {
   color: var(--light-orange);
+  border-color: #f0f0f0
+}
+
+.awesome-checkbox input[type="checkbox"]:focus+label::before, .awesome-checkbox input[type="radio"]:focus+label::before {
+  outline: none;
+  outline-offset: 0;
+}
+
+.checkbox-warning input[type="checkbox"]:checked+label::before, .checkbox-warning input[type="radio"]:checked+label::before {
+  background-color: transparent;
+  border-color: #f0f0f0
 }
 
 /* Sliders inputs */
