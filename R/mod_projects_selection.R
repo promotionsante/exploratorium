@@ -73,7 +73,7 @@ mod_projects_selection_ui <- function(id){
 
           div(
             class = "alltitle",
-            style = "margin-bottom: 20px; font-size: 0.6vw!important;",
+            style = "margin-bottom: 20px;",
             "init"
           ) |>
           with_i18n("pi1"),
@@ -100,7 +100,7 @@ mod_projects_selection_ui <- function(id){
 
           div(
             class = "alltitle",
-            style = "margin-bottom: 20px; font-size: 0.6vw!important;",
+            style = "margin-bottom: 20px;",
             "init"
           ) |>
           with_i18n("pi2"),

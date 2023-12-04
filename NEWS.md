@@ -1,3 +1,8 @@
+# observatoire 0.5.2
+
+* Delete not pretty blue box around checkboxes
+* Set a 2 columns layout in the first view
+
 # observatoire 0.5.1
 
 * Start to create inputs on the main view that correspond to the design system of PSCH
