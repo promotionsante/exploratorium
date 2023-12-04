@@ -7,6 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
+#' @importFrom shinyWidgets noUiSliderInput wNumbFormat awesomeCheckboxGroup pickerInput pickerOptions
 mod_projects_selection_ui <- function(id){
   ns <- NS(id)
 
@@ -38,8 +39,8 @@ mod_projects_selection_ui <- function(id){
           with_i18n("theme"),
 
         div(
-          class = "custom-checkbox",
-          checkboxGroupInput(
+          class = "custom-checkbox custom-checkbox-2col",
+          awesomeCheckboxGroup(
             inputId = ns("theme"),
             label = NULL,
             choices =
@@ -57,7 +58,8 @@ mod_projects_selection_ui <- function(id){
                 ),
                 "Andere NCDs",
                 "Andere"
-              )
+              ),
+            status = "warning"
           )
         )
 
@@ -65,57 +67,63 @@ mod_projects_selection_ui <- function(id){
 
       div(
 
+        class = "two-column-div",
+
         div(
-          class = "alltitle",
-          style = "margin-bottom: 20px",
-          "init"
-        ) |>
+
+          div(
+            class = "alltitle",
+            style = "margin-bottom: 20px; font-size: 0.6vw!important;",
+            "init"
+          ) |>
           with_i18n("pi1"),
 
-        div(
-          class = "custom-checkbox",
-          checkboxGroupInput(
-            inputId = ns("pi1"),
-            label = NULL,
-            choices =
-              sort(
-                c(
-                  "Schnittstellen",
-                  "Gesundheitspfade",
-                  "Selbstmgmt"
-                )
-              )
+          div(
+            class = "custom-checkbox",
+            awesomeCheckboxGroup(
+              inputId = ns("pi1"),
+              label = NULL,
+              choices =
+                sort(
+                  c(
+                    "Schnittstellen",
+                    "Gesundheitspfade",
+                    "Selbstmgmt"
+                  )
+                ),
+              status = "warning"
+            )
           )
-        )
-
-      ),
-
-      div(
+        ),
 
         div(
-          class = "alltitle",
-          style = "margin-bottom: 20px",
-          "init"
-        ) |>
+
+          div(
+            class = "alltitle",
+            style = "margin-bottom: 20px; font-size: 0.6vw!important;",
+            "init"
+          ) |>
           with_i18n("pi2"),
 
-        div(
-          class = "custom-checkbox",
-          checkboxGroupInput(
-            inputId = ns("pi2"),
-            label = NULL,
-            choices =
-              sort(
-                c(
-                  "AWF-bildung",
-                  "Neue Tech",
-                  "Wirschaftl"
-                )
-              )
+          div(
+            class = "custom-checkbox",
+            awesomeCheckboxGroup(
+              inputId = ns("pi2"),
+              label = NULL,
+              choices =
+                sort(
+                  c(
+                    "AWF-bildung",
+                    "Neue Tech",
+                    "Wirschaftl"
+                  )
+                ),
+              status = "warning"
+            )
           )
-        )
+      )
 
-      ),
+    ),
 
       div(
 
@@ -127,13 +135,20 @@ mod_projects_selection_ui <- function(id){
           with_i18n("budget"),
 
         div(
-          sliderInput(
+          style = "margin-top: 50px",
+          noUiSliderInput(
             inputId = ns("budget"),
             label = NULL,
-            min = 0,
-            max = 10^7,
-            value = 10^5,
-            width = "95%"
+            min = 100000,
+            max = 5571018,
+            value = c(2000000, 3000000),
+            width = "100%",
+            color = "#578397",
+            format = wNumbFormat(
+              decimals = 0,
+              thousand = " ",
+              suffix = " CHF"
+            )
           )
         )
 
@@ -149,13 +164,19 @@ mod_projects_selection_ui <- function(id){
           with_i18n("prop_self_funded"),
 
         div(
-          sliderInput(
+          style = "margin-top: 50px",
+          noUiSliderInput(
             inputId = ns("prop_self_funded"),
             label = NULL,
             min = 0,
-            max = 10^7,
-            value = 10^5,
-            width = "95%"
+            max = 100,
+            value = c(20, 80),
+            width = "100%",
+            color = "#578397",
+            format = wNumbFormat(
+              decimals = 0,
+              suffix = " %"
+            )
           )
         )
 
@@ -171,15 +192,21 @@ mod_projects_selection_ui <- function(id){
           with_i18n("cantons_main_org"),
 
         div(
-          selectInput(
+          pickerInput(
             inputId = ns("cantons_main_org"),
             label = NULL,
-            choices = letters[1:5],
+            choices = c("AI", "AR", "BG"),
+            selected = c("AI", "AR", "BG"),
             multiple = TRUE,
-            width = "95%"
+            width = "100%",
+            options = pickerOptions(
+              actionsBox = TRUE,
+              title = "Bitte Kantone ausw\u00e4hlen",
+              selectAllText = "Alle ausw\u00e4hlen",
+              deselectAllText = "Alle abw\u00e4hlen"
+            )
           )
         )
-
       ),
 
       div(

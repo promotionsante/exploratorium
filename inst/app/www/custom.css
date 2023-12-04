@@ -61,21 +61,22 @@
   font-family: var(--font);
   font-weight: 1000;
   text-transform: uppercase;
-  line-height: 18px;
+  line-height: 25px;
   word-wrap: break-word;
 }
 
 .appdesc {
   text-align: center;
-  color: ;
+  color: black;
   font-size: 11px;
   font-family: var(--font);
   font-weight: 600;
-  line-height: 12px;
+  line-height: 18px;
   word-wrap: break-word;
   margin-bottom: 20px;
 }
 
+/* Checkbox */
 .custom-checkbox {
   display: block;
   color: black;
@@ -86,6 +87,123 @@
   word-wrap: break-word;
 }
 
+.custom-checkbox-2col {
+  column-count: 2;
+}
+
+.two-column-div {
+  margin-top: 20px;
+  column-count: 2;
+  column-gap: 20px;
+}
+
+.awesome-checkbox label {
+  display: flex;
+  align-items: center;
+  display: inline-block;
+  vertical-align: initial;
+  position: relative;
+  padding-left: 4px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  padding-top: 3px
+}
+
+.awesome-checkbox label::after:focus {
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+
+.awesome-checkbox label::before {
+  background-color: var(--beige-background);
+  color: transparent;
+  border: none;
+}
+
+.awesome-checkbox label::after {
+  width: 20px;
+  height: 20px;
+  background-color: var(--beige-background);
+}
+
+.checkbox-warning input[type="checkbox"]:checked+label::after, .checkbox-warning input[type="radio"]:checked+label::after {
+  color: var(--light-orange);
+}
+
+/* Sliders inputs */
+.noUi-tooltip {
+  display: block;
+  position: absolute;
+  font-size: 11px;
+  font-family: var(--font);
+  border: 1px solid #D9D9D9;
+  border-radius: 3px;
+  background: var(--beige-background);
+  color: var(--blue);
+  padding: 5px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.noUi-target {
+  height: 10px;
+}
+
+.noUi-horizontal .noUi-handle {
+  width: 20px;
+  height: 20px;
+  right: -17px;
+  top: -6px;
+}
+
+.noUi-handle:before,
+.noUi-handle:after {
+  display: none;
+}
+
+/* Cantons picker */
+.bootstrap-select>.dropdown-toggle {
+  font-family: var(--font);
+  background-color: var(--beige-background);
+}
+
+.bootstrap-select .dropdown-toggle:focus, .bootstrap-select>select.mobile-device:focus+.dropdown-toggle {
+  outline: thin dotted #333!important;
+  outline-offset: none;
+}
+
+.dropup .dropdown-menu, .navbar-fixed-bottom .dropdown .dropdown-menu {
+  font-family: var(--font);
+  background-color: var(--beige-background);
+}
+
+.btn-group>.btn:first-child:not(:last-child):not(.dropdown-toggle) {
+  font-family: var(--font);
+  background-color: var(--beige-background);
+}
+
+.btn-group>.btn:first-child:not(:last-child):not(.dropdown-toggle):focus,
+.btn-group>.btn:first-child:not(:last-child):not(.dropdown-toggle):active,
+.btn-group>.btn:first-child:not(:last-child):not(.dropdown-toggle):active:focus {
+  outline: none;
+}
+
+.btn-group>.btn:last-child:not(:first-child), .btn-group>.dropdown-toggle:not(:first-child) {
+  font-family: var(--font);
+  background-color: var(--beige-background);
+}
+
+.btn-group>.btn:last-child:not(:first-child), .btn-group>.dropdown-toggle:not(:first-child):focus,
+.btn-group>.btn:last-child:not(:first-child), .btn-group>.dropdown-toggle:not(:first-child):active,
+.btn-group>.btn:last-child:not(:first-child), .btn-group>.dropdown-toggle:not(:first-child):active:focus {
+  outline: none;
+}
+
+.glyphicon {
+  color: var(--light-orange);
+}
+
+/* Button to filter */
 .filter-projects-button {
   float: right;
   color: var(--dark-grey);
@@ -106,18 +224,18 @@
   margin-left: 0;
 }
 
-.filter-projects-button:hover {
+.filter-projects-button:hover,
+.filter-projects-button:active {
   color: var(--dark-orange);
   background-color: var(--beige-background);
   border-color: var(--dark-orange);
 }
 
 .filter-projects-button:focus,
-.filter-projects-button:active,
 .filter-projects-button:active:focus {
-  color: var(--dark-orange);
+  color: var(--dark-grey);
   background-color: var(--beige-background);
-  border-color: var(--dark-orange);
+  border-color: var(--dark-grey);
   outline:none;
   box-shadow: none;
 }
