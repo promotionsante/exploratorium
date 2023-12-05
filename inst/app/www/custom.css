@@ -51,7 +51,7 @@
   gap: 5px;
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(auto-fit, minmax(200px, auto));
+  grid-template-columns: repeat(auto-fit, minmax(400px, auto));
 }
 
 .apptitle {
@@ -347,7 +347,7 @@
   font-size: 0.8vw;
   font-family: var(--font);
   font-weight: 400;
-  line-height: 12px;
+  line-height: 18px;
   word-wrap: break-word;
   padding-top: 3px;
   padding-bottom: 3px;
