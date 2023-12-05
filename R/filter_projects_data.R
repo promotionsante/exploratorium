@@ -23,11 +23,15 @@ filter_projects_data <- function(
     range_self_funded_budget,
     canton_main_resp_orga
 ){
-  #   projects_data_sf |> 
-  #     separate_rows(
-  #       geo_range_id, 
-  #       sep = ", "
-  #     ) |> 
+  
+  projects_data_sf |>
+    filter(
+      if_any(
+        contains(vec_topics),
+        ~ .x == 1
+      )
+    )
+    
   #   filter(
   #     topic %in% vec_topics,
   #     total_budget |> between(
@@ -41,5 +45,5 @@ filter_projects_data <- function(
   #       ),
   #    geo_range_id %in% canton_main_resp_orga
   #   )
-  return(projects_data_sf)
+  # return(projects_data_sf)
 }
