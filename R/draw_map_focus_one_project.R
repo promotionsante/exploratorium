@@ -69,8 +69,8 @@ draw_map_focus_one_project <- function(
         filter(
           target_cantons == TRUE
         ),
-      weight = 1,
-      color = psch_orange(),
+      weight = 2,
+      color = psch_dark_orange(),
       fillColor = psch_orange(),
       fillOpacity = 0.5,
       label = ~ gsub("^CH\\.", "", as.character(HASC_1)), 
@@ -83,7 +83,7 @@ draw_map_focus_one_project <- function(
     map_geo_influence <- map_with_cantons_influenced |> 
       addPolylines(
        data = geo_elements_influence$cantons_influenced_lines, 
-       color = psch_orange(), 
+       color = psch_dark_orange(), 
        weight = 2
       )
       
