@@ -35,29 +35,14 @@ mod_projects_selection_ui <- function(id){
           style = "margin-bottom: 20px",
           "init"
         ) |>
-          with_i18n("theme"),
+          with_i18n("topic"),
 
         div(
           class = "custom-checkbox",
           checkboxGroupInput(
-            inputId = ns("theme"),
+            inputId = ns("topic"),
             label = NULL,
             choices = NULL,
-            # c(
-            #   sort(
-            #     c(
-            #       "Erkrankungen der Atemwege",
-            #       "Diabetes",
-            #       "Herz-Kreislauf-Erkrankungen",
-            #       "Krebserkrankungen",
-            #       "Muskuloskelettale Erkrankungen",
-            #       "Psychische Krankheiten",
-            #       "S\u00fcchte"
-            #     )
-            #   ),
-            #   "Andere NCDs",
-            #   "Andere"
-            # )
           )
         )
 
@@ -204,14 +189,14 @@ mod_projects_selection_server <- function(id, r_global){
     ns <- session$ns
 
     r_local <- reactiveValues(
-      theme = NULL
+      topic = NULL
     )
 
     # Store state of inputs to be able to preserve them
     # when changing language
     observeEvent(
-      input$theme, {
-        r_local$theme <- input$theme
+      input$topic, {
+        r_local$topic <- input$topic
       })
 
     # Set initial condition: all projects are displayed
@@ -223,18 +208,19 @@ mod_projects_selection_server <- function(id, r_global){
     observeEvent(
       input$filter_projects, {
         r_global$selected_projects_sf <- filter_projects_data(
-          projects_data_sf = r_global$projects_data_sf
+          projects_data_sf = r_global$projects_data_sf,
+          vec_topics = input$topic
         )
       })
 
     observeEvent(
       r_global$language, {
         updateCheckboxGroupInput(
-          inputId = "theme",
+          inputId = "topic",
           choices = get_topics_to_display(
             language = r_global$language
           ),
-          selected = r_local$theme
+          selected = r_local$topic
         )
         # updateCheckboxGroupInput(
         #   inputId = "pi1",
