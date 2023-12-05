@@ -203,6 +203,17 @@ mod_projects_selection_server <- function(id, r_global){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+    r_local <- reactiveValues(
+      theme = NULL
+    )
+
+    # Store state of inputs to be able to preserve them
+    # when changing language
+    observeEvent(
+      input$theme, {
+        r_local$theme <- input$theme
+      })
+
     # Set initial condition: all projects are displayed
     observeEvent(
       TRUE,
@@ -217,12 +228,13 @@ mod_projects_selection_server <- function(id, r_global){
       })
 
     observeEvent(
-      r_global$projects_data_sf, {
+      r_global$language, {
         updateCheckboxGroupInput(
           inputId = "theme",
           choices = get_topics_to_display(
-            projects_data_sf = r_global$projects_data_sf
-          )
+            language = r_global$language
+          ),
+          selected = r_local$theme
         )
         # updateCheckboxGroupInput(
         #   inputId = "pi1",

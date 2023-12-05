@@ -5,36 +5,31 @@
 #' and put "other" topics at the end.
 #' 
 #' @param projects_data_sf A sf data.frame holding the column `topic`.
-#'
+#' 
 #' @return A character vector ending with "Other" (andere/autre) topics
+#' 
+#' @importFrom readr read_csv2
 #' 
 #' @noRd
 #' @examples
-#' projects_data_sf <- load_projects_data(
+#' get_topics_to_display(
 #'   language = "fr"
 #' )
-#' get_topics_to_display(
-#'   projects_data_sf = projects_data_sf
-#' )
-get_topics_to_display <- function(projects_data_sf) {
+get_topics_to_display <- function(language) {
   
-  topics <- projects_data_sf |>
-    getElement("topic") |>
-    strsplit(", ") |>
-    unlist() |>
-    unique()
-  
-  # Isolate other topics in both FR and DE
-  id_other_topics <- grep("Andere|Autre", topics)
-  main_topics <- topics[-id_other_topics]
-  other_topics <- topics[id_other_topics]
-  
-  topics_to_diplay <- c(
-    sort(
-      main_topics
-    ),
-    # Other topics should appear last
-    other_topics
+  dic_variables <- suppressMessages(
+    read_csv2(
+      file = app_sys("data-dic/dic_variables.csv"),
+      show_col_types = FALSE
+    )
   )
+  
+  topic_dic <- dic_variables[
+    grep("^topic_", dic_variables$name_variable), 
+  ]
+  
+  topics_to_diplay <- topic_dic$name_variable
+  names(topics_to_diplay) <- topic_dic[[language]]
+
   return(topics_to_diplay)
 }
