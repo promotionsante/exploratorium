@@ -1,3 +1,7 @@
+# observatoire 0.5.3
+
+* Use a 2 columns layout adapted to desktop devices (not mobile devices) in the main view
+
 # observatoire 0.5.2
 
 * Delete not pretty blue box around checkboxes
