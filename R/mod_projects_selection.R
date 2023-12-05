@@ -189,7 +189,9 @@ mod_projects_selection_server <- function(id, r_global){
     ns <- session$ns
 
     r_local <- reactiveValues(
-      topic = NULL
+      topic = NULL,
+      pi1 = NULL,
+      pi2 = NULL
     )
 
     # Store state of inputs to be able to preserve them
@@ -197,6 +199,8 @@ mod_projects_selection_server <- function(id, r_global){
     observeEvent(
       input$topic, {
         r_local$topic <- input$topic
+        r_local$pi1 <- input$pi1
+        r_local$pi2 <- input$pi2
       })
 
     # Set initial condition: all projects are displayed
@@ -222,22 +226,36 @@ mod_projects_selection_server <- function(id, r_global){
           ),
           selected = r_local$topic
         )
-        # updateCheckboxGroupInput(
-        #   inputId = "pi1",
-        #   choices =
+        updateCheckboxGroupInput(
+          inputId = "pi1",
+          # choices = get_pi1_to_display(
+          #   language = r_global$language
+          # ),
+          selected = r_local$pi1
+        )
+        updateCheckboxGroupInput(
+          inputId = "pi2",
+          # choices = get_pi2_to_display(
+          #   language = r_global$language
+          # ),
+          selected = r_local$pi2
+        )
+        # updateSliderInput(
+        #   inputId = "budget",
+        #   choices = get_budget_range()
         # )
-        # updateCheckboxGroupInput()
-        # updateSliderInput()
-        # updateSliderInput()
-        # updateSelectInput()
+        # updateSliderInput(
+        #   inputId = "prop_self_funded",
+        #   choices = get_prop_self_funded_range()
+        # )
+        # updateSelectInput(
+        #   inputId = "cantons_main_org",
+        #   choices = get_cantons_main_org()
+        # )
       })
 
 
-    # inputId = ns("pi1"),
-    # inputId = ns("pi2"),
-    # inputId = ns("budget"),
-    # inputId = ns("prop_self_funded"),
-    # inputId = ns("cantons_main_org"),
+
   })
 }
 
