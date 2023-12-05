@@ -9,6 +9,13 @@ psch_blue <- function() {
 
 #'
 #' @noRd
+psch_dark_orange <- function() {
+  # Corporate: Orange
+  "#E06900"
+}
+
+#'
+#' @noRd
 psch_orange <- function() {
   # Corporate: Orange
   "#f59300"

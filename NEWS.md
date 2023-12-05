@@ -1,3 +1,7 @@
+# observatoire 0.5.4
+
+* Increase the visibility of the cantons influenced 
+
 # observatoire 0.5.3
 
 * Use a 2 columns layout adapted to desktop devices (not mobile devices) in the main view
