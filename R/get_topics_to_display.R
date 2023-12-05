@@ -4,9 +4,10 @@
 #'
 #' and put "other" topics at the end.
 #' 
-#' @param projects_data_sf A sf data.frame holding the column `topic`.
+#' @param language A character either "fr" or "de".
 #' 
-#' @return A character vector ending with "Other" (andere/autre) topics
+#' @return A named character vector ending with "Other" (andere/autre) topics.
+#' Names correspond to FR or DE translation displayed to the user.
 #' 
 #' @importFrom readr read_csv2
 #' 
