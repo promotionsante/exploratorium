@@ -1,4 +1,7 @@
 
+# observatoire 0.7.0
+
+* Input values on project selection view are read from the data and not predefined.
 
 # observatoire 0.5.0
 
