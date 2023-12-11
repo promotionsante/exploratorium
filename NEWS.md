@@ -1,5 +1,7 @@
 # observatoire 0.5.5
 
+* Make the translation of some FR caracteristics homogeneous with the vocabulary used in PSCH
+  
 # observatoire 0.5.4
 
 * Increase the visibility of the cantons influenced 
