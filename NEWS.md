@@ -1,3 +1,7 @@
+# observatoire 0.6.0
+
+* Plot the distribution of the budget for one project
+
 # observatoire 0.5.5
 
 * Make the translation of some FR caracteristics homogeneous with the vocabulary used in PSCH
