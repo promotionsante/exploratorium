@@ -7,6 +7,7 @@ test_that("get_cantons_main_org() yields well-formed vector in FR", {
     cantons_main_org,
     "character"
   )
+  # No CH prefix
   expect_true(
     all(
       !grepl(
@@ -14,6 +15,11 @@ test_that("get_cantons_main_org() yields well-formed vector in FR", {
         names(cantons_main_org)
       )
     )
+  )
+  # No dupplicated canton id
+  expect_equal(
+    length(cantons_main_org),
+    length(unique(cantons_main_org))
   )
 })
 
@@ -24,6 +30,7 @@ test_that("get_cantons_main_org() yields well-formed vector in DE", {
     cantons_main_org,
     "character"
   )
+  # No CH prefix
   expect_true(
     all(
       !grepl(
@@ -31,5 +38,10 @@ test_that("get_cantons_main_org() yields well-formed vector in DE", {
         names(cantons_main_org)
       )
     )
+  )
+  # No dupplicated canton id
+  expect_equal(
+    length(cantons_main_org),
+    length(unique(cantons_main_org))
   )
 })

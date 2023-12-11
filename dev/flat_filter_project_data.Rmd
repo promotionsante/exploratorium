@@ -538,7 +538,7 @@ test_that("get_prop_self_funded_range() yield well formed range in DE", {
 get_cantons_main_org <- function(
     projects_data_sf  
 ) {
-  cantons_main_org <- projects_data_sf[["id_canton"]]
+  cantons_main_org <- unique(projects_data_sf[["id_canton"]])
   names(cantons_main_org) <- gsub(
     pattern = "^CH\\.",
     replacement = "",
@@ -561,6 +561,7 @@ test_that("get_cantons_main_org() yields well-formed vector in FR", {
     cantons_main_org,
     "character"
   )
+  # No CH prefix
   expect_true(
     all(
       !grepl(
@@ -568,6 +569,11 @@ test_that("get_cantons_main_org() yields well-formed vector in FR", {
         names(cantons_main_org)
       )
     )
+  )
+  # No dupplicated canton id
+  expect_equal(
+    length(cantons_main_org),
+    length(unique(cantons_main_org))
   )
 })
 
@@ -578,6 +584,7 @@ test_that("get_cantons_main_org() yields well-formed vector in DE", {
     cantons_main_org,
     "character"
   )
+  # No CH prefix
   expect_true(
     all(
       !grepl(
@@ -585,6 +592,11 @@ test_that("get_cantons_main_org() yields well-formed vector in DE", {
         names(cantons_main_org)
       )
     )
+  )
+  # No dupplicated canton id
+  expect_equal(
+    length(cantons_main_org),
+    length(unique(cantons_main_org))
   )
 })
 ```
