@@ -54,10 +54,24 @@ flat_filter_project_data.Rmd:
   state: active
   R:
   - R/filter_projects_data.R
+  - R/get_budget_range.R
+  - R/get_cantons_main_org.R
+  - R/get_input_data_to_display.R
+  - R/get_pi1_to_display.R
+  - R/get_pi2_to_display.R
+  - R/get_prop_self_funded_range.R
+  - R/get_topics_to_display.R
   - R/load_projects_data.R
   tests:
   - tests/testthat/test-load_projects_data.R
   - tests/testthat/test-filter_projects_data.R
+  - tests/testthat/test-get_input_data_to_display.R
+  - tests/testthat/test-get_topics_to_display.R
+  - tests/testthat/test-get_pi1_to_display.R
+  - tests/testthat/test-get_pi2_to_display.R
+  - tests/testthat/test-get_budget_range.R
+  - tests/testthat/test-get_prop_self_funded_range.R
+  - tests/testthat/test-get_cantons_main_org.R
   vignettes: []
   inflate:
     flat_file: dev/flat_filter_project_data.Rmd

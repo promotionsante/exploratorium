@@ -36,29 +36,14 @@ mod_projects_selection_ui <- function(id){
           style = "margin-bottom: 20px",
           "init"
         ) |>
-          with_i18n("theme"),
+          with_i18n("topic"),
 
         div(
           class = "custom-checkbox custom-checkbox-2col",
           awesomeCheckboxGroup(
-            inputId = ns("theme"),
+            inputId = ns("topic"),
             label = NULL,
-            choices =
-              c(
-                sort(
-                  c(
-                    "Erkrankungen der Atemwege",
-                    "Diabetes",
-                    "Herz-Kreislauf-Erkrankungen",
-                    "Krebserkrankungen",
-                    "Muskuloskelettale Erkrankungen",
-                    "Psychische Krankheiten",
-                    "S\u00fcchte"
-                  )
-                ),
-                "Andere NCDs",
-                "Andere"
-              ),
+            choices =NULL,
             status = "warning"
           )
         )
@@ -230,6 +215,21 @@ mod_projects_selection_server <- function(id, r_global){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+    r_local <- reactiveValues(
+      topic = NULL,
+      pi1 = NULL,
+      pi2 = NULL
+    )
+
+    # Store state of inputs to be able to preserve them
+    # when changing language
+    observeEvent(
+      input$topic, {
+        r_local$topic <- input$topic
+        r_local$pi1 <- input$pi1
+        r_local$pi2 <- input$pi2
+      })
+
     # Set initial condition: all projects are displayed
     observeEvent(
       TRUE,
@@ -239,9 +239,64 @@ mod_projects_selection_server <- function(id, r_global){
     observeEvent(
       input$filter_projects, {
         r_global$selected_projects_sf <- filter_projects_data(
-          projects_data_sf = r_global$projects_data_sf
+          projects_data_sf = r_global$projects_data_sf,
+          vec_topics = input$topic
         )
       })
+
+    observeEvent(
+      r_global$language, {
+
+        updateCheckboxGroupInput(
+          inputId = "topic",
+          choices = get_topics_to_display(
+            language = r_global$language
+          ),
+          selected = r_local$topic
+        )
+
+        updateCheckboxGroupInput(
+          inputId = "pi1",
+          choices = get_pi1_to_display(
+            language = r_global$language
+          ),
+          selected = r_local$pi1
+        )
+        updateCheckboxGroupInput(
+          inputId = "pi2",
+          choices = get_pi2_to_display(
+            language = r_global$language
+          ),
+          selected = r_local$pi2
+        )
+
+        budget_range <- get_budget_range(
+          projects_data_sf = r_global$projects_data_sf
+        )
+        updateSliderInput(
+          inputId = "budget",
+          min = budget_range[1],
+          max = budget_range[2]
+        )
+
+        prop_self_funded_range <- get_prop_self_funded_range(
+          projects_data_sf = r_global$projects_data_sf
+        )
+        updateSliderInput(
+          inputId = "prop_self_funded",
+          min = prop_self_funded_range[1],
+          max = prop_self_funded_range[2]
+        )
+
+        updateSelectInput(
+          inputId = "cantons_main_org",
+          choices = get_cantons_main_org(
+            projects_data_sf = r_global$projects_data_sf
+          )
+        )
+      })
+
+
 
   })
 }

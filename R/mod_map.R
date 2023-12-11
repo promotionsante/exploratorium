@@ -44,7 +44,10 @@ mod_map_server <- function(id, r_global){
       })
 
     observeEvent(
-      r_global$id_selected_project,
+      c(
+        r_global$id_selected_project,
+        r_global$selected_projects_sf
+      ),
       ignoreInit = TRUE,
       ignoreNULL = FALSE,
       {

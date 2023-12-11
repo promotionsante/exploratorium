@@ -1,3 +1,8 @@
+
+# observatoire 0.7.0
+
+* Input values on project selection view are read from the data and not predefined.
+
 # observatoire 0.6.0
 
 * Plot the distribution of the budget for one project

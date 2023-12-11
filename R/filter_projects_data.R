@@ -13,33 +13,44 @@
 #' @param canton_main_resp_orga A character vector containing the names of the 
 #' cantons of interest.
 #'
+#' @importFrom dplyr if_any
+#'
 #' @return A sf data.frame
 #' 
 #' @noRd
+#' @examples
+#' projects_fr <- load_projects_data(
+#'   language = "fr"
+#' )
+#' filter_projects_data(projects_fr)
 filter_projects_data <- function(
     projects_data_sf,
-    vec_topics,
+    vec_topics = NULL,
     range_budget,
     range_self_funded_budget,
     canton_main_resp_orga
-){
-#   projects_data_sf |> 
-#     separate_rows(
-#       geo_range_id, 
-#       sep = ", "
-#     ) |> 
-#   filter(
-#     topic %in% vec_topics,
-#     total_budget |> between(
-#       min(range_budget), 
-#       max(range_budget)
-#     ),
-#     budget_orga |> 
-#       between(
-#         min(range_self_funded_budget), 
-#         max(range_self_funded_budget)
-#       ),
-#    geo_range_id %in% canton_main_resp_orga
-#   )
+) {
+  if ( 
+    !missing(vec_topics) 
+  ) {
+    projects_data_sf <- projects_data_sf |>
+      filter(
+        if_any(
+          contains(vec_topics),
+          ~ .x == 1
+        )
+      )
+  }  
+  #   filter(
+  #     total_budget |> between(
+  #       min(range_budget), 
+  #       max(range_budget)
+  #     ),
+  #     budget_orga |> 
+  #       between(
+  #         min(range_self_funded_budget), 
+  #         max(range_self_funded_budget)
+  #       )
+  #   )
   return(projects_data_sf)
 }
