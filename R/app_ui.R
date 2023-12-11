@@ -46,6 +46,15 @@ golem_add_external_resources <- function() {
     favicon(
       ext = "png"
     ),
+    tags$script(
+      src = "https://code.highcharts.com/highcharts.js"
+    ),
+    tags$script(
+      src = "https://code.highcharts.com/modules/accessibility.js"
+    ),
+    tags$script(
+      src = "https://code.highcharts.com/modules/exporting.js"
+    ),
     bundle_resources(
       path = app_sys("app/www"),
       app_title = "observatoire"

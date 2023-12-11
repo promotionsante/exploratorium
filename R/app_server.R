@@ -12,7 +12,7 @@ app_server <- function(input, output, session) {
     # Set initial condition: no focus project is selected
     id_selected_project = NULL,
     language = NULL,
-    projects_data = NULL
+    projects_data_sf = NULL
   )
 
   observeEvent(
@@ -30,5 +30,7 @@ app_server <- function(input, output, session) {
     })
 
   mod_map_server("map_1", r_global = r_global)
+
   mod_right_panel_server("right_panel_1", r_global = r_global)
+
 }
