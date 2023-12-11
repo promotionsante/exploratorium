@@ -219,6 +219,7 @@ mod_projects_selection_server <- function(id, r_global){
 
     observeEvent(
       r_global$language, {
+
         updateCheckboxGroupInput(
           inputId = "topic",
           choices = get_topics_to_display(
@@ -226,32 +227,46 @@ mod_projects_selection_server <- function(id, r_global){
           ),
           selected = r_local$topic
         )
+
         updateCheckboxGroupInput(
           inputId = "pi1",
-          # choices = get_pi1_to_display(
-          #   language = r_global$language
-          # ),
+          choices = get_pi1_to_display(
+            language = r_global$language
+          ),
           selected = r_local$pi1
         )
         updateCheckboxGroupInput(
           inputId = "pi2",
-          # choices = get_pi2_to_display(
-          #   language = r_global$language
-          # ),
+          choices = get_pi2_to_display(
+            language = r_global$language
+          ),
           selected = r_local$pi2
         )
-        # updateSliderInput(
-        #   inputId = "budget",
-        #   choices = get_budget_range()
-        # )
-        # updateSliderInput(
-        #   inputId = "prop_self_funded",
-        #   choices = get_prop_self_funded_range()
-        # )
-        # updateSelectInput(
-        #   inputId = "cantons_main_org",
-        #   choices = get_cantons_main_org()
-        # )
+
+        budget_range <- get_budget_range(
+          projects_data_sf = r_global$projects_data_sf
+        )
+        updateSliderInput(
+          inputId = "budget",
+          min = budget_range[1],
+          max = budget_range[2]
+        )
+
+        prop_self_funded_range <- get_prop_self_funded_range(
+          projects_data_sf = r_global$projects_data_sf
+        )
+        updateSliderInput(
+          inputId = "prop_self_funded",
+          min = prop_self_funded_range[1],
+          max = prop_self_funded_range[2]
+        )
+
+        updateSelectInput(
+          inputId = "cantons_main_org",
+          choices = get_cantons_main_org(
+            projects_data_sf = r_global$projects_data_sf
+          )
+        )
       })
 
 

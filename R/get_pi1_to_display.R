@@ -12,7 +12,7 @@ get_pi1_to_display <- function(language){
   )
   # Remove PI 1 prefix
   names(pi1_to_display) <- gsub(
-    pattern = "PI 1 : ",
+    pattern = "PI 1 *: ",
     replacement = "",
      names(pi1_to_display)
   )

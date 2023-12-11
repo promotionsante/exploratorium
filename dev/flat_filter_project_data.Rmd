@@ -291,7 +291,7 @@ get_pi1_to_display <- function(language){
   )
   # Remove PI 1 prefix
   names(pi1_to_display) <- gsub(
-    pattern = "PI 1 : ",
+    pattern = "PI 1 *: ",
     replacement = "",
      names(pi1_to_display)
   )
@@ -347,7 +347,7 @@ test_that("get_pi1_to_display() returns well formed named vector in DE", {
   expect_true(
     all(
       !grepl(
-        "^P1 : ",
+        "^P1 *: ",
         x = names(pi1_to_display)
       )
     )
@@ -369,7 +369,7 @@ get_pi2_to_display <- function(language){
   )
   # Remove PI 1 prefix
   names(pi1_to_display) <- gsub(
-    pattern = "PI 2 : ",
+    pattern = "PI 2 *: ",
     replacement = "",
      names(pi1_to_display)
   )
@@ -425,7 +425,7 @@ test_that("get_pi2_to_display() returns well formed named vector in DE", {
   expect_true(
     all(
       !grepl(
-        "^P2 : ",
+        "^P2 *: ",
         x = names(pi2_to_display)
       )
     )

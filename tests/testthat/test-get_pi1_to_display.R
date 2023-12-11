@@ -43,7 +43,7 @@ test_that("get_pi1_to_display() returns well formed named vector in DE", {
   expect_true(
     all(
       !grepl(
-        "^P1 : ",
+        "^P1 *: ",
         x = names(pi1_to_display)
       )
     )
