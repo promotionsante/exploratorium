@@ -4,12 +4,11 @@
 #'
 #' and put "other" topics at the end.
 #' 
-#' @param language A character either "fr" or "de".
+#' @inheritParams get_input_data_to_display
 #' 
 #' @return A named character vector ending with "Other" (andere/autre) topics.
 #' Names correspond to FR or DE translation displayed to the user.
 #' 
-#' @importFrom readr read_csv2
 #' 
 #' @noRd
 #' @examples
@@ -17,20 +16,8 @@
 #'   language = "fr"
 #' )
 get_topics_to_display <- function(language) {
-  
-  dic_variables <- suppressMessages(
-    read_csv2(
-      file = app_sys("data-dic/dic_variables.csv"),
-      show_col_types = FALSE
-    )
+  get_input_data_to_display(
+    language = language,
+    pattern = "^topic_"
   )
-  
-  topic_dic <- dic_variables[
-    grep("^topic_", dic_variables$name_variable), 
-  ]
-  
-  topics_to_diplay <- topic_dic$name_variable
-  names(topics_to_diplay) <- topic_dic[[language]]
-
-  return(topics_to_diplay)
 }
