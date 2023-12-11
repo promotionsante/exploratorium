@@ -8,11 +8,20 @@
 #'
 #' @importFrom shiny NS tagList
 mod_one_project_desc_ui <- function(id){
+
   ns <- NS(id)
+
   tagList(
+
     uiOutput(
       outputId = ns("project_card")
+    ),
+
+    div(
+      id = ns("project_repart_budget_plot")
     )
+
+
   )
 }
 
@@ -61,8 +70,11 @@ mod_one_project_desc_server <- function(id, r_global){
         if (
           is.null(r_global$id_selected_project)
         ) {
+
           r_local$card_ui <- tags$script('$("#project_selection_panel").show()')
+
         } else {
+
           r_local$card_ui <- tagList(
             actionButton(
               inputId = ns("back_to_project_selection_view"),
@@ -80,6 +92,16 @@ mod_one_project_desc_server <- function(id, r_global){
               )
             ),
             tags$script('$("#project_selection_panel").hide()')
+          )
+
+          plot_contrib_budget_highcharter(
+            id = ns("project_repart_budget_plot"),
+            data_repart = get_data_repart_budget_one_project(
+              data_projects = r_global$projects_data_sf,
+              id_project = r_global$id_selected_project,
+              language = language
+            ),
+            session = session
           )
         }
 

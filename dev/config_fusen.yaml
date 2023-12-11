@@ -102,6 +102,32 @@ flat_map_subfunctions.Rmd:
     check: false
     document: true
     overwrite: 'yes'
+flat_plot_budget.Rmd:
+  path: dev/flat_plot_budget.Rmd
+  state: active
+  R: R/plot_contrib_budget_highcharter.R
+  tests: tests/testthat/test-plot_contrib_budget_highcharter.R
+  vignettes: vignettes/draw-the-distribution-of-contributions.Rmd
+  inflate:
+    flat_file: dev/flat_plot_budget.Rmd
+    vignette_name: Draw the distribution of contributions
+    open_vignette: false
+    check: false
+    document: true
+    overwrite: 'yes'
+flat_plot_budget_subfunctions.Rmd:
+  path: dev/flat_plot_budget_subfunctions.Rmd
+  state: active
+  R: R/get_data_repart_budget_one_project.R
+  tests: tests/testthat/test-get_data_repart_budget_one_project.R
+  vignettes: []
+  inflate:
+    flat_file: dev/flat_plot_budget_subfunctions.Rmd
+    vignette_name: .na
+    open_vignette: false
+    check: false
+    document: true
+    overwrite: 'yes'
 flat_prepare_data.Rmd:
   path: dev/flat_prepare_data.Rmd
   state: active
