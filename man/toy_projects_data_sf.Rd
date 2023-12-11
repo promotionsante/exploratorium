@@ -8,7 +8,6 @@
 A data frame with 67 rows and 51 variables:
 \describe{
   \item{ short_title }{  character }
-  \item{ status }{  character }
   \item{ language }{  character }
   \item{ funding_round }{  character }
   \item{ funding_area }{  character }
@@ -16,7 +15,6 @@ A data frame with 67 rows and 51 variables:
   \item{ project_end }{  POSIXct,POSIXt }
   \item{ description }{  character }
   \item{ geo_range }{  character }
-  \item{ topic }{  character }
   \item{ main_resp_orga }{  character }
   \item{ zip_code_main_resp_orga }{  character }
   \item{ city_code_main_resp_orga }{  character }
@@ -41,7 +39,6 @@ A data frame with 67 rows and 51 variables:
   \item{ topic_addictions }{  character }
   \item{ topic_other_ncd }{  character }
   \item{ topic_other }{  character }
-  \item{ risk_factors }{  character }
   \item{ target_groups }{  character }
   \item{ multipliers }{  character }
   \item{ settings }{  character }
@@ -58,6 +55,9 @@ A data frame with 67 rows and 51 variables:
   \item{ prop_budget_gfch }{  numeric }
   \item{ prop_budget_orga }{  numeric }
   \item{ prop_budget_third_party }{  numeric }
+  \item{ status }{  character }
+  \item{ topic }{  character }
+  \item{ risk_factors }{  character }
 }
 }
 \source{

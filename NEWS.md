@@ -1,3 +1,5 @@
+# observatoire 0.5.5
+
 # observatoire 0.5.4
 
 * Increase the visibility of the cantons influenced 
