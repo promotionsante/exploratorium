@@ -12,6 +12,7 @@ library(here)
 library(tools)
 library(readr)
 library(dplyr)
+library(tidyr)
 library(tidygeocoder)
 library(sf)
 library(glue)
@@ -329,6 +330,214 @@ test_that("Test that the cleaning of the raw data is ok", {
   
 })
 ```
+
+
+# Consolidate topic data
+    
+```{r function-consolidate_topic_data}
+#' Consolidate topic data
+#' 
+#' Make sure information between `topic` character column and 
+#' the binary `topic_` columns is identical
+#' 
+#' @param data Tibble. Raw data about projects, with the good columns names.
+#' 
+#' @return A tibble.
+#' 
+#' @importFrom dplyr select right_join inner_join mutate starts_with
+#' @importFrom tidyr separate_rows complete pivot_wider
+#' @noRd
+consolidate_topic_data <- function(
+    data
+) {
+  
+  dic_variables_topic_de <- suppressMessages(
+    read_csv2(
+      system.file(
+        "data-dic", 
+        "dic_variables.csv", 
+        package = "observatoire"
+      ),
+      show_col_types = FALSE
+    ) 
+  ) |> 
+    select(de, name_variable) |> 
+    filter(
+      grepl(
+        "^topic_",
+        name_variable
+      )
+    )
+  
+  # Get one row per topic
+  data_separated_by_topic <- data |> 
+    select(
+      short_title,
+      topic
+    ) |> 
+    separate_rows(
+      topic,
+      sep = ",*\r\n"
+    )
+  
+  # Get topic names in English
+  data_topic_in_english <- data_separated_by_topic |> 
+    right_join(
+      dic_variables_topic_de,
+      by = c("topic" = "de")
+    ) |> 
+    select(-topic)
+  
+  # Generate new binary topic columns  
+  data_topic_consolidated <- data_topic_in_english |> 
+    mutate(
+      topic_value = TRUE
+    ) |> 
+    complete(
+      short_title, 
+      name_variable, 
+      fill = list( 
+        topic_value = FALSE
+      )
+    ) |> 
+    pivot_wider(
+      names_from = name_variable,
+      values_from = topic_value
+    )
+  
+  
+  data_with_consolidated_topic_columns <- data |> 
+    # Remove existing topic_ columns 
+    select(
+      -starts_with("topic_")
+    ) |> 
+    # Add consolidated topic_ columns back to main dataset
+    inner_join(
+      data_topic_consolidated,
+      by = "short_title"
+    )
+  
+  return(data_with_consolidated_topic_columns)
+}
+
+```
+  
+```{r example-consolidate_topic_data}
+# Load the toy datasets
+data("toy_data_pgv")
+data("toy_dic_variables")
+data("toy_cantons_sf")
+
+toy_data <- toy_data_pgv |> 
+  add_col_raw_data(
+    dic_variables = toy_dic_variables
+  ) |> 
+  clean_raw_data() |> 
+  consolidate_topic_data()
+```
+  
+```{r tests-consolidate_topic_data}
+test_that("consolidate_topic_data() preserves information", {
+  
+  # Same column names before and after consolidation
+  toy_data <- toy_data_pgv |> 
+    add_col_raw_data(
+      dic_variables = toy_dic_variables
+    ) |> 
+    clean_raw_data() 
+  
+  toy_data_consolidated <- toy_data |> consolidate_topic_data()
+  
+  expect_setequal(
+    colnames(toy_data),
+    colnames(toy_data_consolidated)
+  )
+  
+  # Consolidation worked i.e. the same information is contained in the 
+  # topic vs all topic_ binary columns
+  topics_in_topic_column_consolidated <- toy_data_consolidated |>
+    dplyr::select(
+      short_title,
+      topic
+    ) |> 
+    tidyr::separate_rows(
+      topic,
+      sep = ",*\r\n"
+    ) |> 
+    dplyr::arrange(
+      short_title,
+      topic
+    )
+  
+  dic_variables_topic_de <- suppressMessages(
+    read_csv2(
+      system.file(
+        "data-dic", 
+        "dic_variables.csv", 
+        package = "observatoire"
+      ),
+      show_col_types = FALSE
+    ) 
+  ) |> 
+    dplyr::select(de, name_variable) |> 
+    dplyr::filter(
+      grepl(
+        "^topic_",
+        name_variable
+      )
+    )
+  
+  topics_in_topic_binary_columns_consolidated <- toy_data_consolidated |>
+    dplyr::select(
+      short_title,
+      dplyr::starts_with("topic_")
+    ) |> 
+    tidyr::pivot_longer(
+      data = _,
+      cols = starts_with("topic_")
+    ) |>
+    dplyr::right_join(
+      dic_variables_topic_de,
+      by = c("name" = "name_variable")
+    ) |> 
+    dplyr::filter(
+      value
+    ) |> 
+    dplyr::select(
+      short_title,
+      topic = de
+    ) |> 
+    dplyr::arrange(
+      short_title,
+      topic
+    )
+  
+  expect_equal(
+    topics_in_topic_column_consolidated,
+    topics_in_topic_binary_columns_consolidated
+  )
+  
+  # Topic character column is the same before and after consolidation
+  topics_in_topic_column <- toy_data |> 
+    dplyr::select(
+      short_title,
+      topic
+    ) |> 
+    tidyr::separate_rows(
+      topic,
+      sep = ",*\r\n"
+    ) |> 
+    dplyr::arrange(
+      short_title,
+      topic
+    )
+  expect_equal(
+    topics_in_topic_column,
+    topics_in_topic_column_consolidated
+  )
+})
+```
+
 
 # Get the coordinates of the principale organization with `get_coord_main_resp_orga()`
 
@@ -1623,8 +1832,12 @@ prepare_projects_data <- function(
   data_cleaned <- data_with_col |> 
     clean_raw_data()
   
+  cli_alert("Consolidate topic data")
+  data_topic_consolidated <- data_cleaned |> 
+    consolidate_topic_data()
+  
   cli_alert("Add the coordinates of the main organization")
-  data_with_coord <- data_cleaned |> 
+  data_with_coord <- data_topic_consolidated |> 
     get_coord_main_resp_orga(
       cantons_sf = cantons_sf
     ) 
