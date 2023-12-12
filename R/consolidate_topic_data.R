@@ -9,7 +9,7 @@
 #' 
 #' @return A tibble.
 #' 
-#' @importFrom dplyr select right_join inner_join mutate starts_with
+#' @importFrom dplyr select full_join inner_join mutate starts_with
 #' @importFrom tidyr separate_rows complete pivot_wider
 #' @noRd
 #' @examples
@@ -18,7 +18,7 @@
 #' data("toy_dic_variables")
 #' data("toy_cantons_sf")
 #'
-#' toy_data <- toy_data_pgv |> 
+#' toy_data_pgv |> 
 #'   add_col_raw_data(
 #'     dic_variables = toy_dic_variables
 #'   ) |> 
@@ -54,12 +54,16 @@ consolidate_topic_data <- function(
     ) |> 
     separate_rows(
       topic,
-      sep = ",*\r\n"
+      sep = ",*\r\n|, "
+    ) |> 
+    mutate(
+      topic = gsub("\\W$", "", topic)
     )
+    
   
   # Get topic names in English
   data_topic_in_english <- data_separated_by_topic |> 
-    right_join(
+    full_join(
       dic_variables_topic_de,
       by = c("topic" = "de")
     ) |> 
@@ -68,6 +72,12 @@ consolidate_topic_data <- function(
   # Generate new binary topic columns  
   data_topic_consolidated <- data_topic_in_english |> 
     mutate(
+      # Add flag value for projects without any topics
+      name_variable = ifelse(
+        is.na(name_variable),
+        "none",
+        name_variable
+      ),
       topic_value = TRUE
     ) |> 
     complete(
@@ -80,8 +90,13 @@ consolidate_topic_data <- function(
     pivot_wider(
       names_from = name_variable,
       values_from = topic_value
-    )
-  
+    ) |> 
+    filter(
+      # Remove project artifacts: categories without associated projetcs
+      !is.na(short_title)
+    ) |> 
+    # Remove flag variable
+    select(-none)
   
   data_with_consolidated_topic_columns <- data |> 
     # Remove existing topic_ columns 

@@ -25,7 +25,7 @@ test_that("consolidate_topic_data() preserves information", {
     ) |> 
     tidyr::separate_rows(
       topic,
-      sep = ",*\r\n"
+      sep = ",*\r\n|, "
     ) |> 
     dplyr::arrange(
       short_title,
@@ -75,8 +75,15 @@ test_that("consolidate_topic_data() preserves information", {
       topic
     )
   
+  topics_in_topic_column_consolidated_wo_na <- 
+    topics_in_topic_column_consolidated |> 
+    # Remove edge case project without topic 
+    filter(
+      !is.na(topic)
+    )
+  
   expect_equal(
-    topics_in_topic_column_consolidated,
+    topics_in_topic_column_consolidated_wo_na,
     topics_in_topic_binary_columns_consolidated
   )
   
@@ -88,7 +95,7 @@ test_that("consolidate_topic_data() preserves information", {
     ) |> 
     tidyr::separate_rows(
       topic,
-      sep = ",*\r\n"
+      sep = ",*\r\n|, "
     ) |> 
     dplyr::arrange(
       short_title,

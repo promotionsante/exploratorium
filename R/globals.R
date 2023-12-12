@@ -17,6 +17,6 @@ globalVariables(unique(c(
   # translate_values_in_col
   "col_translated",
   # consolidate_topic_data
-  "name_variable", "topic", "topic_value",
+  "name_variable", "topic", "topic_value", "none",
   NULL
 )))

@@ -2,7 +2,7 @@
 #'
 #' Description.
 #'
-#' @format A data frame with 5 rows and 42 variables:
+#' @format A data frame with 7 rows and 42 variables:
 #' \describe{
 #'   \item{ Kurztitel }{  character }
 #'   \item{ Status }{  character }

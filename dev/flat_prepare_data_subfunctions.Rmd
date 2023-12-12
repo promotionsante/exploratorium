@@ -344,7 +344,7 @@ test_that("Test that the cleaning of the raw data is ok", {
 #' 
 #' @return A tibble.
 #' 
-#' @importFrom dplyr select right_join inner_join mutate starts_with
+#' @importFrom dplyr select full_join inner_join mutate starts_with
 #' @importFrom tidyr separate_rows complete pivot_wider
 #' @noRd
 consolidate_topic_data <- function(
@@ -377,12 +377,16 @@ consolidate_topic_data <- function(
     ) |> 
     separate_rows(
       topic,
-      sep = ",*\r\n"
+      sep = ",*\r\n|, "
+    ) |> 
+    mutate(
+      topic = gsub("\\W$", "", topic)
     )
+    
   
   # Get topic names in English
   data_topic_in_english <- data_separated_by_topic |> 
-    right_join(
+    full_join(
       dic_variables_topic_de,
       by = c("topic" = "de")
     ) |> 
@@ -391,6 +395,12 @@ consolidate_topic_data <- function(
   # Generate new binary topic columns  
   data_topic_consolidated <- data_topic_in_english |> 
     mutate(
+      # Add flag value for projects without any topics
+      name_variable = ifelse(
+        is.na(name_variable),
+        "none",
+        name_variable
+      ),
       topic_value = TRUE
     ) |> 
     complete(
@@ -403,8 +413,13 @@ consolidate_topic_data <- function(
     pivot_wider(
       names_from = name_variable,
       values_from = topic_value
-    )
-  
+    ) |> 
+    filter(
+      # Remove project artifacts: categories without associated projetcs
+      !is.na(short_title)
+    ) |> 
+    # Remove flag variable
+    select(-none)
   
   data_with_consolidated_topic_columns <- data |> 
     # Remove existing topic_ columns 
@@ -428,7 +443,7 @@ data("toy_data_pgv")
 data("toy_dic_variables")
 data("toy_cantons_sf")
 
-toy_data <- toy_data_pgv |> 
+toy_data_pgv |> 
   add_col_raw_data(
     dic_variables = toy_dic_variables
   ) |> 
@@ -462,7 +477,7 @@ test_that("consolidate_topic_data() preserves information", {
     ) |> 
     tidyr::separate_rows(
       topic,
-      sep = ",*\r\n"
+      sep = ",*\r\n|, "
     ) |> 
     dplyr::arrange(
       short_title,
@@ -512,8 +527,15 @@ test_that("consolidate_topic_data() preserves information", {
       topic
     )
   
+  topics_in_topic_column_consolidated_wo_na <- 
+    topics_in_topic_column_consolidated |> 
+    # Remove edge case project without topic 
+    filter(
+      !is.na(topic)
+    )
+  
   expect_equal(
-    topics_in_topic_column_consolidated,
+    topics_in_topic_column_consolidated_wo_na,
     topics_in_topic_binary_columns_consolidated
   )
   
@@ -525,7 +547,7 @@ test_that("consolidate_topic_data() preserves information", {
     ) |> 
     tidyr::separate_rows(
       topic,
-      sep = ",*\r\n"
+      sep = ",*\r\n|, "
     ) |> 
     dplyr::arrange(
       short_title,
@@ -1463,7 +1485,9 @@ test_that("Test that the translation of a column works", {
       "D\u00e9pendances", 
       "Diab\u00e8tes",
       "Autres th\u00e8mes, Maladies mentales", 
-      "Autres th\u00e8mes, Maladies respiratoires, Cancers, Maladies musculosquelettiques, D\u00e9pendances"
+      "Autres th\u00e8mes, Maladies respiratoires, Cancers, Maladies musculosquelettiques, D\u00e9pendances",
+      "Maladies mentales, D\u00e9pendances", 
+      "Information non renseign\u00e9e" 
     )
   )
   
