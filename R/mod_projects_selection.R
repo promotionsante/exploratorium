@@ -185,10 +185,7 @@ mod_projects_selection_ui <- function(id){
             multiple = TRUE,
             width = "100%",
             options = pickerOptions(
-              actionsBox = TRUE,
-              title = "Bitte Kantone ausw\u00e4hlen",
-              selectAllText = "Alle ausw\u00e4hlen",
-              deselectAllText = "Alle abw\u00e4hlen"
+              actionsBox = TRUE
             )
           )
         )
@@ -229,15 +226,6 @@ mod_projects_selection_server <- function(id, r_global){
     # when changing language
     observeEvent(
       input$topic, {
-        cli::cat_rule(
-          sprintf(
-            "input$topic: %s",
-            paste(
-              input$topic,
-              collapse = ","
-            )
-          )
-        )
         r_local$topic <- input$topic
       })
     observeEvent(
@@ -323,7 +311,21 @@ mod_projects_selection_server <- function(id, r_global){
           choices = get_cantons_main_org(
             projects_data_sf = r_global$projects_data_sf
           ),
-          selected = r_local$cantons_main_org
+          selected = r_local$cantons_main_org,
+          options = pickerOptions(
+            title = translate_entry_server_side(
+              language = r_global$language,
+              key = "cantons_main_org_title"
+            ),
+            selectAllText = translate_entry_server_side(
+              language = r_global$language,
+              key = "cantons_main_org_select_all_text"
+            ),
+            deselectAllText = translate_entry_server_side(
+              language = r_global$language,
+              key = "cantons_main_org_deselect_all_text"
+            )
+          )
         )
       })
 
