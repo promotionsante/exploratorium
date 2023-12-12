@@ -43,7 +43,7 @@ mod_projects_selection_ui <- function(id){
           awesomeCheckboxGroup(
             inputId = ns("topic"),
             label = NULL,
-            choices =NULL,
+            choices = NULL,
             status = "warning"
           )
         )
@@ -61,7 +61,7 @@ mod_projects_selection_ui <- function(id){
             style = "margin-bottom: 20px;",
             "init"
           ) |>
-          with_i18n("pi1"),
+            with_i18n("pi1"),
 
           div(
             class = "custom-checkbox",
@@ -88,7 +88,7 @@ mod_projects_selection_ui <- function(id){
             style = "margin-bottom: 20px;",
             "init"
           ) |>
-          with_i18n("pi2"),
+            with_i18n("pi2"),
 
           div(
             class = "custom-checkbox",
@@ -106,9 +106,9 @@ mod_projects_selection_ui <- function(id){
               status = "warning"
             )
           )
-      )
+        )
 
-    ),
+      ),
 
       div(
 
@@ -125,7 +125,7 @@ mod_projects_selection_ui <- function(id){
             inputId = ns("budget"),
             label = NULL,
             min = 100000,
-            max = 5571018,
+            max = 6e6,
             value = c(2000000, 3000000),
             width = "100%",
             color = "#578397",
@@ -155,7 +155,7 @@ mod_projects_selection_ui <- function(id){
             label = NULL,
             min = 0,
             max = 100,
-            value = c(20, 80),
+            value = c(20, 40),
             width = "100%",
             color = "#578397",
             format = wNumbFormat(
@@ -185,10 +185,7 @@ mod_projects_selection_ui <- function(id){
             multiple = TRUE,
             width = "100%",
             options = pickerOptions(
-              actionsBox = TRUE,
-              title = "Bitte Kantone ausw\u00e4hlen",
-              selectAllText = "Alle ausw\u00e4hlen",
-              deselectAllText = "Alle abw\u00e4hlen"
+              actionsBox = TRUE
             )
           )
         )
@@ -210,6 +207,9 @@ mod_projects_selection_ui <- function(id){
 
 #' projects_selection Server Functions
 #'
+#' @importFrom shinyWidgets updateAwesomeCheckboxGroup updateNoUiSliderInput
+#' @importFrom shinyWidgets updatePickerInput
+#'
 #' @noRd
 mod_projects_selection_server <- function(id, r_global){
   moduleServer( id, function(input, output, session){
@@ -218,7 +218,8 @@ mod_projects_selection_server <- function(id, r_global){
     r_local <- reactiveValues(
       topic = NULL,
       pi1 = NULL,
-      pi2 = NULL
+      pi2 = NULL,
+      cantons_main_org = NULL
     )
 
     # Store state of inputs to be able to preserve them
@@ -226,8 +227,18 @@ mod_projects_selection_server <- function(id, r_global){
     observeEvent(
       input$topic, {
         r_local$topic <- input$topic
+      })
+    observeEvent(
+      input$pi1, {
         r_local$pi1 <- input$pi1
+      })
+    observeEvent(
+      input$pi2, {
         r_local$pi2 <- input$pi2
+      })
+    observeEvent(
+      input$cantons_main_org, {
+        r_local$cantons_main_org <- input$cantons_main_org
       })
 
     # Set initial condition: all projects are displayed
@@ -247,51 +258,73 @@ mod_projects_selection_server <- function(id, r_global){
     observeEvent(
       r_global$language, {
 
-        updateCheckboxGroupInput(
+        updateAwesomeCheckboxGroup(
+          session = session,
           inputId = "topic",
           choices = get_topics_to_display(
             language = r_global$language
           ),
-          selected = r_local$topic
+          selected = r_local$topic,
+          status = "warning"
         )
 
-        updateCheckboxGroupInput(
+        updateAwesomeCheckboxGroup(
+          session = session,
           inputId = "pi1",
           choices = get_pi1_to_display(
             language = r_global$language
           ),
+          status = "warning",
           selected = r_local$pi1
         )
-        updateCheckboxGroupInput(
+        updateAwesomeCheckboxGroup(
+          session = session,
           inputId = "pi2",
           choices = get_pi2_to_display(
             language = r_global$language
           ),
+          status = "warning",
           selected = r_local$pi2
         )
 
         budget_range <- get_budget_range(
           projects_data_sf = r_global$projects_data_sf
         )
-        updateSliderInput(
+        updateNoUiSliderInput(
+          session = session,
           inputId = "budget",
-          min = budget_range[1],
-          max = budget_range[2]
+          range = budget_range,
         )
 
         prop_self_funded_range <- get_prop_self_funded_range(
           projects_data_sf = r_global$projects_data_sf
         )
-        updateSliderInput(
+        updateNoUiSliderInput(
+          session = session,
           inputId = "prop_self_funded",
-          min = prop_self_funded_range[1],
-          max = prop_self_funded_range[2]
+          range = prop_self_funded_range,
         )
 
-        updateSelectInput(
+        updatePickerInput(
+          session = session,
           inputId = "cantons_main_org",
           choices = get_cantons_main_org(
             projects_data_sf = r_global$projects_data_sf
+          ),
+          selected = r_local$cantons_main_org,
+          options = pickerOptions(
+            title = translate_entry_server_side(
+              language = r_global$language,
+              key = "cantons_main_org_title"
+            ),
+            selectAllText = translate_entry_server_side(
+              language = r_global$language,
+              key = "cantons_main_org_select_all_text"
+            ),
+            deselectAllText = translate_entry_server_side(
+              language = r_global$language,
+              key = "cantons_main_org_deselect_all_text"
+            )
           )
         )
       })

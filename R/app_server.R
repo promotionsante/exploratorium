@@ -7,6 +7,12 @@
 app_server <- function(input, output, session) {
   # Your application server logic
 
+  # Store translation json as parsed list in session$userData
+  # and not in reactiveValues because
+  # - It will not change during session
+  # - It need to be accessible everywhere
+  session$userData$l_translation <- read_translation_json()
+
   r_global <- reactiveValues(
     zoom_level = NULL,
     # Set initial condition: no focus project is selected

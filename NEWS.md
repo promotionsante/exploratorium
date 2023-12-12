@@ -1,3 +1,6 @@
+# observatoire 0.7.1
+
+* Input values update logic now works with {shinyWidgets} inputs
 
 # observatoire 0.7.0
 

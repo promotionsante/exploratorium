@@ -9,7 +9,10 @@
             "budget": "Budget",
             "prop_self_funded" : "Selbstfinanzierter Anteil des Budgets",
             "cantons_main_org" : "Kanton.e der Hauptorganisation",
-            "filter_projects" : "Projekte filtern"
+            "filter_projects" : "Projekte filtern",
+            "cantons_main_org_title" : "Bitte Kantone auswählen",
+            "cantons_main_org_select_all_text" : "Alle auswählen",
+            "cantons_main_org_deselect_all_text" : "Alle abwählen"
         }
     },
     "fr": {
@@ -22,7 +25,10 @@
             "budget": "Budget",
             "prop_self_funded" : "Proportion du budget auto-financée",
             "cantons_main_org" : "Canton.s de l'organisation principale",
-            "filter_projects" : "Filtrer les projets"
+            "filter_projects" : "Filtrer les projets",
+            "cantons_main_org_title" : "Veuillez sélectionner les cantons",
+            "cantons_main_org_select_all_text" : "Tout sélectionner",
+            "cantons_main_org_deselect_all_text" : "Tout désélectionner"
         }
     }
 }

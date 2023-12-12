@@ -93,3 +93,39 @@ get_language <- function(
     )
   )
 }
+
+
+#' Read translation json
+#'
+#' Used to get translation json dictionary in R
+#' to be able to translate elements on the server side.
+#'
+#' @return A list containing the parsed json data.
+#'
+#' @importFrom jsonlite read_json
+#'
+#' @noRd
+read_translation_json <- function() {
+  app_sys("app/www/i18n_locales.json") |>
+    read_json()
+}
+
+
+#' Get translate for an entry in the json dictionary
+#'
+#' @param l_translation The parsed json dictionary available in session$userData
+#' @param language A character. The target language.
+#' @param key A character. The translation key.
+#'
+#' @return A character, the translated entry.
+#'
+#' @importFrom shiny getDefaultReactiveDomain
+#'
+#' @noRd
+translate_entry_server_side <- function(
+    l_translation = getDefaultReactiveDomain()$userData$l_translation,
+    language,
+    key
+) {
+  l_translation[[language]][["translation"]][[key]]
+}
