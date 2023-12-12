@@ -12,16 +12,9 @@ mod_one_project_desc_ui <- function(id){
   ns <- NS(id)
 
   tagList(
-
     uiOutput(
       outputId = ns("project_card")
-    ),
-
-    div(
-      id = ns("project_repart_budget_plot")
     )
-
-
   )
 }
 
@@ -90,6 +83,9 @@ mod_one_project_desc_server <- function(id, r_global){
                 glue("project_card_{clean_id_project}_{language}.html"),
                 package = "observatoire"
               )
+            ),
+            div(
+              id = ns("project_repart_budget_plot")
             ),
             tags$script('$("#project_selection_panel").hide()')
           )
