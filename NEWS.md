@@ -1,3 +1,12 @@
+
+# observatoire 0.7.3
+
+* Consolidate topic data i.e. rederive topic_ binary columns from topic character column.
+
+# observatoire 0.7.2
+
+* Project JS graph only displayed in project view.
+
 # observatoire 0.7.1
 
 * Input values update logic now works with {shinyWidgets} inputs
