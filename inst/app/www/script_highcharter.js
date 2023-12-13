@@ -1,12 +1,29 @@
+// https://gist.github.com/chrisjhoughton/7890303
+// Wait for something to be ready before executing a function
+var waitForEl = function(selector, callback) {
+    if (jQuery(selector).length) {
+        callback();
+    } else {
+        setTimeout(function() {
+            waitForEl(selector, callback);
+        }, 100);
+    }
+};
+
+
 Shiny.addCustomMessageHandler('createChart', function(message) {
 
-  var data = message;
-
-  console.log(data);
-
-  createChart(data);
+  waitForEl(
+    "#" + message[0].id,
+    function(){
+        var data = message;
+        console.log(data);
+        createChart(data);
+    }
+  )
 
 });
+
 
 function createChart(data) {
 
