@@ -59,7 +59,9 @@ test_that("Test that the translation of a column works", {
       "D\u00e9pendances", 
       "Diab\u00e8tes",
       "Autres th\u00e8mes, Maladies mentales", 
-      "Autres th\u00e8mes, Maladies respiratoires, Cancers, Maladies musculosquelettiques, D\u00e9pendances"
+      "Autres th\u00e8mes, Maladies respiratoires, Cancers, Maladies musculosquelettiques, D\u00e9pendances",
+      "Maladies mentales, D\u00e9pendances", 
+      "Information non renseign\u00e9e" 
     )
   )
   

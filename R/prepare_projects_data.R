@@ -77,8 +77,12 @@ prepare_projects_data <- function(
   data_cleaned <- data_with_col |> 
     clean_raw_data()
   
+  cli_alert("Consolidate topic data")
+  data_topic_consolidated <- data_cleaned |> 
+    consolidate_topic_data()
+  
   cli_alert("Add the coordinates of the main organization")
-  data_with_coord <- data_cleaned |> 
+  data_with_coord <- data_topic_consolidated |> 
     get_coord_main_resp_orga(
       cantons_sf = cantons_sf
     ) 

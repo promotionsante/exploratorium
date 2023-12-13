@@ -15,5 +15,8 @@ globalVariables(unique(c(
   # create_skeleton_dic
   "value",
   # translate_values_in_col
-  "col_translated"
+  "col_translated",
+  # consolidate_topic_data
+  "name_variable", "topic", "topic_value", "none",
+  NULL
 )))

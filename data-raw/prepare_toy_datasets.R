@@ -4,6 +4,7 @@
 ################################################
 
 pkgload::load_all()
+library(readxl)
 library(readr)
 library(dplyr)
 
@@ -16,7 +17,19 @@ toy_data_pgv <- read_excel(
     package = "observatoire"
   )
 ) |>
-  slice(1:5)
+  slice(
+    # First line inlcuding extra French title line to clean
+    1:5,
+    # Project with peculiar topic data weird separator or entirely missing data
+    grep(
+      pattern = paste(
+        "Antalgie",
+        "FM_ProPCC",
+        sep = "|"
+      ),
+      x = Kurztitel
+    )
+  )
 
 usethis::use_data(
   toy_data_pgv,
