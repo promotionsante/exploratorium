@@ -258,6 +258,7 @@ mod_projects_selection_server <- function(id, r_global){
           range_budget = input$budget#,
           # range_self_funded_budget = input$prop_self_funded
         )
+        browser()
       })
 
     observeEvent(
@@ -299,6 +300,7 @@ mod_projects_selection_server <- function(id, r_global){
           session = session,
           inputId = "budget",
           range = budget_range,
+          value = budget_range
         )
 
         prop_self_funded_range <- get_prop_self_funded_range(
@@ -308,6 +310,7 @@ mod_projects_selection_server <- function(id, r_global){
           session = session,
           inputId = "prop_self_funded",
           range = prop_self_funded_range,
+          value = prop_self_funded_range
         )
 
         updatePickerInput(
