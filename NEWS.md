@@ -1,3 +1,7 @@
+# observatoire 0.9.0
+
+* Display graphs with budget by theme and year in project selection view
+
 # observatoire 0.8.0
 
 * Users can now filter projects on projects selection view

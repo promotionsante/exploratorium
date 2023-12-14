@@ -28,8 +28,6 @@ library(observatoire)
 To create the interactive plot,  you can use the `plot_contrib_budget_highcharter()` function as follows *(here with a toy dataset)*:
 
 
-  
-
 ```{r example-plot_contrib_budget_highcharter, eval = FALSE}
 toy_data_repart <- tibble::tibble(
   name = c("Item 1", "Item 2"),
@@ -43,9 +41,4 @@ toy_data_repart <- tibble::tibble(
 #   session = session
 # )
 ```
-
-  
-
-  
-
 

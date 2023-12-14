@@ -13,7 +13,9 @@
             "cantons_main_org_title" : "Bitte Kantone auswählen",
             "cantons_main_org_select_all_text" : "Alle auswählen",
             "cantons_main_org_deselect_all_text" : "Alle abwählen",
-            "no_target_projects" : "Kein Projekt erfüllt diese Auswahlkriterien"
+            "no_target_projects" : "Kein Projekt erfüllt diese Auswahlkriterien",
+            "budget_by_theme" : "Gesamtbudget pro Thema",
+            "budget_by_year" : "Gesamtbudget pro Jahr"
         }
     },
     "fr": {
@@ -30,7 +32,9 @@
             "cantons_main_org_title" : "Veuillez sélectionner les cantons",
             "cantons_main_org_select_all_text" : "Tout sélectionner",
             "cantons_main_org_deselect_all_text" : "Tout désélectionner",
-            "no_target_projects" : "Aucun projet ne répond à ces critères de sélection"
+            "no_target_projects" : "Aucun projet ne répond à ces critères de sélection",
+            "budget_by_theme" : "Budget total par thème",
+            "budget_by_year" : "Budget total par année"
         }
     }
 }

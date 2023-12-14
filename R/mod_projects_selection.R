@@ -198,6 +198,28 @@ mod_projects_selection_ui <- function(id){
             with_i18n("filter_projects"),
           class = "filter-projects-button"
         )
+      ),
+
+      div(
+        class = "alltitle",
+        style = "margin-bottom: 20px",
+        "init"
+      ) |>
+        with_i18n("budget_by_theme"),
+
+      div(
+        id = ns("projects_budget_by_theme_plot")
+      ),
+
+      div(
+        class = "alltitle",
+        style = "margin-bottom: 20px",
+        "init"
+      ) |>
+        with_i18n("budget_by_year"),
+
+      div(
+        id = ns("projects_year_by_theme_plot")
       )
 
     )
@@ -219,7 +241,10 @@ mod_projects_selection_server <- function(id, r_global){
       topic = NULL,
       pi1 = NULL,
       pi2 = NULL,
-      cantons_main_org = NULL
+      cantons_main_org = NULL,
+      data_budget_by_theme_selected_projects = NULL,
+      data_budget_by_year_selected_projects = NULL,
+      recompute_graph = TRUE
     )
 
     # Store state of inputs to be able to preserve them
@@ -259,6 +284,55 @@ mod_projects_selection_server <- function(id, r_global){
           range_self_funded_budget = input$prop_self_funded,
           cantons_main_org =  input$cantons_main_org
         )
+
+        r_local$recompute_graph <- r_local$recompute_graph + 1
+      })
+
+
+    observeEvent(
+      c(r_global$language, r_local$recompute_graph), {
+
+        # Budget by theme
+        r_local$data_budget_by_theme_selected_projects <-
+          get_data_budget_by_theme_selected_projects(
+            projects_data_sf = r_global$selected_projects_sf,
+            language = r_global$language
+          )
+        plot_contrib_budget_highcharter(
+          id = ns("projects_budget_by_theme_plot"),
+          data_repart = r_local$data_budget_by_theme_selected_projects,
+          plot_options = list(
+            axis_max = max(
+              r_local$data_budget_by_theme_selected_projects$value
+            ),
+            axis_interval = 1e7,
+            series_name = "",
+            prefixer = "CHF"
+          ),
+          session = session
+        )
+
+        # Budget by year
+        r_local$data_budget_by_year_selected_projects <-
+          get_data_budget_by_year_selected_projects(
+            projects_data_sf = r_global$selected_projects_sf
+          )
+        plot_contrib_budget_highcharter(
+          id = ns("projects_year_by_theme_plot"),
+          data_repart = get_data_budget_by_year_selected_projects(
+            projects_data_sf = r_global$selected_projects_sf
+          ),
+          plot_options = list(
+            axis_max = max(
+              r_local$data_budget_by_year_selected_projects$value
+            ),
+            axis_interval = 1e7,
+            series_name = "",
+            prefixer = " CHF"
+          ),
+          session = session
+        )
+
       })
 
     # Set input value based on app language
@@ -336,9 +410,8 @@ mod_projects_selection_server <- function(id, r_global){
             )
           )
         )
+
       })
-
-
 
   })
 }
