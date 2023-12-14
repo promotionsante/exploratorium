@@ -18,5 +18,7 @@ globalVariables(unique(c(
   "col_translated",
   # consolidate_topic_data
   "name_variable", "topic", "topic_value", "none",
+  # filter_projects_data
+  "prop_budget_orga", "total_budget",
   NULL
 )))

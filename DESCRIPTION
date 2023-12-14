@@ -40,6 +40,7 @@ Suggests:
     DT,
     knitr,
     rmarkdown,
+    rsconnect,
     rstudioapi,
     stringr,
     testthat (>= 3.0.0),

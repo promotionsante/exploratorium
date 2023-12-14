@@ -255,10 +255,9 @@ mod_projects_selection_server <- function(id, r_global){
           vec_topics = input$topic,
           vec_pi_1 = input$pi1,
           vec_pi_2 = input$pi2,
-          range_budget = input$budget#,
-          # range_self_funded_budget = input$prop_self_funded
+          range_budget = input$budget,
+          range_self_funded_budget = input$prop_self_funded
         )
-        browser()
       })
 
     observeEvent(

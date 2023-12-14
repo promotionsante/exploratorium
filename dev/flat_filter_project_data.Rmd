@@ -145,20 +145,20 @@ filter_projects_data <- function(
       )
   }
   
-  # if ( 
-  #   !is.null(range_self_funded_budget) 
-  # ) {   
-  #   # Back to percentage scale
-  #   range_self_funded_budget <- range_self_funded_budget / 100
-  #   projects_data_sf <- projects_data_sf |>
-  #     filter(
-  #       budget_orga |>
-  #         between(
-  #           min(range_self_funded_budget),
-  #           max(range_self_funded_budget)
-  #         )
-  #     )
-  # }
+  if (
+    !is.null(range_self_funded_budget)
+  ) {
+    # Back to percentage scale
+    range_self_funded_budget <- range_self_funded_budget / 100
+    projects_data_sf <- projects_data_sf |>
+      filter(
+        prop_budget_orga |>
+          between(
+            min(range_self_funded_budget),
+            max(range_self_funded_budget)
+          )
+      )
+  }
   
   return(projects_data_sf)
 }
