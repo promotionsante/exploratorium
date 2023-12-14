@@ -201,8 +201,22 @@ mod_projects_selection_ui <- function(id){
       ),
 
       div(
+        class = "alltitle",
+        style = "margin-bottom: 20px",
+        "init"
+      ) |>
+        with_i18n("budget_by_theme"),
+
+      div(
         id = ns("projects_budget_by_theme_plot")
       ),
+
+      div(
+        class = "alltitle",
+        style = "margin-bottom: 20px",
+        "init"
+      ) |>
+        with_i18n("budget_by_year"),
 
       div(
         id = ns("projects_year_by_theme_plot")
