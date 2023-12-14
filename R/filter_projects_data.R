@@ -30,7 +30,7 @@ filter_projects_data <- function(
     vec_pi_2 = NULL,
     range_budget = NULL,
     range_self_funded_budget = NULL,
-    canton_main_resp_orga = NULL
+    cantons_main_org = NULL
 ) {
   if ( 
     !is.null(vec_topics) 
@@ -92,6 +92,15 @@ filter_projects_data <- function(
             min(range_self_funded_budget),
             max(range_self_funded_budget)
           )
+      )
+  }
+  
+  if (
+    !is.null(cantons_main_org)
+  ) {
+    projects_data_sf <- projects_data_sf |>
+      filter(
+        id_canton %in% cantons_main_org
       )
   }
   
