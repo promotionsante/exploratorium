@@ -26,18 +26,44 @@
 filter_projects_data <- function(
     projects_data_sf,
     vec_topics = NULL,
+    vec_pi_1 = NULL,
+    vec_pi_2 = NULL,
     range_budget,
     range_self_funded_budget,
     canton_main_resp_orga
 ) {
   if ( 
-    !missing(vec_topics) 
+    !is.null(vec_topics) 
   ) {
     projects_data_sf <- projects_data_sf |>
       filter(
         if_any(
           contains(vec_topics),
           ~ .x == 1
+        )
+      )
+  }  
+  
+  if ( 
+    !is.null(vec_pi_1) 
+  ) {
+    projects_data_sf <- projects_data_sf |>
+      filter(
+        if_any(
+          contains(vec_pi_1),
+          ~ .x == "X" 
+        )
+      )
+  }  
+  
+  if ( 
+    !is.null(vec_pi_2) 
+  ) {
+    projects_data_sf <- projects_data_sf |>
+      filter(
+        if_any(
+          contains(vec_pi_2),
+          ~ .x == "X" 
         )
       )
   }  
