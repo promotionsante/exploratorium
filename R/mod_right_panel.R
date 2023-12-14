@@ -43,6 +43,7 @@ mod_right_panel_server <- function(id, r_global){
 
     r_local <- reactiveValues()
 
+    # Set app language and load appropriate dataset
     observeEvent(
       input$language_switch, {
         language <- if (

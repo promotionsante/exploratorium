@@ -43,6 +43,7 @@ mod_map_server <- function(id, r_global){
         )
       })
 
+    # Draw appropriate map
     observeEvent(
       c(
         r_global$id_selected_project,
@@ -72,6 +73,7 @@ mod_map_server <- function(id, r_global){
       r_local$map_to_draw
     })
 
+    # Detect click on map
     observeEvent(
       input$map_click, {
 
@@ -89,6 +91,7 @@ mod_map_server <- function(id, r_global){
 
       })
 
+    # Detect project selection
     observeEvent(
       input$map_marker_click$id,
       ignoreNULL = TRUE,

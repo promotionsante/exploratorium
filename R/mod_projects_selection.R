@@ -261,6 +261,7 @@ mod_projects_selection_server <- function(id, r_global){
         )
       })
 
+    # Set input value based on app language
     observeEvent(
       r_global$language, {
 
