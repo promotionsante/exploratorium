@@ -1,3 +1,8 @@
+# observatoire 0.8.0
+
+* Users can now filter projects on projects selection view
+* If target criteria correspond to no single project an empty map with an informative
+message is drawn.
 
 # observatoire 0.7.3
 
