@@ -243,7 +243,8 @@ mod_projects_selection_server <- function(id, r_global){
       pi2 = NULL,
       cantons_main_org = NULL,
       data_budget_by_theme_selected_projects = NULL,
-      data_budget_by_year_selected_projects = NULL
+      data_budget_by_year_selected_projects = NULL,
+      recompute_graph = TRUE
     )
 
     # Store state of inputs to be able to preserve them
@@ -284,6 +285,14 @@ mod_projects_selection_server <- function(id, r_global){
           cantons_main_org =  input$cantons_main_org
         )
 
+        r_local$recompute_graph <- r_local$recompute_graph + 1
+      })
+
+
+    observeEvent(
+      c(r_global$language, r_local$recompute_graph), {
+
+        # Budget by theme
         r_local$data_budget_by_theme_selected_projects <-
           get_data_budget_by_theme_selected_projects(
             projects_data_sf = r_global$selected_projects_sf,
@@ -303,6 +312,7 @@ mod_projects_selection_server <- function(id, r_global){
           session = session
         )
 
+        # Budget by year
         r_local$data_budget_by_year_selected_projects <-
           get_data_budget_by_year_selected_projects(
             projects_data_sf = r_global$selected_projects_sf
