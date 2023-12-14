@@ -249,12 +249,19 @@ mod_projects_selection_server <- function(id, r_global){
       })
     observeEvent(
       input$filter_projects, {
+        log_all_current_module_input()
         r_global$selected_projects_sf <- filter_projects_data(
           projects_data_sf = r_global$projects_data_sf,
-          vec_topics = input$topic
+          vec_topics = input$topic,
+          vec_pi_1 = input$pi1,
+          vec_pi_2 = input$pi2,
+          range_budget = input$budget,
+          range_self_funded_budget = input$prop_self_funded,
+          cantons_main_org =  input$cantons_main_org
         )
       })
 
+    # Set input value based on app language
     observeEvent(
       r_global$language, {
 
@@ -294,6 +301,7 @@ mod_projects_selection_server <- function(id, r_global){
           session = session,
           inputId = "budget",
           range = budget_range,
+          value = budget_range
         )
 
         prop_self_funded_range <- get_prop_self_funded_range(
@@ -303,6 +311,7 @@ mod_projects_selection_server <- function(id, r_global){
           session = session,
           inputId = "prop_self_funded",
           range = prop_self_funded_range,
+          value = prop_self_funded_range
         )
 
         updatePickerInput(

@@ -32,12 +32,12 @@ mod_one_project_server <- function(id, r_global){
       card_ui = NULL
     )
 
+    # Take user back to project selection view
     observeEvent(
       input$back_to_project_selection_view,
       {
         r_global$id_selected_project <- NULL
       })
-
     observeEvent(
       r_global$click_map,
       {
@@ -46,6 +46,7 @@ mod_one_project_server <- function(id, r_global){
         }
       })
 
+    # Construct card to be displayed based on project id and app language
     observeEvent(
       c(
         r_global$id_selected_project,

@@ -33,6 +33,7 @@ flat_fct_utils.Rmd:
   - R/get_back_arrow_html.R
   - R/get_trad_title.R
   - R/languageswitchinput.R
+  - R/log_all_current_module_input.R
   - R/fct_utils.R
   tests:
   - tests/testthat/test-fct_utils.R
@@ -41,6 +42,7 @@ flat_fct_utils.Rmd:
   - tests/testthat/test-languageswitchinput.R
   - tests/testthat/test-create_skeleton_dic.R
   - tests/testthat/test-get_back_arrow_html.R
+  - tests/testthat/test-log_all_current_module_input.R
   vignettes: []
   inflate:
     flat_file: dev/flat_fct_utils.Rmd
@@ -93,7 +95,7 @@ flat_map.Rmd:
   inflate:
     flat_file: dev/flat_map.Rmd
     vignette_name: Draw the Switzerland maps with projects
-    open_vignette: true
+    open_vignette: false
     check: false
     document: true
     overwrite: 'yes'
