@@ -24,6 +24,18 @@ Shiny.addCustomMessageHandler('createChart', function(message) {
 
 });
 
+function countKeysMatchingPattern(obj, pattern) {
+  const regex = new RegExp(pattern);
+  let count = 0;
+
+  for (const key in obj) {
+    if (regex.test(key)) {
+      count++;
+    }
+  }
+
+  return count;
+}
 
 function createChart(data) {
 
@@ -35,7 +47,8 @@ function createChart(data) {
     value_tooltip: data_to_compare[place_to_compare].value_tooltip
   }));
 
-  const colorsArray = ['#f59300', '#f59300', '#f59300', '#f59300'];
+  const number_items = countKeysMatchingPattern(data_to_compare, "place")
+  const colorsArray = Array.from({ length: number_items }, () => '#f59300');
 
   chartData.forEach((placeData, index) => {
    placeData.color = colorsArray[index];
