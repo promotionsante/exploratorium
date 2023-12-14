@@ -249,13 +249,14 @@ mod_projects_selection_server <- function(id, r_global){
       })
     observeEvent(
       input$filter_projects, {
-        # browser()
         log_all_current_module_input()
         r_global$selected_projects_sf <- filter_projects_data(
           projects_data_sf = r_global$projects_data_sf,
           vec_topics = input$topic,
           vec_pi_1 = input$pi1,
-          vec_pi_2 = input$pi2
+          vec_pi_2 = input$pi2,
+          range_budget = input$budget#,
+          # range_self_funded_budget = input$prop_self_funded
         )
       })
 
