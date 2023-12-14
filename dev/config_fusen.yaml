@@ -95,7 +95,7 @@ flat_map.Rmd:
   inflate:
     flat_file: dev/flat_map.Rmd
     vignette_name: Draw the Switzerland maps with projects
-    open_vignette: true
+    open_vignette: false
     check: false
     document: true
     overwrite: 'yes'

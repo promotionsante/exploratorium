@@ -4,7 +4,7 @@
 \alias{draw_map_selected_projects}
 \title{Draw map of selected projects}
 \usage{
-draw_map_selected_projects(projects_data_sf, zoom_level = 8)
+draw_map_selected_projects(projects_data_sf, zoom_level = 8, language)
 }
 \arguments{
 \item{projects_data_sf}{A sf data.frame containing coordinates of project 
@@ -12,6 +12,8 @@ main organisation and project `short_title`.}
 
 \item{zoom_level}{An integer. The zoom level for the map. Defines
 default zoom level.}
+
+\item{language}{A character string. App language "fr", "de"...}
 }
 \value{
 A leaflet object.

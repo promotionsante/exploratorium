@@ -47,7 +47,8 @@ mod_map_server <- function(id, r_global){
     observeEvent(
       c(
         r_global$id_selected_project,
-        r_global$selected_projects_sf
+        r_global$selected_projects_sf,
+        r_global$language
       ),
       ignoreInit = TRUE,
       ignoreNULL = FALSE,
@@ -57,7 +58,8 @@ mod_map_server <- function(id, r_global){
         ) {
           r_local$map_to_draw <- draw_map_selected_projects(
             projects_data_sf = r_global$selected_projects_sf,
-            zoom_level = r_global$zoom_level
+            zoom_level = r_global$zoom_level,
+            language = r_global$language
           )
         } else {
           r_local$map_to_draw <- draw_map_focus_one_project(

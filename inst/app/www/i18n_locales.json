@@ -12,7 +12,8 @@
             "filter_projects" : "Projekte filtern",
             "cantons_main_org_title" : "Bitte Kantone auswählen",
             "cantons_main_org_select_all_text" : "Alle auswählen",
-            "cantons_main_org_deselect_all_text" : "Alle abwählen"
+            "cantons_main_org_deselect_all_text" : "Alle abwählen",
+            "no_target_projects" : "Kein Projekt erfüllt diese Auswahlkriterien"
         }
     },
     "fr": {
@@ -28,7 +29,8 @@
             "filter_projects" : "Filtrer les projets",
             "cantons_main_org_title" : "Veuillez sélectionner les cantons",
             "cantons_main_org_select_all_text" : "Tout sélectionner",
-            "cantons_main_org_deselect_all_text" : "Tout désélectionner"
+            "cantons_main_org_deselect_all_text" : "Tout désélectionner",
+            "no_target_projects" : "Aucun projet ne répond à ces critères de sélection"
         }
     }
 }
