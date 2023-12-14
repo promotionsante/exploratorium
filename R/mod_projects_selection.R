@@ -198,6 +198,10 @@ mod_projects_selection_ui <- function(id){
             with_i18n("filter_projects"),
           class = "filter-projects-button"
         )
+      ),
+
+      div(
+        id = ns("projects_budget_by_theme_plot")
       )
 
     )
@@ -258,6 +262,15 @@ mod_projects_selection_server <- function(id, r_global){
           range_budget = input$budget,
           range_self_funded_budget = input$prop_self_funded,
           cantons_main_org =  input$cantons_main_org
+        )
+
+        plot_contrib_budget_highcharter(
+          id = ns("projects_budget_by_theme_plot"),
+          data_repart = get_data_budget_by_theme_selected_projects(
+            projects_data_sf = r_global$selected_projects_sf,
+            language = r_global$language
+          ),
+          session = session
         )
       })
 
@@ -337,8 +350,6 @@ mod_projects_selection_server <- function(id, r_global){
           )
         )
       })
-
-
 
   })
 }
