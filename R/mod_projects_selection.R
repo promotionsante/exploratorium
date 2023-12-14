@@ -241,7 +241,9 @@ mod_projects_selection_server <- function(id, r_global){
       topic = NULL,
       pi1 = NULL,
       pi2 = NULL,
-      cantons_main_org = NULL
+      cantons_main_org = NULL,
+      data_budget_by_theme_selected_projects = NULL,
+      data_budget_by_year_selected_projects = NULL
     )
 
     # Store state of inputs to be able to preserve them
@@ -282,19 +284,41 @@ mod_projects_selection_server <- function(id, r_global){
           cantons_main_org =  input$cantons_main_org
         )
 
-        plot_contrib_budget_highcharter(
-          id = ns("projects_budget_by_theme_plot"),
-          data_repart = get_data_budget_by_theme_selected_projects(
+        r_local$data_budget_by_theme_selected_projects <-
+          get_data_budget_by_theme_selected_projects(
             projects_data_sf = r_global$selected_projects_sf,
             language = r_global$language
+          )
+        plot_contrib_budget_highcharter(
+          id = ns("projects_budget_by_theme_plot"),
+          data_repart = r_local$data_budget_by_theme_selected_projects,
+          plot_options = list(
+            axis_max = max(
+              r_local$data_budget_by_theme_selected_projects$value
+            ),
+            axis_interval = 1e7,
+            series_name = "",
+            prefixer = "CHF"
           ),
           session = session
         )
 
+        r_local$data_budget_by_year_selected_projects <-
+          get_data_budget_by_year_selected_projects(
+            projects_data_sf = r_global$selected_projects_sf
+          )
         plot_contrib_budget_highcharter(
           id = ns("projects_year_by_theme_plot"),
           data_repart = get_data_budget_by_year_selected_projects(
             projects_data_sf = r_global$selected_projects_sf
+          ),
+          plot_options = list(
+            axis_max = max(
+              r_local$data_budget_by_year_selected_projects$value
+            ),
+            axis_interval = 1e7,
+            series_name = "",
+            prefixer = " CHF"
           ),
           session = session
         )
@@ -376,6 +400,7 @@ mod_projects_selection_server <- function(id, r_global){
             )
           )
         )
+
       })
 
   })
