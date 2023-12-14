@@ -35,40 +35,40 @@ plot_contrib_budget_highcharter <- function(
       prefixer = "%"
     ),
     session
-    ){
+){
   
-    # Transform the data in the right format
-    data_to_compare <- pmap(
-      list(
-        data_repart$name, 
-        data_repart$value, 
-        data_repart$value_tooltip
-      ), 
-      ~ list(
-        name = ..1, 
-        value = ..2, 
-        value_tooltip = ..3
+  # Transform the data in the right format
+  data_to_compare <- pmap(
+    list(
+      data_repart$name, 
+      data_repart$value, 
+      data_repart$value_tooltip
+    ), 
+    ~ list(
+      name = ..1, 
+      value = ..2, 
+      value_tooltip = ..3
+    )
+  ) |> 
+    set_names(
+      paste0(
+        "place", 
+        seq(from = 1, to = nrow(data_repart), by = 1)
       )
-      ) |> 
-      set_names(
-        paste0(
-          "place", 
-          seq(from = 1, to = nrow(data_repart), by = 1)
-          )
-        )
-
-    data <- list(
-      id = id,
-      plot_options = plot_options,
-      data_to_compare = data_to_compare
     )
   
-    # Transform the data in the right format
-    session$sendCustomMessage(
-      type = "createChart",
-      message = list(
-        data
-        )
+  data <- list(
+    id = id,
+    plot_options = plot_options,
+    data_to_compare = data_to_compare
+  )
+  
+  # Transform the data in the right format
+  session$sendCustomMessage(
+    type = "createChart",
+    message = list(
+      data
     )
-
+  )
+  
 }

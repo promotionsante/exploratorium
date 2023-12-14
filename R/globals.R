@@ -20,5 +20,9 @@ globalVariables(unique(c(
   "name_variable", "topic", "topic_value", "none",
   # filter_projects_data
   "prop_budget_orga", "total_budget",
+  # get_data_budget_by_theme_selected_projects
+  "name", "present", "value_tooltip",
+  # get_data_budget_by_year_selected_projects
+  "funding_round",
   NULL
 )))

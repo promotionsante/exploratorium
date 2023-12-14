@@ -136,10 +136,12 @@ flat_plot_budget_subfunctions.Rmd:
   state: active
   R:
   - R/get_data_budget_by_theme_selected_projects.R
+  - R/get_data_budget_by_year_selected_projects.R
   - R/get_data_repart_budget_one_project.R
   tests:
   - tests/testthat/test-get_data_repart_budget_one_project.R
   - tests/testthat/test-get_data_budget_by_theme_selected_projects.R
+  - tests/testthat/test-get_data_budget_by_year_selected_projects.R
   vignettes: []
   inflate:
     flat_file: dev/flat_plot_budget_subfunctions.Rmd

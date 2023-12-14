@@ -202,6 +202,10 @@ mod_projects_selection_ui <- function(id){
 
       div(
         id = ns("projects_budget_by_theme_plot")
+      ),
+
+      div(
+        id = ns("projects_year_by_theme_plot")
       )
 
     )
@@ -272,6 +276,15 @@ mod_projects_selection_server <- function(id, r_global){
           ),
           session = session
         )
+
+        plot_contrib_budget_highcharter(
+          id = ns("projects_year_by_theme_plot"),
+          data_repart = get_data_budget_by_year_selected_projects(
+            projects_data_sf = r_global$selected_projects_sf
+          ),
+          session = session
+        )
+
       })
 
     # Set input value based on app language
