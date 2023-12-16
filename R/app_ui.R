@@ -1,3 +1,21 @@
+
+#' Add start-up screen
+#'
+#' Wait until the app is ready to display UI
+#'
+#' @importFrom waiter useWaiter waiterPreloader spin_pulsar
+#' @noRd
+startup_screen <- function() {
+  tagList(
+    useWaiter(),
+    waiterPreloader(
+      html = spin_pulsar(),
+      # Same color as --beige-background in custom.css
+      color = "#FAFAF8"
+    )
+  )
+}
+
 #' The application User-Interface
 #'
 #' @param request Internal parameter for `{shiny}`.
@@ -10,6 +28,7 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     # Your application UI logic
     fluidPage(
+      startup_screen(),
       div(
         class = "container-map",
         column(
