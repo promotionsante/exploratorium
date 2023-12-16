@@ -1,3 +1,7 @@
+# observatoire 0.9.1
+
+* Add startup screen to hide app initialization glitches to the users
+
 # observatoire 0.9.0
 
 * Display graphs with budget by theme and year in project selection view
@@ -6,7 +10,7 @@
 
 * Users can now filter projects on projects selection view
 * If target criteria correspond to no single project an empty map with an informative
-message is drawn.
+message is drawn
 
 # observatoire 0.7.3
 
@@ -14,7 +18,7 @@ message is drawn.
 
 # observatoire 0.7.2
 
-* Project JS graph only displayed in project view.
+* Project JS graph only displayed in project view
 
 # observatoire 0.7.1
 
