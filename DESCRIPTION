@@ -35,7 +35,8 @@ Imports:
     tidygeocoder,
     tidyr,
     tidyselect,
-    tools
+    tools,
+    waiter
 Suggests: 
     DT,
     knitr,
