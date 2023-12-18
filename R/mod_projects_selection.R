@@ -126,7 +126,7 @@ mod_projects_selection_ui <- function(id){
             label = NULL,
             min = 100000,
             max = 6e6,
-            value = c(2000000, 3000000),
+            value = c(100000, 6e6),
             width = "100%",
             color = "#578397",
             format = wNumbFormat(
@@ -155,7 +155,7 @@ mod_projects_selection_ui <- function(id){
             label = NULL,
             min = 0,
             max = 100,
-            value = c(20, 40),
+            value = c(0, 100),
             width = "100%",
             color = "#578397",
             format = wNumbFormat(
@@ -260,6 +260,14 @@ mod_projects_selection_server <- function(id, r_global){
     observeEvent(
       input$pi2, {
         r_local$pi2 <- input$pi2
+      })
+    observeEvent(
+      input$budget_range, {
+        r_local$budget_range <- input$budget_range
+      })
+    observeEvent(
+      input$prop_self_funded, {
+        r_local$prop_self_funded <- input$prop_self_funded
       })
     observeEvent(
       input$cantons_main_org, {
@@ -377,7 +385,7 @@ mod_projects_selection_server <- function(id, r_global){
           session = session,
           inputId = "budget",
           range = budget_range,
-          value = budget_range
+          value = r_local$budget_range
         )
 
         prop_self_funded_range <- get_prop_self_funded_range(
@@ -387,7 +395,7 @@ mod_projects_selection_server <- function(id, r_global){
           session = session,
           inputId = "prop_self_funded",
           range = prop_self_funded_range,
-          value = prop_self_funded_range
+          value =  r_local$prop_self_funded
         )
 
         updatePickerInput(
