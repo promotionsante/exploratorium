@@ -6,6 +6,7 @@
 #' the binary `topic_` columns is identical
 #' 
 #' @param data Tibble. Raw data about projects, with the good columns names.
+#' @param dic_variables Tibble. Variables dictionaries. Mainly used for examples and unit testing purpose.
 #' 
 #' @return A tibble.
 #' 
@@ -25,20 +26,25 @@
 #'   clean_raw_data() |> 
 #'   consolidate_topic_data()
 consolidate_topic_data <- function(
-    data
+    data,
+    dic_variables = NULL
 ) {
   
-  dic_variables_topic_de <- suppressMessages(
-    read_csv2(
-      system.file(
-        "data-dic", 
-        "dic_variables.csv", 
-        package = "observatoire"
-      ),
-      show_col_types = FALSE
-    ) 
-  ) |> 
-    select(de, name_variable) |> 
+  if (is.null(dic_variables)) {
+    dic_variables <- suppressMessages(
+      read_csv2(
+        system.file(
+          "data-dic", 
+          "dic_variables.csv", 
+          package = "observatoire"
+          ),
+        show_col_types = FALSE
+      )
+    )
+  }
+  
+  dic_variables_topic_de <- dic_variables |> 
+    select(name_col_in_raw_data, name_variable) |> 
     filter(
       grepl(
         "^topic_",
@@ -65,7 +71,7 @@ consolidate_topic_data <- function(
   data_topic_in_english <- data_separated_by_topic |> 
     full_join(
       dic_variables_topic_de,
-      by = c("topic" = "de")
+      by = c("topic" = "name_col_in_raw_data")
     ) |> 
     select(-topic)
   

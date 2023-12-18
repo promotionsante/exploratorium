@@ -26,7 +26,12 @@ To create the interactive plot, you can use the `plot_budget_highcharter()` func
 #' 
 #' @param id Character. Id of the container in the DOM.
 #' @param data_repart Tibble. Data to be plotted.
-#' @param plot_options List. List of options for the plot.
+#' @param x_axis_labels Character. Should the labels on the x axis be displayed.
+#' @param axis_max Integer. Maximum value for the axis.
+#' @param axis_interval Integer. Interval for the axis.
+#' @param font_size_labels_col Character. Font size for the labels next to the bars.
+#' @param series_name Character. Series name.
+#' @param prefixer Character. Prefixer.
 #' @param session Session object.
 #' 
 #' @importFrom purrr pmap set_names
@@ -38,12 +43,12 @@ To create the interactive plot, you can use the `plot_budget_highcharter()` func
 plot_budget_highcharter <- function(
     id,
     data_repart,
-    plot_options = list(
-      axis_max = 100,
-      axis_interval = 20,
-      series_name = "",
-      prefixer = "%"
-    ),
+    x_axis_labels = "true", 
+    axis_max = 100,
+    axis_interval = 20,
+    font_size_labels_col = "16px",
+    series_name = "",
+    prefixer = "%",
     session
 ){
   
@@ -69,7 +74,14 @@ plot_budget_highcharter <- function(
   
   data <- list(
     id = id,
-    plot_options = plot_options,
+    plot_options = list(
+      x_axis_labels = x_axis_labels,
+      axis_max = axis_max,
+      axis_interval = axis_interval,
+      font_size_labels_col = font_size_labels_col,
+      series_name = series_name,
+      prefixer = prefixer
+    ),
     data_to_compare = data_to_compare
   )
   

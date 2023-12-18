@@ -296,19 +296,21 @@ mod_projects_selection_server <- function(id, r_global){
         r_local$data_budget_by_theme_selected_projects <-
           get_data_budget_by_theme_selected_projects(
             projects_data_sf = r_global$selected_projects_sf,
-            language = r_global$language
+            language = r_global$language,
+            topic = r_local$topic
           )
+
         plot_budget_highcharter(
           id = ns("projects_budget_by_theme_plot"),
           data_repart = r_local$data_budget_by_theme_selected_projects,
-          plot_options = list(
-            axis_max = max(
-              r_local$data_budget_by_theme_selected_projects$value
-            ),
-            axis_interval = 1e7,
-            series_name = "",
-            prefixer = "CHF"
+          x_axis_labels = "false",
+          axis_max = max(
+            r_local$data_budget_by_theme_selected_projects$value
           ),
+          axis_interval = 1e7,
+          font_size_labels_col = "10px",
+          series_name = "",
+          prefixer = " CHF",
           session = session
         )
 
@@ -317,19 +319,18 @@ mod_projects_selection_server <- function(id, r_global){
           get_data_budget_by_year_selected_projects(
             projects_data_sf = r_global$selected_projects_sf
           )
+
         plot_budget_highcharter(
           id = ns("projects_year_by_theme_plot"),
           data_repart = get_data_budget_by_year_selected_projects(
             projects_data_sf = r_global$selected_projects_sf
           ),
-          plot_options = list(
-            axis_max = max(
-              r_local$data_budget_by_year_selected_projects$value
-            ),
-            axis_interval = 1e7,
-            series_name = "",
-            prefixer = " CHF"
+          axis_max = max(
+            r_local$data_budget_by_year_selected_projects$value
           ),
+          axis_interval = 1e7,
+          series_name = "",
+          prefixer = " CHF",
           session = session
         )
 

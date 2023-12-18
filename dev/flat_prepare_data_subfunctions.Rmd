@@ -166,7 +166,7 @@ add_col_raw_data <- function(
   }
   
   # Check if all columns are present
-  all_expected_columns_are_present <- all(sort(colnames(data)) == sort(dic_variables$de))
+  all_expected_columns_are_present <- all(sort(colnames(data)) == sort(dic_variables$name_col_in_raw_data))
   if (isFALSE(all_expected_columns_are_present)) {
     stop(
       paste(
@@ -180,7 +180,7 @@ add_col_raw_data <- function(
   # Replace german column names with the names of the variables
   colnames(data) <- dic_variables$name_variable[
     match(
-      dic_variables$de, 
+      dic_variables$name_col_in_raw_data, 
       names(data)
     )
   ]
@@ -341,6 +341,7 @@ test_that("Test that the cleaning of the raw data is ok", {
 #' the binary `topic_` columns is identical
 #' 
 #' @param data Tibble. Raw data about projects, with the good columns names.
+#' @param dic_variables Tibble. Variables dictionaries. Mainly used for examples and unit testing purpose.
 #' 
 #' @return A tibble.
 #' 
@@ -348,20 +349,25 @@ test_that("Test that the cleaning of the raw data is ok", {
 #' @importFrom tidyr separate_rows complete pivot_wider
 #' @noRd
 consolidate_topic_data <- function(
-    data
+    data,
+    dic_variables = NULL
 ) {
   
-  dic_variables_topic_de <- suppressMessages(
-    read_csv2(
-      system.file(
-        "data-dic", 
-        "dic_variables.csv", 
-        package = "observatoire"
-      ),
-      show_col_types = FALSE
-    ) 
-  ) |> 
-    select(de, name_variable) |> 
+  if (is.null(dic_variables)) {
+    dic_variables <- suppressMessages(
+      read_csv2(
+        system.file(
+          "data-dic", 
+          "dic_variables.csv", 
+          package = "observatoire"
+          ),
+        show_col_types = FALSE
+      )
+    )
+  }
+  
+  dic_variables_topic_de <- dic_variables |> 
+    select(name_col_in_raw_data, name_variable) |> 
     filter(
       grepl(
         "^topic_",
@@ -388,7 +394,7 @@ consolidate_topic_data <- function(
   data_topic_in_english <- data_separated_by_topic |> 
     full_join(
       dic_variables_topic_de,
-      by = c("topic" = "de")
+      by = c("topic" = "name_col_in_raw_data")
     ) |> 
     select(-topic)
   
@@ -454,6 +460,11 @@ toy_data_pgv |>
 ```{r tests-consolidate_topic_data}
 test_that("consolidate_topic_data() preserves information", {
   
+  # Load the toy datasets
+  data("toy_data_pgv")
+  data("toy_dic_variables")
+  data("toy_cantons_sf")
+
   # Same column names before and after consolidation
   toy_data <- toy_data_pgv |> 
     add_col_raw_data(
@@ -484,17 +495,8 @@ test_that("consolidate_topic_data() preserves information", {
       topic
     )
   
-  dic_variables_topic_de <- suppressMessages(
-    read_csv2(
-      system.file(
-        "data-dic", 
-        "dic_variables.csv", 
-        package = "observatoire"
-      ),
-      show_col_types = FALSE
-    ) 
-  ) |> 
-    dplyr::select(de, name_variable) |> 
+  dic_variables_topic_de <- toy_dic_variables |> 
+    dplyr::select(name_col_in_raw_data, name_variable) |> 
     dplyr::filter(
       grepl(
         "^topic_",
@@ -520,7 +522,7 @@ test_that("consolidate_topic_data() preserves information", {
     ) |> 
     dplyr::select(
       short_title,
-      topic = de
+      topic = name_col_in_raw_data
     ) |> 
     dplyr::arrange(
       short_title,

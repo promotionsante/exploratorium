@@ -3,12 +3,13 @@
 #' Get budget data by theme for selected projects
 #' 
 #' @param projects_data_sf Tibble. Data projects.
-#' @param language A character string. Language, 'fr' or 'de'.
-#'
+#' @param language Character. Language, 'fr' or 'de'.
+#' @param topic Character. A specific topic/theme in the form topic_
+#' 
 #' @return A tibble with three columns: `name`, `value` and `value_tooltip`
 #' 
 #' @importFrom sf st_drop_geometry
-#' @importFrom dplyr select starts_with filter group_by summarise mutate inner_join all_of
+#' @importFrom dplyr select starts_with filter group_by summarise mutate inner_join all_of arrange desc
 #' @importFrom tidyr pivot_longer
 #' @importFrom scales number
 #' @importFrom readr read_csv2
@@ -16,15 +17,32 @@
 #' 
 #' @noRd
 #' @examples
-#' language <- "fr"
-#' projects_data_sf <- load_projects_data(language) 
+#' data("toy_projects_data_sf")
+#'
 #' get_data_budget_by_theme_selected_projects(
-#'   projects_data_sf = projects_data_sf,
-#'   language = language
+#'   projects_data_sf = toy_projects_data_sf,
+#'   language = "fr"
+#' )
+#'
+#' get_data_budget_by_theme_selected_projects(
+#'   projects_data_sf = toy_projects_data_sf,
+#'   language = "fr", 
+#'   topic = "topic_diabetes"
+#' )
+#'
+#' get_data_budget_by_theme_selected_projects(
+#'   projects_data_sf = toy_projects_data_sf,
+#'   language = "fr", 
+#'   topic = c(
+#'     "topic_diabetes", 
+#'     "topic_addictions"
+#'   )
+#'   
 #' )
 get_data_budget_by_theme_selected_projects <- function(
     projects_data_sf, 
-    language
+    language, 
+    topic = NULL
 ) {
   
   data_graph_topic <-  projects_data_sf |> 
@@ -52,6 +70,12 @@ get_data_budget_by_theme_selected_projects <- function(
       )
     )
   
+  # Filter only a specific project
+  if (!is.null(topic)) {
+    data_graph_topic <- data_graph_topic |> 
+      filter(name %in% topic)
+  }
+  
   dic_variables <- suppressMessages(
     read_csv2(
       file = app_sys("data-dic/dic_variables.csv"),
@@ -68,6 +92,9 @@ get_data_budget_by_theme_selected_projects <- function(
       name = all_of(language), 
       value, 
       value_tooltip
+    ) |> 
+    arrange(
+      desc(value)
     )
   
   return(data_graph_topic_translated)

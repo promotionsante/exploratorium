@@ -17,7 +17,7 @@ globalVariables(unique(c(
   # translate_values_in_col
   "col_translated",
   # consolidate_topic_data
-  "name_variable", "topic", "topic_value", "none",
+  "name_variable", "topic", "topic_value", "none", "name_col_in_raw_data",
   # filter_projects_data
   "prop_budget_orga", "total_budget",
   # get_data_budget_by_theme_selected_projects

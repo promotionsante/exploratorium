@@ -1,5 +1,6 @@
 # observatoire 0.9.2
 
+* Improve the plot of the budget by theme
 * Make all the projects visible on the clusters of points on the map
 * Make the "Filter" button more visible
 
