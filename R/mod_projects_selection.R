@@ -309,7 +309,7 @@ mod_projects_selection_server <- function(id, r_global){
             topic = r_local$topic
           )
 
-        plot_budget_highcharter(
+        plot_budget_barchart(
           id = ns("projects_budget_by_theme_plot"),
           data_repart = r_local$data_budget_by_theme_selected_projects,
           x_axis_labels = "false",
@@ -329,7 +329,7 @@ mod_projects_selection_server <- function(id, r_global){
             projects_data_sf = r_global$selected_projects_sf
           )
 
-        plot_budget_highcharter(
+        plot_budget_linechart(
           id = ns("projects_year_by_theme_plot"),
           data_repart = get_data_budget_by_year_selected_projects(
             projects_data_sf = r_global$selected_projects_sf

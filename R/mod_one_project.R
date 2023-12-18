@@ -97,7 +97,7 @@ mod_one_project_server <- function(id, r_global){
             ns("project_repart_budget_plot")
           )
 
-          plot_budget_highcharter(
+          plot_budget_barchart(
             id = ns("project_repart_budget_plot"),
             data_repart = get_data_repart_budget_one_project(
               data_projects = r_global$projects_data_sf,
