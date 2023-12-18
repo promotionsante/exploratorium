@@ -20,12 +20,12 @@
 #'   value_tooltip = c("75 000 CHF", "25 000 CHF")
 #' )
 #'
-#' # plot_contrib_budget_highcharter(
+#' # plot_budget_highcharter(
 #' #   id = "id-in-the-dom-maybe-with-ns",
 #' #   data_repart = toy_data_repart,
 #' #   session = session
 #' # )
-plot_contrib_budget_highcharter <- function(
+plot_budget_highcharter <- function(
     id,
     data_repart,
     plot_options = list(

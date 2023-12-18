@@ -2,7 +2,7 @@
 
 export(draw_map_focus_one_project)
 export(draw_map_selected_projects)
-export(plot_contrib_budget_highcharter)
+export(plot_budget_highcharter)
 export(prepare_app_data)
 export(run_app)
 import(shiny)

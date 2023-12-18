@@ -97,7 +97,8 @@ draw_map_selected_projects <- function(
             color = psch_orange(), 
             opacity = 0.5
           ),
-          freezeAtZoom = zoom_level
+          freezeAtZoom = zoom_level, 
+          spiderfyDistanceMultiplier = 1.5
         )
       )
   }

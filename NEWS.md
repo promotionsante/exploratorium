@@ -1,3 +1,8 @@
+# observatoire 0.9.2
+
+* Make all the projects visible on the clusters of points on the map
+* Make the "Filter" button more visible
+
 # observatoire 0.9.1
 
 * Add startup screen to hide app initialization glitches to the users
