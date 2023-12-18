@@ -57,6 +57,8 @@ function createChart(data) {
   const id = data[0].id;
   const axis_max = data[0].plot_options.axis_max;
   const axis_interval = data[0].plot_options.axis_interval;
+  const x_axis_labels = JSON.parse(data[0].plot_options.x_axis_labels);
+  const font_size_labels_col = data[0].plot_options.font_size_labels_col;
   const series_name = data[0].plot_options.series_name;
   const prefixer = data[0].plot_options.prefixer;
 
@@ -110,6 +112,7 @@ function createChart(data) {
         text: ''
       },
       labels: {
+        enabled: x_axis_labels,
         style: {
           fontSize: '10px',
           color: '#000000',
@@ -123,17 +126,20 @@ function createChart(data) {
     },
     plotOptions: {
       bar: {
+        pointPadding: 1, // Adjust the spacing between bars within a group
+    groupPadding: 0.1, // Adjust the spacing between groups
+        pointWidth: 20,
         dataLabels: {
           enabled: true,
           inside: false,
           style: {
             fontFamily: 'DINPro',
-            fontSize: '16px',
+            fontSize: font_size_labels_col,
             fontWeight: 'bold',
             color: '#000000'
           },
           formatter: function() {
-            return this.y + prefixer;
+            return Highcharts.numberFormat(this.y, 0, ".", " ") + prefixer;
           }
         }
       }

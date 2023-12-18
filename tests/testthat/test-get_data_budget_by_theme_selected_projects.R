@@ -3,11 +3,11 @@
 test_that(
   "get_data_budget_by_theme_selected_projects() yield propre data.frame for FR data", {
   
-  language <- "fr"
-  projects_data_sf <- load_projects_data(language) 
+  data("toy_projects_data_sf")
+    
   data_graph_topic <- get_data_budget_by_theme_selected_projects(
-    projects_data_sf = projects_data_sf,
-    language = language
+    projects_data_sf = toy_projects_data_sf,
+    language = "fr"
   )
   
   # Colnames and classes are the expected ones
@@ -25,11 +25,11 @@ test_that(
 test_that(
   "get_data_budget_by_theme_selected_projects() yield propre data.frame for DE data", {
   
-  language <- "de"
-  projects_data_sf <- load_projects_data(language) 
+  data("toy_projects_data_sf")
+    
   data_graph_topic <- get_data_budget_by_theme_selected_projects(
-    projects_data_sf = projects_data_sf,
-    language = language
+    projects_data_sf = toy_projects_data_sf,
+    language = "de"
   )
   
   # Colnames and classes are the expected ones

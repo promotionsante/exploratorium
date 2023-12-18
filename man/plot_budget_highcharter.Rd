@@ -7,8 +7,12 @@
 plot_budget_highcharter(
   id,
   data_repart,
-  plot_options = list(axis_max = 100, axis_interval = 20, series_name = "", prefixer =
-    "\%"),
+  x_axis_labels = "true",
+  axis_max = 100,
+  axis_interval = 20,
+  font_size_labels_col = "16px",
+  series_name = "",
+  prefixer = "\%",
   session
 )
 }
@@ -17,7 +21,17 @@ plot_budget_highcharter(
 
 \item{data_repart}{Tibble. Data to be plotted.}
 
-\item{plot_options}{List. List of options for the plot.}
+\item{x_axis_labels}{Character. Should the labels on the x axis be displayed.}
+
+\item{axis_max}{Integer. Maximum value for the axis.}
+
+\item{axis_interval}{Integer. Interval for the axis.}
+
+\item{font_size_labels_col}{Character. Font size for the labels next to the bars.}
+
+\item{series_name}{Character. Series name.}
+
+\item{prefixer}{Character. Prefixer.}
 
 \item{session}{Session object.}
 }
