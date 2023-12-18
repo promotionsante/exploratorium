@@ -90,6 +90,13 @@ mod_one_project_server <- function(id, r_global){
             tags$script('$("#project_selection_panel").hide()')
           )
 
+          # Make sure div graph div is removed if it already exists
+          # This make sure the graph is updated after the renderUI
+          session$sendCustomMessage(
+            "remove_id_if_existing_in_dom",
+            ns("project_repart_budget_plot")
+          )
+
           plot_budget_highcharter(
             id = ns("project_repart_budget_plot"),
             data_repart = get_data_repart_budget_one_project(
