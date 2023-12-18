@@ -1,4 +1,8 @@
 
+# observatoire 0.9.4
+
+* Slider values persist when changing language
+
 # observatoire 0.9.3
 
 * JS graph is properly updated (does not disappeared) when changing language on project 
