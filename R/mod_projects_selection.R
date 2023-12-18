@@ -285,6 +285,7 @@ mod_projects_selection_server <- function(id, r_global){
           cantons_main_org =  input$cantons_main_org
         )
 
+        # Make sure graphs are recomputed after each filter
         r_local$recompute_graph <- r_local$recompute_graph + 1
       })
 

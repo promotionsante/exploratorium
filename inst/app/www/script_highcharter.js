@@ -10,9 +10,18 @@ var waitForEl = function(selector, callback) {
     }
 };
 
+Shiny.addCustomMessageHandler('remove_id_if_existing_in_dom', function(message) {
+
+  dom_object = $("#" + message)
+
+   if (dom_object.length) {
+        dom_object.remove()
+    }
+});
+
 
 Shiny.addCustomMessageHandler('createChart', function(message) {
-
+  // Make sure graph div has been rendered before generating the chart
   waitForEl(
     "#" + message[0].id,
     function(){

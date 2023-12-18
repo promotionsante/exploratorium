@@ -1,3 +1,9 @@
+
+# observatoire 0.9.3
+
+* JS graph is properly updated (does not disappeared) when changing language on project 
+focus view
+
 # observatoire 0.9.2
 
 * Improve the plot of the budget by theme
