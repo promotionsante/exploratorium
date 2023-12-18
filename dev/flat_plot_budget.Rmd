@@ -19,9 +19,9 @@ pkgload::load_all(export_all = FALSE)
 
 # Plot the distribution of the budgets
 
-To create the interactive plot,  you can use the `plot_contrib_budget_highcharter()` function as follows *(here with a toy dataset)*:
+To create the interactive plot, you can use the `plot_budget_highcharter()` function as follows *(here with a toy dataset)*:
 
-```{r function-plot_contrib_budget_highcharter}
+```{r function-plot_budget_highcharter}
 #' Plot the distribution of the budgets
 #' 
 #' @param id Character. Id of the container in the DOM.
@@ -35,7 +35,7 @@ To create the interactive plot,  you can use the `plot_contrib_budget_highcharte
 #' @return A Java Script plot
 #' 
 #' @export
-plot_contrib_budget_highcharter <- function(
+plot_budget_highcharter <- function(
     id,
     data_repart,
     plot_options = list(
@@ -84,23 +84,23 @@ plot_contrib_budget_highcharter <- function(
 }
 ```
 
-```{r example-plot_contrib_budget_highcharter, eval=FALSE}
+```{r example-plot_budget_highcharter, eval=FALSE}
 toy_data_repart <- tibble::tibble(
   name = c("Item 1", "Item 2"),
   value = c(75, 25), 
   value_tooltip = c("75 000 CHF", "25 000 CHF")
 )
 
-# plot_contrib_budget_highcharter(
+# plot_budget_highcharter(
 #   id = "id-in-the-dom-maybe-with-ns",
 #   data_repart = toy_data_repart,
 #   session = session
 # )
 ```
 
-```{r tests-plot_contrib_budget_highcharter}
-test_that("plot_contrib_budget_highcharter works", {
-  expect_true(inherits(plot_contrib_budget_highcharter, "function")) 
+```{r tests-plot_budget_highcharter}
+test_that("plot_budget_highcharter works", {
+  expect_true(inherits(plot_budget_highcharter, "function")) 
 })
 ```
 

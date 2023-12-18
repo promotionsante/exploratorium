@@ -121,8 +121,8 @@ flat_map_subfunctions.Rmd:
 flat_plot_budget.Rmd:
   path: dev/flat_plot_budget.Rmd
   state: active
-  R: R/plot_contrib_budget_highcharter.R
-  tests: tests/testthat/test-plot_contrib_budget_highcharter.R
+  R: R/plot_budget_highcharter.R
+  tests: tests/testthat/test-plot_budget_highcharter.R
   vignettes: vignettes/draw-the-distribution-of-contributions.Rmd
   inflate:
     flat_file: dev/flat_plot_budget.Rmd

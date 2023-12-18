@@ -25,17 +25,17 @@ library(observatoire)
 
 # Plot the distribution of the budgets
 
-To create the interactive plot,  you can use the `plot_contrib_budget_highcharter()` function as follows *(here with a toy dataset)*:
+To create the interactive plot, you can use the `plot_budget_highcharter()` function as follows *(here with a toy dataset)*:
 
 
-```{r example-plot_contrib_budget_highcharter, eval = FALSE}
+```{r example-plot_budget_highcharter, eval = FALSE}
 toy_data_repart <- tibble::tibble(
   name = c("Item 1", "Item 2"),
   value = c(75, 25), 
   value_tooltip = c("75 000 CHF", "25 000 CHF")
 )
 
-# plot_contrib_budget_highcharter(
+# plot_budget_highcharter(
 #   id = "id-in-the-dom-maybe-with-ns",
 #   data_repart = toy_data_repart,
 #   session = session
