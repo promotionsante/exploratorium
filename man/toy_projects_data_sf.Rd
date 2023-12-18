@@ -30,15 +30,6 @@ A data frame with 67 rows and 51 variables:
   \item{ pi_2_training }{  character }
   \item{ pi_2_new_tech }{  character }
   \item{ pi_2_econom }{  character }
-  \item{ topic_respiratory_diseases }{  character }
-  \item{ topic_diabetes }{  character }
-  \item{ topic_cardio_diseases }{  character }
-  \item{ topic_cancers }{  character }
-  \item{ topic_musculoskeletal_diseases }{  character }
-  \item{ topic_mental_diseases }{  character }
-  \item{ topic_addictions }{  character }
-  \item{ topic_other_ncd }{  character }
-  \item{ topic_other }{  character }
   \item{ target_groups }{  character }
   \item{ multipliers }{  character }
   \item{ settings }{  character }
@@ -46,6 +37,15 @@ A data frame with 67 rows and 51 variables:
   \item{ desc_de }{  character }
   \item{ title_de }{  character }
   \item{ title_fr }{  character }
+  \item{ topic_addictions }{  logical }
+  \item{ topic_cancers }{  logical }
+  \item{ topic_cardio_diseases }{  logical }
+  \item{ topic_diabetes }{  logical }
+  \item{ topic_mental_diseases }{  logical }
+  \item{ topic_musculoskeletal_diseases }{  logical }
+  \item{ topic_other }{  logical }
+  \item{ topic_other_ncd }{  logical }
+  \item{ topic_respiratory_diseases }{  logical }
   \item{ latitude }{  numeric }
   \item{ longitude }{  numeric }
   \item{ geometry }{  sfc_POINT,sfc }

@@ -2,6 +2,11 @@
 
 test_that("consolidate_topic_data() preserves information", {
   
+  # Load the toy datasets
+  data("toy_data_pgv")
+  data("toy_dic_variables")
+  data("toy_cantons_sf")
+
   # Same column names before and after consolidation
   toy_data <- toy_data_pgv |> 
     add_col_raw_data(
@@ -32,17 +37,8 @@ test_that("consolidate_topic_data() preserves information", {
       topic
     )
   
-  dic_variables_topic_de <- suppressMessages(
-    read_csv2(
-      system.file(
-        "data-dic", 
-        "dic_variables.csv", 
-        package = "observatoire"
-      ),
-      show_col_types = FALSE
-    ) 
-  ) |> 
-    dplyr::select(de, name_variable) |> 
+  dic_variables_topic_de <- toy_dic_variables |> 
+    dplyr::select(name_col_in_raw_data, name_variable) |> 
     dplyr::filter(
       grepl(
         "^topic_",
@@ -68,7 +64,7 @@ test_that("consolidate_topic_data() preserves information", {
     ) |> 
     dplyr::select(
       short_title,
-      topic = de
+      topic = name_col_in_raw_data
     ) |> 
     dplyr::arrange(
       short_title,

@@ -5,8 +5,9 @@
 \alias{toy_dic_variables}
 \title{toy_dic_variables}
 \format{
-A data frame with 42 rows and 3 variables:
+A data frame with 42 rows and 4 variables:
 \describe{
+  \item{ name_col_in_raw_data }{  character }
   \item{ de }{  character }
   \item{ fr }{  character }
   \item{ name_variable }{  character }

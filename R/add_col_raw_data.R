@@ -38,7 +38,7 @@ add_col_raw_data <- function(
   }
   
   # Check if all columns are present
-  all_expected_columns_are_present <- all(sort(colnames(data)) == sort(dic_variables$de))
+  all_expected_columns_are_present <- all(sort(colnames(data)) == sort(dic_variables$name_col_in_raw_data))
   if (isFALSE(all_expected_columns_are_present)) {
     stop(
       paste(
@@ -52,7 +52,7 @@ add_col_raw_data <- function(
   # Replace german column names with the names of the variables
   colnames(data) <- dic_variables$name_variable[
     match(
-      dic_variables$de, 
+      dic_variables$name_col_in_raw_data, 
       names(data)
     )
   ]
