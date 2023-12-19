@@ -20,6 +20,18 @@ Shiny.addCustomMessageHandler('remove_id_if_existing_in_dom', function(message) 
 });
 
 
+Shiny.addCustomMessageHandler('display_warning_no_available_projects', function(message) {
+
+  dom_object = $("#" + message)
+
+   if (dom_object.length) {
+        dom_object.html(
+          "<p>Aucun projet ne répond à ces critères de sélection</p>" +
+          "<p>Kein Projekt erfüllt diese Auswahlkriterien</p>"
+          )
+    }
+});
+
 Shiny.addCustomMessageHandler('createChart', function(message) {
   // Make sure graph div has been rendered before generating the chart
   waitForEl(
