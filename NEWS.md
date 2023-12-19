@@ -1,3 +1,6 @@
+# observatoire 0.10.0
+
+* Use a lineplot with a cumulative curve for the evolution of the budget by year
 
 # observatoire 0.9.4
 
