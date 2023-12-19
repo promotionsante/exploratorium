@@ -3,7 +3,7 @@
 #' Get budget data by year for selected projects
 #' 
 #' @param projects_data_sf Tibble. Data projects.
-#' @param language A character string. Language, 'fr' or 'de'.
+#' @param language Character. Language, 'fr' or 'de'.
 #'
 #' @return A tibble with three columns: `name`, `value` and `value_tooltip`
 #' 
@@ -13,12 +13,27 @@
 #' 
 #' @noRd
 #' @examples
+#' data("toy_projects_data_sf")
+#'
 #' get_data_budget_by_year_selected_projects(
-#'   projects_data_sf = load_projects_data("fr") 
+#'   projects_data_sf = toy_projects_data_sf
 #' )
 get_data_budget_by_year_selected_projects <- function(
-    projects_data_sf
+    projects_data_sf, 
+    language
 ) {
+  
+  if (language == "fr") {
+    
+    word_en <- "en"
+    word_cum <- "cumulé depuis"
+    
+  } else if (language == "de") {
+    
+    word_en <- "im Jahr"
+    word_cum <- "kumuliert seit"
+    
+  }
   
   projects_data_sf |>
     st_drop_geometry() |> 
@@ -36,12 +51,30 @@ get_data_budget_by_year_selected_projects <- function(
     ) |> 
     group_by(year) |> 
     summarise(
-      value = sum(total_budget, na.rm = TRUE)
+      sum_value = sum(total_budget, na.rm = TRUE),
     ) |> 
     mutate(
-      value_tooltip = number(
-        value,
-        suffix = " CHF"
+      value = cumsum(sum_value)
+    ) |> 
+    mutate(
+      value_tooltip = paste(
+        paste(
+          number(
+            sum_value,
+            suffix = " CHF"
+            ), 
+          word_en, 
+          year
+        ),
+        paste(
+          number(
+            value,
+            suffix = " CHF"
+          ), 
+          word_cum, 
+          min(year)
+        ),
+        sep = "<br>"
       )
     ) |> 
     rename(

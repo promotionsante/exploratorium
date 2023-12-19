@@ -240,9 +240,9 @@
 
 .filter-projects-button:hover,
 .filter-projects-button:active {
-  color: var(--dark-orange);
+  color: var(--light-orange);
   background-color: var(--beige-background);
-  border-color: var(--dark-orange);
+  border-color: var(--light-orange);
 }
 
 .filter-projects-button:focus,
