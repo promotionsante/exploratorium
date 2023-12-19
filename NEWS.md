@@ -1,3 +1,7 @@
+# exploratorium 0.10.3
+
+* Rename into {exploratorium}
+
 # exploratorium 0.10.2
 
 * Make the right panel visible after the change of the language in the description page
