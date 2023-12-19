@@ -13,11 +13,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-# {observatoire} <img src="man/figures/logo.png" align="right" alt="" width="120" /> {.unlisted}
+# {exploratorium} <img src="man/figures/logo.png" align="right" alt="" width="120" /> {.unlisted}
 
 <!-- badges: start -->
-[![R build status](https://forge.thinkr.fr/promotionsante/observatoire/badges/main/pipeline.svg)](https://forge.thinkr.fr/promotionsante/observatoire/-/pipelines)
-[![Codecov test coverage](https://forge.thinkr.fr/promotionsante/observatoire/badges/main/coverage.svg)](https://forge.thinkr.fr/promotionsante/observatoire/commits/main)
+[![R build status](https://forge.thinkr.fr/promotionsante/exploratorium/badges/main/pipeline.svg)](https://forge.thinkr.fr/promotionsante/exploratorium/-/pipelines)
+[![Codecov test coverage](https://forge.thinkr.fr/promotionsante/exploratorium/badges/main/coverage.svg)](https://forge.thinkr.fr/promotionsante/exploratorium/commits/main)
 <!-- badges: end -->
 
 # Overview
@@ -30,13 +30,13 @@ An attractive and	playful **platform** for citizens and the federal government t
 
 The app is deployed on shinyapps.io.
 
-The **prod** app: [prod version](https://prevention.shinyapps.io/observatoire/)
+The **prod** app: [prod version](https://prevention.shinyapps.io/exploratorium/)
 
-The **dev** app (only for the dev team and key business users): [dev version](https://prevention.shinyapps.io/observatoire-dev/)
+The **dev** app (only for the dev team and key business users): [dev version](https://prevention.shinyapps.io/exploratorium-dev/)
 
 # Documentation
 
-The technical documentation for the developers is available in the [pkgdown](https://promotionsante.pages.thinkr.fr/observatoire). You will find global information about: 
+The technical documentation for the developers is available in the [pkgdown](https://promotionsante.pages.thinkr.fr/exploratorium). You will find global information about: 
 
 - The architecture of the app
 - How to **update and modify the data used by the app**

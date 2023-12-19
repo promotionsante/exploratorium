@@ -41,7 +41,7 @@
 #' )
 save_projects_data <- function(
     list_data_fr_de, 
-    pkg_dir = system.file(package = "observatoire")
+    pkg_dir = system.file(package = "exploratorium")
     ){
   
   # Check that the list contains 2 tibbles (FR and DE)

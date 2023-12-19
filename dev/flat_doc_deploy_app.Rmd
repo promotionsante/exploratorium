@@ -22,8 +22,8 @@ pkgload::load_all(export_all = FALSE)
 The application is continuously deployed on the prevention.shinyapps.io account belonging to
 PSCH.
 
-* The `main` branch can be found at https://prevention.shinyapps.io/observatoire-dev/
-* The `production` branch on https://prevention.shinyapps.io/observatoire/
+* The `main` branch can be found at https://prevention.shinyapps.io/exploratorium-dev/
+* The `production` branch on https://prevention.shinyapps.io/exploratorium/
 
 ### Environment variables
 

@@ -51,7 +51,7 @@ read_cantons_sf <- function() {
     dsn = system.file(
       "data-geo",
       "gadm41_CHE_1.json", 
-      package = "observatoire"
+      package = "exploratorium"
     ),
     quiet = TRUE
   )
@@ -71,7 +71,7 @@ read_projects_data <- function(
     system.file(
       "data-projects", 
       glue("projects_{language}.rds"),
-      package = "observatoire"
+      package = "exploratorium"
     )
   )
     

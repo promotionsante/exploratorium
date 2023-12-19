@@ -46,7 +46,7 @@ get_id_cantons_influenced <- function(
       system.file(
         "data-dic", 
         "dic_cantons.csv", 
-        package = "observatoire"
+        package = "exploratorium"
       ), 
       show_col_types = FALSE
     )

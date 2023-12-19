@@ -63,7 +63,7 @@ DT::datatable(
     system.file(
       "data-dic",
       "dic_variables.csv", 
-      package = "observatoire"
+      package = "exploratorium"
     )
   )
 )
@@ -77,7 +77,7 @@ DT::datatable(
     system.file(
       "data-dic",
       "dic_cantons.csv", 
-      package = "observatoire"
+      package = "exploratorium"
     )
   )
 )
@@ -91,7 +91,7 @@ DT::datatable(
     system.file(
       "data-dic",
       "dic_values.csv", 
-      package = "observatoire"
+      package = "exploratorium"
     )
   )
 )
@@ -105,7 +105,7 @@ DT::datatable(
     system.file(
       "data-dic",
       "dic_titles_app.csv", 
-      package = "observatoire"
+      package = "exploratorium"
     )
   )
 )
@@ -134,7 +134,7 @@ Then, to update the data used by the application, you can use the `prepare_app_d
 #' @export
 prepare_app_data <- function(
     name_raw_file = "PGV.xlsx",
-    pkg_dir = system.file(package = "observatoire"),
+    pkg_dir = system.file(package = "exploratorium"),
     dic_variables = NULL, 
     dic_cantons = NULL,
     dic_titles_pages = NULL,

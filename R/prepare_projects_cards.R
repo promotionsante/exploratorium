@@ -31,7 +31,7 @@
 #'   from = system.file(
 #'     "data-projects-cards", 
 #'     "template_projects_cards.html", 
-#'     package = "observatoire"
+#'     package = "exploratorium"
 #'     ), 
 #'   to = file.path(
 #'     my_temp_dir, 
@@ -59,7 +59,7 @@ prepare_projects_cards <- function(
     data_projects_fr = read_projects_data(language = "fr"),
     data_projects_de = read_projects_data(language = "de"),
     dic_titles_pages = NULL,
-    pkg_dir = system.file(package = "observatoire")
+    pkg_dir = system.file(package = "exploratorium")
     ){
   
   cli_process_start(

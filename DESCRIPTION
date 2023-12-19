@@ -1,5 +1,5 @@
-Package: observatoire
-Title: Observatoire De La Promotion De La Santé et La Prévention Des
+Package: exploratorium
+Title: Exploratorium De La Promotion De La Santé et La Prévention Des
     Maladies en Suisse
 Version: 0.10.2
 Authors@R: c(

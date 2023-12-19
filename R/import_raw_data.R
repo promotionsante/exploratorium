@@ -17,7 +17,7 @@
 #' import_raw_data()
 import_raw_data <- function(
     name_raw_file = "PGV.xlsx",
-    pkg_dir = system.file(package = "observatoire")
+    pkg_dir = system.file(package = "exploratorium")
 ) {
   
   raw_data_path <- file.path(

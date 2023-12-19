@@ -84,7 +84,7 @@ translate_values_in_col <- function(
       system.file(
         "data-dic", 
         "dic_values.csv", 
-        package = "observatoire"
+        package = "exploratorium"
       ),
       show_col_types = FALSE
     )

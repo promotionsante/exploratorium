@@ -55,7 +55,7 @@
 #' unlink(my_temp_dir, recursive = TRUE)
 prepare_app_data <- function(
     name_raw_file = "PGV.xlsx",
-    pkg_dir = system.file(package = "observatoire"),
+    pkg_dir = system.file(package = "exploratorium"),
     dic_variables = NULL, 
     dic_cantons = NULL,
     dic_titles_pages = NULL,
