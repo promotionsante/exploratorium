@@ -1,3 +1,7 @@
+# exploratorium 0.10.4
+
+* Update the final documentation (general overview and other articles)
+
 # exploratorium 0.10.3
 
 * Rename into {exploratorium}
