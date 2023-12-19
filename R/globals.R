@@ -23,6 +23,6 @@ globalVariables(unique(c(
   # get_data_budget_by_theme_selected_projects
   "name", "present", "value_tooltip",
   # get_data_budget_by_year_selected_projects
-  "funding_round",
+  "funding_round", "sum_value",
   NULL
 )))
