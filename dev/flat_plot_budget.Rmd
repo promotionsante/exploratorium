@@ -162,6 +162,17 @@ plot_budget_linechart <- function(
     session
 ){
   
+  empty_data_provided <- nrow(data_repart) == 0
+  if(
+    empty_data_provided
+  ) {
+    session$sendCustomMessage(
+      "display_warning_no_available_projects",
+      id
+    )
+    return(NULL)
+  }
+  
   # Transform the data in the right format
   data_to_compare <- pmap(
     list(
