@@ -29,7 +29,8 @@ reference:
 - title: Animated budget graphs
   desc: Draw JS-based graph to visualize project budget data
 - contents:
-  - plot_budget_highcharter
+  - plot_budget_barchart
+  - plot_budget_linechart
 - title: Shiny app
 - contents:
   - run_app

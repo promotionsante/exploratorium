@@ -1,3 +1,7 @@
+# observatoire 0.10.1
+
+* Add the 2 functionf to create budget plot in pkgdown
+
 # observatoire 0.10.0
 
 * Use a lineplot with a cumulative curve for the evolution of the budget by year
