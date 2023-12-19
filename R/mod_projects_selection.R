@@ -250,17 +250,21 @@ mod_projects_selection_server <- function(id, r_global){
     # Store state of inputs to be able to preserve them
     # when changing language
     observeEvent(
-      input$topic, {
+      input$topic,
+      ignoreNULL = FALSE, {
         r_local$topic <- input$topic
       })
+
     observeEvent(
       input$pi1, {
         r_local$pi1 <- input$pi1
       })
+
     observeEvent(
       input$pi2, {
         r_local$pi2 <- input$pi2
       })
+
     observeEvent(
       input$budget_range, {
         r_local$budget_range <- input$budget_range
@@ -280,6 +284,7 @@ mod_projects_selection_server <- function(id, r_global){
       once = TRUE, {
         r_global$selected_projects_sf <- r_global$projects_data_sf
       })
+
     observeEvent(
       input$filter_projects, {
         log_all_current_module_input()
@@ -309,7 +314,7 @@ mod_projects_selection_server <- function(id, r_global){
             topic = r_local$topic
           )
 
-        plot_budget_highcharter(
+        plot_budget_barchart(
           id = ns("projects_budget_by_theme_plot"),
           data_repart = r_local$data_budget_by_theme_selected_projects,
           x_axis_labels = "false",
@@ -326,14 +331,13 @@ mod_projects_selection_server <- function(id, r_global){
         # Budget by year
         r_local$data_budget_by_year_selected_projects <-
           get_data_budget_by_year_selected_projects(
-            projects_data_sf = r_global$selected_projects_sf
+            projects_data_sf = r_global$selected_projects_sf,
+            language = r_global$language
           )
 
-        plot_budget_highcharter(
+        plot_budget_linechart(
           id = ns("projects_year_by_theme_plot"),
-          data_repart = get_data_budget_by_year_selected_projects(
-            projects_data_sf = r_global$selected_projects_sf
-          ),
+          data_repart = r_local$data_budget_by_year_selected_projects,
           axis_max = max(
             r_local$data_budget_by_year_selected_projects$value
           ),

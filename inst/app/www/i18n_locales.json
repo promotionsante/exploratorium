@@ -8,14 +8,14 @@
             "pi2": "Querschnittsbereiche",
             "budget": "Budget",
             "prop_self_funded" : "Selbstfinanzierter Anteil des Budgets",
-            "cantons_main_org" : "Kanton.e der Hauptorganisation",
+            "cantons_main_org" : "Kanton der Hauptorganisation",
             "filter_projects" : "Projekte filtern",
             "cantons_main_org_title" : "Bitte Kantone auswählen",
             "cantons_main_org_select_all_text" : "Alle auswählen",
             "cantons_main_org_deselect_all_text" : "Alle abwählen",
             "no_target_projects" : "Kein Projekt erfüllt diese Auswahlkriterien",
             "budget_by_theme" : "Gesamtbudget pro Thema",
-            "budget_by_year" : "Gesamtbudget pro Jahr"
+            "budget_by_year" : "Kumuliertes Gesamtbudget pro Jahr"
         }
     },
     "fr": {
@@ -34,7 +34,7 @@
             "cantons_main_org_deselect_all_text" : "Tout désélectionner",
             "no_target_projects" : "Aucun projet ne répond à ces critères de sélection",
             "budget_by_theme" : "Budget total par thème",
-            "budget_by_year" : "Budget total par année"
+            "budget_by_year" : "Budget total cumulé par année"
         }
     }
 }
