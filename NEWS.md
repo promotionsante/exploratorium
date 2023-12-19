@@ -1,6 +1,10 @@
+# observatoire 0.10.2
+
+* Make the right panel visible after the change of the language in the description page
+
 # observatoire 0.10.1
 
-* Add the 2 functionf to create budget plot in pkgdown
+* Add the 2 functions to create budget plot in pkgdown
 
 # observatoire 0.10.0
 

@@ -87,23 +87,7 @@ function createBarChart(data) {
     chart: {
       type: 'bar',
       height: 234,
-      backgroundColor: 'rgba(0, 0, 0, 0)',
-      events: {
-        load: function() {
-          var dataLabelsOfPoints = this.series[0].points,
-            correctedPosition;
-
-          dataLabelsOfPoints.forEach(function(el, inx) {
-            if (el.graphic.element.attributes[3].value > el.dataLabel.x) {
-              correctedPosition = parseInt($(el.dataLabel.div).css("top"));
-              correctedPosition -= 25;
-              correctedPosition = correctedPosition + 'px';
-
-              $(el.dataLabel.div).css('top', correctedPosition);
-            }
-          });
-        }
-      }
+      backgroundColor: 'rgba(0, 0, 0, 0)'
     },
     title: {
       text: ''
@@ -235,23 +219,7 @@ function createLineChart(data) {
     chart: {
       type: 'area',
       height: 234,
-      backgroundColor: 'rgba(0, 0, 0, 0)',
-      events: {
-        load: function() {
-          var dataLabelsOfPoints = this.series[0].points,
-            correctedPosition;
-
-          dataLabelsOfPoints.forEach(function(el, inx) {
-            if (el.graphic.element.attributes[3].value > el.dataLabel.x) {
-              correctedPosition = parseInt($(el.dataLabel.div).css("top"));
-              correctedPosition -= 25;
-              correctedPosition = correctedPosition + 'px';
-
-              $(el.dataLabel.div).css('top', correctedPosition);
-            }
-          });
-        }
-      }
+      backgroundColor: 'rgba(0, 0, 0, 0)'
     },
     title: {
       text: ''
