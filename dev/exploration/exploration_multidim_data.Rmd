@@ -27,12 +27,12 @@ pkgload::load_all()
 
 # Import des données brutes
 data_psch <- read_excel(
-  path = system.file("PGV.xlsx", package = "observatoire")
+  path = system.file("PGV.xlsx", package = "exploratorium")
 )
 
 # Import du dictionnaire des variables
 dic_variables <- read_csv(
-  file = system.file("dic_variables.csv", package = "observatoire"),
+  file = system.file("dic_variables.csv", package = "exploratorium"),
   show_col_types = FALSE
 )
 

@@ -77,7 +77,7 @@ prepare_one_project_card <- function(
     data_projects,
     language = c("de", "fr"),
     dic_titles_pages = NULL,
-    pkg_dir = system.file(package = "observatoire")
+    pkg_dir = system.file(package = "exploratorium")
   ){
   
   language <- match.arg(language)
@@ -193,7 +193,7 @@ prepare_one_project_card <- function(
     filename = system.file(
       "data-projects-cards",
       "template_projects_cards.html",
-      package = "observatoire"
+      package = "exploratorium"
     ),
     short_title_value = short_title_value,
     status_color = status_color,

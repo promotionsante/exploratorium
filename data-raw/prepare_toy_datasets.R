@@ -14,7 +14,7 @@ toy_data_pgv <- read_excel(
   path = system.file(
     "data-projects-raw",
     "PGV.xlsx",
-    package = "observatoire"
+    package = "exploratorium"
   )
 ) |>
   slice(
@@ -45,7 +45,7 @@ toy_dic_variables <- read_csv2(
   system.file(
     "data-dic",
     "dic_variables.csv",
-    package = "observatoire"
+    package = "exploratorium"
   ),
   show_col_types = FALSE
 )
@@ -64,7 +64,7 @@ toy_dic_cantons <- read_csv(
   system.file(
     "data-dic",
     "dic_cantons.csv",
-    package = "observatoire"
+    package = "exploratorium"
   ),
   show_col_types = FALSE
 )
@@ -83,7 +83,7 @@ toy_cantons_sf <- st_read(
   dsn = system.file(
     "data-geo",
     "gadm41_CHE_1.json",
-    package = "observatoire"
+    package = "exploratorium"
   )
 )
 
@@ -101,7 +101,7 @@ toy_projects_data_sf <- readRDS(
   system.file(
     "data-projects",
     "projects_de.rds",
-    package = "observatoire"
+    package = "exploratorium"
   )
 )
 

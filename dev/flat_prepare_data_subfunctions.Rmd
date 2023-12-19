@@ -40,7 +40,7 @@ pkgload::load_all(export_all = FALSE)
 #' @noRd
 import_raw_data <- function(
     name_raw_file = "PGV.xlsx",
-    pkg_dir = system.file(package = "observatoire")
+    pkg_dir = system.file(package = "exploratorium")
 ) {
   
   raw_data_path <- file.path(
@@ -159,7 +159,7 @@ add_col_raw_data <- function(
       system.file(
         "data-dic", 
         "dic_variables.csv", 
-        package = "observatoire"
+        package = "exploratorium"
       ),
       show_col_types = FALSE
     )
@@ -359,7 +359,7 @@ consolidate_topic_data <- function(
         system.file(
           "data-dic", 
           "dic_variables.csv", 
-          package = "observatoire"
+          package = "exploratorium"
           ),
         show_col_types = FALSE
       )
@@ -963,7 +963,7 @@ get_id_cantons_influenced <- function(
       system.file(
         "data-dic", 
         "dic_cantons.csv", 
-        package = "observatoire"
+        package = "exploratorium"
       ), 
       show_col_types = FALSE
     )
@@ -1329,7 +1329,7 @@ translate_values_in_col <- function(
       system.file(
         "data-dic", 
         "dic_values.csv", 
-        package = "observatoire"
+        package = "exploratorium"
       ),
       show_col_types = FALSE
     )
@@ -1524,7 +1524,7 @@ translate_values_in_data <- function(
       system.file(
         "data-dic", 
         "dic_values.csv", 
-        package = "observatoire"
+        package = "exploratorium"
       ),
       show_col_types = FALSE
     )
@@ -1672,7 +1672,7 @@ test_that("Test that the translation of the data is ok", {
 #' @noRd
 save_projects_data <- function(
     list_data_fr_de, 
-    pkg_dir = system.file(package = "observatoire")
+    pkg_dir = system.file(package = "exploratorium")
     ){
   
   # Check that the list contains 2 tibbles (FR and DE)
@@ -1831,7 +1831,7 @@ test_that("Test that the saving of the data in inst works", {
 #' @return A list with the projects data in FR and DE.
 prepare_projects_data <- function(
     name_raw_file = "PGV.xlsx",
-    pkg_dir = system.file(package = "observatoire"),
+    pkg_dir = system.file(package = "exploratorium"),
     dic_variables = NULL, 
     dic_cantons = NULL,
     cantons_sf = NULL
@@ -2052,7 +2052,7 @@ prepare_one_project_card <- function(
     data_projects,
     language = c("de", "fr"),
     dic_titles_pages = NULL,
-    pkg_dir = system.file(package = "observatoire")
+    pkg_dir = system.file(package = "exploratorium")
   ){
   
   language <- match.arg(language)
@@ -2168,7 +2168,7 @@ prepare_one_project_card <- function(
     filename = system.file(
       "data-projects-cards",
       "template_projects_cards.html",
-      package = "observatoire"
+      package = "exploratorium"
     ),
     short_title_value = short_title_value,
     status_color = status_color,
@@ -2333,7 +2333,7 @@ prepare_projects_cards <- function(
     data_projects_fr = read_projects_data(language = "fr"),
     data_projects_de = read_projects_data(language = "de"),
     dic_titles_pages = NULL,
-    pkg_dir = system.file(package = "observatoire")
+    pkg_dir = system.file(package = "exploratorium")
     ){
   
   cli_process_start(
@@ -2458,7 +2458,7 @@ file.copy(
   from = system.file(
     "data-projects-cards", 
     "template_projects_cards.html", 
-    package = "observatoire"
+    package = "exploratorium"
     ), 
   to = file.path(
     my_temp_dir, 

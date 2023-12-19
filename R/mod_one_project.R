@@ -81,7 +81,7 @@ mod_one_project_server <- function(id, r_global){
               system.file(
                 "data-projects-cards",
                 glue("project_card_{clean_id_project}_{language}.html"),
-                package = "observatoire"
+                package = "exploratorium"
               )
             ),
             div(

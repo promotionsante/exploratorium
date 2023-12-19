@@ -31,7 +31,7 @@ add_col_raw_data <- function(
       system.file(
         "data-dic", 
         "dic_variables.csv", 
-        package = "observatoire"
+        package = "exploratorium"
       ),
       show_col_types = FALSE
     )

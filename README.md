@@ -1,14 +1,14 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# {observatoire} <img src="man/figures/logo.png" align="right" alt="" width="120" />
+# {exploratorium} <img src="man/figures/logo.png" align="right" alt="" width="120" />
 
 <!-- badges: start -->
 
 [![R build
-status](https://forge.thinkr.fr/promotionsante/observatoire/badges/main/pipeline.svg)](https://forge.thinkr.fr/promotionsante/observatoire/-/pipelines)
+status](https://forge.thinkr.fr/promotionsante/exploratorium/badges/main/pipeline.svg)](https://forge.thinkr.fr/promotionsante/exploratorium/-/pipelines)
 [![Codecov test
-coverage](https://forge.thinkr.fr/promotionsante/observatoire/badges/main/coverage.svg)](https://forge.thinkr.fr/promotionsante/observatoire/commits/main)
+coverage](https://forge.thinkr.fr/promotionsante/exploratorium/badges/main/coverage.svg)](https://forge.thinkr.fr/promotionsante/exploratorium/commits/main)
 <!-- badges: end -->
 
 # Overview
@@ -24,15 +24,15 @@ diseases in Switzerland**.
 The app is deployed on shinyapps.io.
 
 The **prod** app: [prod
-version](https://prevention.shinyapps.io/observatoire/)
+version](https://prevention.shinyapps.io/exploratorium/)
 
 The **dev** app (only for the dev team and key business users): [dev
-version](https://prevention.shinyapps.io/observatoire-dev/)
+version](https://prevention.shinyapps.io/exploratorium-dev/)
 
 # Documentation
 
 The technical documentation for the developers is available in the
-[pkgdown](https://promotionsante.pages.thinkr.fr/observatoire). You will
+[pkgdown](https://promotionsante.pages.thinkr.fr/exploratorium). You will
 find global information about:
 
 - The architecture of the app

@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(observatoire)
+library(exploratorium)
 
-test_check("observatoire")
+test_check("exploratorium")
