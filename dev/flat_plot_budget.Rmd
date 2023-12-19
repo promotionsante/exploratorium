@@ -1,0 +1,252 @@
+---
+title: "Draw the distribution of contributions"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r development, include=FALSE}
+library(testthat)
+library(purrr)
+```
+
+```{r development-load}
+# Load already included functions if relevant
+pkgload::load_all(export_all = FALSE)
+```
+
+*The aim of this article is to show you how to reproduce the interactive charts that represent the distribution of the budgets.*
+
+# Plot the distribution of the budgets with a barchart
+
+To create the interactive plot, you can use the `plot_budget_barchart()` function as follows *(here with a toy dataset)*:
+
+```{r function-plot_budget_bartchart}
+#' Plot the distribution of the budgets with a barchart
+#' 
+#' @param id Character. Id of the container in the DOM.
+#' @param data_repart Tibble. Data to be plotted.
+#' @param x_axis_labels Character. Should the labels on the x axis be displayed.
+#' @param axis_max Integer. Maximum value for the axis.
+#' @param axis_interval Integer. Interval for the axis.
+#' @param font_size_labels_col Character. Font size for the labels next to the bars.
+#' @param series_name Character. Series name.
+#' @param prefixer Character. Prefixer.
+#' @param session Session object.
+#' 
+#' @importFrom purrr pmap set_names
+#' @importFrom dplyr mutate
+#' 
+#' @return A Java Script plot
+#' 
+#' @export
+plot_budget_barchart <- function(
+    id,
+    data_repart,
+    x_axis_labels = "true", 
+    axis_max = 100,
+    axis_interval = 20,
+    font_size_labels_col = "16px",
+    series_name = "",
+    prefixer = "%",
+    session
+){
+  
+  empty_data_provided <- nrow(data_repart) == 0
+  if(
+    empty_data_provided
+  ) {
+    session$sendCustomMessage(
+      "display_warning_no_available_projects",
+      id
+    )
+    return(NULL)
+  }
+    
+  # Transform the data in the right format
+  data_to_compare <- pmap(
+    list(
+      data_repart$name, 
+      data_repart$value, 
+      data_repart$value_tooltip
+    ), 
+    ~ list(
+      name = ..1, 
+      value = ..2, 
+      value_tooltip = ..3
+    )
+  ) |> 
+    set_names(
+      paste0(
+        "place", 
+        seq(from = 1, to = nrow(data_repart), by = 1)
+      )
+    )
+  
+  data <- list(
+    id = id,
+    plot_options = list(
+      x_axis_labels = x_axis_labels,
+      axis_max = axis_max,
+      axis_interval = axis_interval,
+      font_size_labels_col = font_size_labels_col,
+      series_name = series_name,
+      prefixer = prefixer
+    ),
+    data_to_compare = data_to_compare
+  )
+  
+  # Transform the data in the right format
+  session$sendCustomMessage(
+    type = "createBarChart",
+    message = list(
+      data
+    )
+  )
+  
+}
+```
+
+```{r example-plot_budget_barchart, eval=FALSE}
+toy_data_repart <- tibble::tibble(
+  name = c("Item 1", "Item 2"),
+  value = c(75, 25), 
+  value_tooltip = c("75 000 CHF", "25 000 CHF")
+)
+
+# plot_budget_barchart(
+#   id = "id-in-the-dom-maybe-with-ns",
+#   data_repart = toy_data_repart,
+#   session = session
+# )
+```
+
+```{r tests-plot_budget_barchart}
+test_that("plot_budget_barchart works", {
+  expect_true(inherits(plot_budget_barchart, "function")) 
+})
+```
+
+# Plot the distribution of the budgets with a linechart (time)
+
+To create the interactive plot, you can use the `plot_budget_linechart()` function as follows *(here with a toy dataset)*:
+
+```{r function-plot_budget_linechart}
+#' Plot the distribution of the budgets with a linechart
+#' 
+#' @param id Character. Id of the container in the DOM.
+#' @param data_repart Tibble. Data to be plotted.
+#' @param x_axis_labels Character. Should the labels on the x axis be displayed.
+#' @param axis_max Integer. Maximum value for the axis.
+#' @param axis_interval Integer. Interval for the axis.
+#' @param font_size_labels_col Character. Font size for the labels next to the bars.
+#' @param series_name Character. Series name.
+#' @param prefixer Character. Prefixer.
+#' @param session Session object.
+#' 
+#' @importFrom purrr pmap set_names
+#' @importFrom dplyr mutate
+#' 
+#' @return A Java Script plot
+#' 
+#' @export
+plot_budget_linechart <- function(
+    id,
+    data_repart,
+    x_axis_labels = "true", 
+    axis_max = 100,
+    axis_interval = 20,
+    font_size_labels_col = "16px",
+    series_name = "",
+    prefixer = "%",
+    session
+){
+  
+  empty_data_provided <- nrow(data_repart) == 0
+  if(
+    empty_data_provided
+  ) {
+    session$sendCustomMessage(
+      "display_warning_no_available_projects",
+      id
+    )
+    return(NULL)
+  }
+  
+  # Transform the data in the right format
+  data_to_compare <- pmap(
+    list(
+      data_repart$name, 
+      data_repart$value, 
+      data_repart$value_tooltip
+    ), 
+    ~ list(
+      name = ..1, 
+      value = ..2, 
+      value_tooltip = ..3
+    )
+  ) |> 
+    set_names(
+      paste0(
+        "place", 
+        seq(from = 1, to = nrow(data_repart), by = 1)
+      )
+    )
+  
+  data <- list(
+    id = id,
+    plot_options = list(
+      x_axis_labels = x_axis_labels,
+      axis_max = axis_max,
+      axis_interval = axis_interval,
+      font_size_labels_col = font_size_labels_col,
+      series_name = series_name,
+      prefixer = prefixer
+    ),
+    data_to_compare = data_to_compare
+  )
+  
+  # Transform the data in the right format
+  session$sendCustomMessage(
+    type = "createLineChart",
+    message = list(
+      data
+    )
+  )
+  
+}
+```
+
+```{r example-plot_budget_linechart, eval=FALSE}
+toy_data_repart <- tibble::tibble(
+  name = c("Item 1", "Item 2"),
+  value = c(75, 25), 
+  value_tooltip = c("75 000 CHF", "25 000 CHF")
+)
+
+# plot_budget_linechart(
+#   id = "id-in-the-dom-maybe-with-ns",
+#   data_repart = toy_data_repart,
+#   session = session
+# )
+```
+
+```{r tests-plot_budget_linechart}
+test_that("plot_budget_linechart works", {
+  expect_true(inherits(plot_budget_linechart, "function")) 
+})
+```
+
+
+```{r development-inflate, eval=FALSE}
+# Run but keep eval=FALSE to avoid infinite loop
+# Execute in the console directly
+fusen::inflate(
+  flat_file = "dev/flat_plot_budget.Rmd", 
+  vignette_name = "Draw the distribution of contributions", 
+  check = FALSE,
+  overwrite = TRUE, 
+  open_vignette = FALSE
+  )
+```
+

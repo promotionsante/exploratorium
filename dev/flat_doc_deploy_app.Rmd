@@ -1,0 +1,56 @@
+---
+title: "Deploy the app on shinyapps.io"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  eval=FALSE,
+  echo=TRUE
+)
+```
+
+```{r development-load}
+# Load already included functions if relevant
+pkgload::load_all(export_all = FALSE)
+```
+
+*The aim of this article is to explain you how to deploy the app on shinyapps.io.*
+
+The application is continuously deployed on the prevention.shinyapps.io account belonging to
+PSCH.
+
+* The `main` branch can be found at https://prevention.shinyapps.io/exploratorium-dev/
+* The `production` branch on https://prevention.shinyapps.io/exploratorium/
+
+### Environment variables
+
+Two environment variables have to be defined in`.gitlab-ci.yml` or in `~/.Renviron` for a manual deployment:
+
+* `SHINYAPPS_IO_TOKEN`
+* `SHINYAPPS_IO_SECRET` 
+
+Values can be found at https://www.shinyapps.io/admin/#/tokens.
+You will then need to click on `Show` to see the two variables.
+
+### Manual deployment
+
+To deploy the app manually, you can directly use the script `dev/deploy_app.R` in your development environment.
+
+```{r}
+rstudioapi::navigateToFile("dev/deploy_app.R")
+```
+
+```{r development-inflate, eval=FALSE}
+# Run but keep eval=FALSE to avoid infinite loop
+# Execute in the console directly
+fusen::inflate(
+  flat_file = "dev/flat_doc_deploy_app.Rmd", 
+  vignette_name = "Deploy the app",
+  check = FALSE, 
+  overwrite = TRUE
+)
+```
+

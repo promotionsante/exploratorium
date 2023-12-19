@@ -1,7 +1,7 @@
-Package: observatoire
-Title: Observatoire De La Promotion De La Santé et La Prévention Des
+Package: exploratorium
+Title: Exploratorium De La Promotion De La Santé et La Prévention Des
     Maladies en Suisse
-Version: 0.0.0.9002
+Version: 0.10.3
 Authors@R: c(
     person("Margot", "Brard", , "margot@thinkr.fr", role = c("aut", "cre")),
     person("Antoine", "Languillaume", , "antoine@thinkr.fr", role = "aut")
@@ -10,18 +10,45 @@ Description: Rendre accessible et valoriser les données d’investissement
     dans la promotion de la santé et de la prévention des maladies en
     Suisse.
 License: file LICENSE
+Depends: 
+    R (>= 2.10)
 Imports: 
-    config (>= 0.3.1),
-    golem (>= 0.3.5),
-    shiny (>= 1.7.3)
-Suggests: 
     cli,
+    config (>= 0.3.1),
+    dplyr,
+    glue,
+    golem (>= 0.3.5),
+    here,
+    htmltools,
+    jsonlite,
+    leaflet,
+    lubridate,
+    purrr,
+    readr,
+    readxl,
+    scales,
+    sf,
+    shiny (>= 1.7.3),
+    shinyWidgets,
+    stats,
+    tibble,
+    tidygeocoder,
+    tidyr,
+    tidyselect,
+    tools,
+    waiter
+Suggests: 
+    DT,
     knitr,
     rmarkdown,
     rsconnect,
-    testthat (>= 3.0.0)
+    rstudioapi,
+    stringr,
+    testthat (>= 3.0.0),
+    writexl
 VignetteBuilder: 
     knitr
+Config/fusen/version: 0.5.2.9000
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true

@@ -1,0 +1,46 @@
+articles:
+- title: Introduction
+  navbar: Introduction
+  contents:
+  - general-overview-of-the-app
+- title: Modification of the data used by the app
+  navbar: Modification of the data used by the app
+  contents:
+  - prepare-update-data-used-by-the-app
+- title: Deployment
+  navbar: Deployment
+  contents:
+  - deploy-the-app
+- title: Other
+  contents:
+  - draw-the-switzerland-maps-with-projects
+  - draw-the-distribution-of-contributions
+
+reference:
+- title: Data used by the app
+  desc: Prepare and update the data used by the app
+- contents:
+  - prepare_app_data
+- title: Draw the Switzerland maps
+  desc: Build the maps with projects data
+- contents:
+  - draw_map_selected_projects
+  - draw_map_focus_one_project
+- title: Animated budget graphs
+  desc: Draw JS-based graph to visualize project budget data
+- contents:
+  - plot_budget_barchart
+  - plot_budget_linechart
+- title: Shiny app
+- contents:
+  - run_app
+- title: Toy datasets
+  desc: Datasets used for demo purposes
+- contents:
+  - toy_data_pgv
+  - toy_cantons_sf
+  - toy_dic_variables
+  - toy_dic_cantons
+  - toy_projects_data_sf
+  - toy_dic_titles_pages
+  - toy_dic_values

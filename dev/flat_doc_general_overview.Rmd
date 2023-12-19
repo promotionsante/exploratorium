@@ -1,0 +1,44 @@
+---
+title: "General overview"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  eval=TRUE,
+  echo=FALSE
+)
+```
+
+```{r development-load}
+# Load already included functions if relevant
+pkgload::load_all(export_all = FALSE)
+```
+
+*The aim of this article is to show you how application is structured.*
+
+The **architecture diagram** is shown below. It presents the different components of the application, and how they interact with each other.
+
+*You can open the image for easier viewing. And, for a better browsing experience, you can:*
+
+*- Download the file `dev/schemas/architecture.excalidraw` to your machine*
+
+*- Drop it on <https://excalidraw.com/>*
+
+```{r echo=FALSE, eval=TRUE, fig.align='center'}
+knitr::include_graphics("../man/figures/architecture.png")
+```
+
+```{r development-inflate, eval=FALSE}
+# Run but keep eval=FALSE to avoid infinite loop
+# Execute in the console directly
+fusen::inflate(
+  flat_file = "dev/flat_doc_general_overview.Rmd", 
+  vignette_name = "General overview of the app",
+  check = FALSE, 
+  overwrite = TRUE
+)
+```
+

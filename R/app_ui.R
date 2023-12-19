@@ -1,3 +1,21 @@
+
+#' Add start-up screen
+#'
+#' Wait until the app is ready to display UI
+#'
+#' @importFrom waiter useWaiter waiterPreloader spin_pulsar
+#' @noRd
+startup_screen <- function() {
+  tagList(
+    useWaiter(),
+    waiterPreloader(
+      html = spin_pulsar(),
+      # Same color as --beige-background in custom.css
+      color = "#FAFAF8"
+    )
+  )
+}
+
 #' The application User-Interface
 #'
 #' @param request Internal parameter for `{shiny}`.
@@ -10,7 +28,21 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     # Your application UI logic
     fluidPage(
-      h1("observatoire")
+      startup_screen(),
+      div(
+        class = "container-map",
+        column(
+          width = 9,
+          mod_map_ui("map_1"),
+        )
+      ),
+      column(
+        width = 3,
+        div(
+          class = "container-project",
+          mod_right_panel_ui("right_panel_1"),
+        )
+      )
     )
   )
 }
@@ -30,10 +62,21 @@ golem_add_external_resources <- function() {
   )
 
   tags$head(
-    favicon(),
+    favicon(
+      ext = "png"
+    ),
+    tags$script(
+      src = "https://code.highcharts.com/highcharts.js"
+    ),
+    tags$script(
+      src = "https://code.highcharts.com/modules/accessibility.js"
+    ),
+    tags$script(
+      src = "https://code.highcharts.com/modules/exporting.js"
+    ),
     bundle_resources(
       path = app_sys("app/www"),
-      app_title = "observatoire"
+      app_title = "exploratorium"
     )
     # Add here other external resources
     # for example, you can add shinyalert::useShinyalert()

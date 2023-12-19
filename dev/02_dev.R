@@ -20,12 +20,16 @@ attachment::att_amend_desc()
 
 ## Add modules ----
 ## Create a module infrastructure in R/
-golem::add_module(name = "name_of_module1", with_test = TRUE) # Name of the module
-golem::add_module(name = "name_of_module2", with_test = TRUE) # Name of the module
+golem::add_module(name = "map", with_test = TRUE)
+golem::add_module(name = "project", with_test = TRUE)
+
+golem::add_module(name = "right_panel", with_test = TRUE)
+golem::add_module(name = "projects_selection", with_test = TRUE)
+golem::add_module(name = "projects_graph_summary", with_test = TRUE)
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
-golem::add_fct("helpers", with_test = TRUE)
+golem::add_fct("map", with_test = TRUE)
 golem::add_utils("helpers", with_test = TRUE)
 
 ## External resources
@@ -34,6 +38,10 @@ golem::add_js_file("script")
 golem::add_js_handler("handlers")
 golem::add_css_file("custom")
 golem::add_sass_file("custom")
+
+
+## Add translation system blue print
+gemstones::use_jqueryi18next()
 
 ## Add internal datasets ----
 ## If you have data in your package

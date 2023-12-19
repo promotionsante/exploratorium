@@ -10,6 +10,7 @@ $run_dev.*
 ^\.gitlab-ci\.yml$
 ^\.gitlab$
 ^README\.Rmd$
-^observatoire\.Rproj$
+^exploratorium\.Rproj$
 ^app\.R$
 ^rsconnect$
+^docs$
