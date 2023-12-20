@@ -1,3 +1,7 @@
+# exploratorium 0.10.5
+
+* Remove the flags from the architecture schema
+
 # exploratorium 0.10.4
 
 * Update the final documentation (general overview and other articles)
