@@ -1,3 +1,7 @@
+# exploratorium 0.10.6
+
+* Fix the title of the app
+
 # exploratorium 0.10.5
 
 * Remove the flags from the architecture schema
