@@ -1,7 +1,7 @@
 {
     "de": {
         "translation": {
-            "app-title": "Exploratorium des Fonds zur Finanzierung der Prävention im Pflegebereich in der Schweiz",
+            "app-title": "Exploratorium Projektförderung Prävention in der Gesundheitsversorgung",
             "app-desc": "Eine attraktive und spielerische Bürger- und Bundesplattform zur räumlichen und typologischen Erkundung der unterstützten Projekte zur Förderung von Krankheiten in der Schweiz",
             "topic": "Themen",
             "pi1": "Hauptbereiche",
@@ -20,7 +20,7 @@
     },
     "fr": {
         "translation": {
-            "app-title": "Exploratorium du fonds de financement de la prévention dans le domaine des soins en Suisse",
+            "app-title": "Exploratorium du soutien de projets Prévention dans le domaine des soins",
             "app-desc": "Une plateforme citoyenne et fédérale, attractive et ludique, pour explorer spatialement et typologiquement les projets soutenus dans la promotion des maladies en Suisse",
             "topic": "Thèmes",
             "pi1": "Domaines d'intervention principaux",
