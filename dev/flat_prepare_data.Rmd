@@ -27,13 +27,13 @@ The app uses 2 types of data:
 - Projects data saved in a .rds format with all the data
 - Projects cards in a .html format
 
-```{r echo=FALSE, eval=TRUE, fig.align='center'}
+```{r echo=FALSE, eval=TRUE, fig.align='center', out.width='40%'}
 knitr::include_graphics("../man/figures/type_data.png")
 ```
 
 The data preparation workflow is shown below. **This data preparation process must be repeated each time the raw data is modified or each time a modification is required to the data dictionaries.**
 
-```{r echo=FALSE, eval=TRUE, fig.align='center'}
+```{r echo=FALSE, eval=TRUE, fig.align='center', out.width='100%'}
 knitr::include_graphics("../man/figures/data_prep_workflow.png")
 ```
 
@@ -51,9 +51,11 @@ knitr::include_graphics("../man/figures/update_raw_projects_data.png")
 
 You must modify directly the dictionaries used for the translations. They are saved in the `inst/data-dic` folder, in a `.csv` format.
 
-```{r echo=FALSE, eval=TRUE, fig.align='center', out.width='30%'}
+```{r echo=FALSE, eval=TRUE, fig.align='center', out.width='80%'}
 knitr::include_graphics("../man/figures/update_dic_data.png")
 ```
+
+### dic_variables.csv
 
 The content of **"dic_variables.csv"** is the following one:
 
@@ -69,6 +71,8 @@ DT::datatable(
 )
 ```
 
+### dic_cantons.csv
+
 The content of **"dic_cantons.csv"** is the following one:
 
 ```{r echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE}
@@ -83,11 +87,13 @@ DT::datatable(
 )
 ```
   
+### dic_values.csv
+
 The content of **"dic_values.csv"** is the following one:
 
 ```{r echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE}
 DT::datatable(
-  readr::read_csv(
+  readr::read_csv2(
     system.file(
       "data-dic",
       "dic_values.csv", 
@@ -97,17 +103,42 @@ DT::datatable(
 )
 ```
 
+### dic_titles_app.csv and i18n_locales.json
+
 The content of **"dic_titles_app.csv"** is the following one:
 
 ```{r echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE}
 DT::datatable(
-  readr::read_csv(
+  readr::read_csv2(
     system.file(
       "data-dic",
       "dic_titles_app.csv", 
       package = "exploratorium"
     )
   )
+)
+```
+
+The content of **"i18n_locales.json"** is the following one:
+
+```{r echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
+json_content <- jsonlite::fromJSON(
+  system.file(
+    "app",
+    "www",
+    "i18n_locales.json",
+    package = "exploratorium"
+  )
+)
+
+translations_tibble <- tibble::tibble(
+  id = names(unlist(json_content$de$translation)),
+  de = unlist(json_content$de$translation),
+  fr = unlist(json_content$fr$translation)
+)
+
+DT::datatable(
+  translations_tibble
 )
 ```
 
