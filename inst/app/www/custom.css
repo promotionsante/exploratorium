@@ -55,23 +55,23 @@
 }
 
 .apptitle {
-  color: var(--blue);
-  font-size: 1vw;
+  color: black;
+  font-size: min(max(1vw, 16px), 24px);
   text-align: center;
   font-family: var(--font);
   font-weight: 1000;
   text-transform: uppercase;
-  line-height: 25px;
+  line-height: min(max(1.5vw, 18px), 24px);
   word-wrap: break-word;
 }
 
 .appdesc {
   text-align: center;
   color: black;
-  font-size: 11px;
+  font-size: min(max(0.8vw, 12px), 14px);
   font-family: var(--font);
   font-weight: 600;
-  line-height: 18px;
+  line-height: min(max(1vw, 16px), 18px);
   word-wrap: break-word;
   margin-bottom: 20px;
 }
@@ -80,7 +80,7 @@
 .custom-checkbox {
   display: block;
   color: black;
-  font-size: 11px;
+  font-size: min(max(0.8vw, 12px), 14px);
   font-family: var(--font);
   font-weight: 300;
   letter-spacing: 0.11px;
@@ -146,7 +146,7 @@
 .noUi-tooltip {
   display: block;
   position: absolute;
-  font-size: 11px;
+  font-size: 12px;
   font-family: var(--font);
   border: 1px solid #D9D9D9;
   border-radius: 3px;
@@ -159,6 +159,8 @@
 
 .noUi-target {
   height: 10px;
+  width: 80%;
+  margin: 0 auto;
 }
 
 .noUi-horizontal .noUi-handle {
@@ -174,6 +176,11 @@
 }
 
 /* Cantons picker */
+.contonpicker {
+  width: 60%;
+  margin: 0 auto;
+}
+
 .bootstrap-select>.dropdown-toggle {
   font-family: var(--font);
   background-color: var(--beige-background);
@@ -224,7 +231,7 @@
   padding-top: 1.25rem;
   padding-bottom: 1.1rem;
   text-align: center;
-  font-size: 1.25rem;
+  font-size: min(max(0.8vw, 12px), 14px);
   line-height: 1.25rem;
   font-weight: 500;
   display: inline-block;
@@ -289,7 +296,7 @@
   text-align: center;
   vertical-align: middle;
   color: #FAFAFA;
-  font-size: 10px;
+  font-size: min(max(0.7vw, 11px), 12px);
   font-family: var(--font);
   font-weight: 600;
   word-wrap: break-word;
@@ -318,10 +325,10 @@
   height: 40px;
   text-align: center;
   color: var(--blue);
-  font-size: 11px;
+  font-size: min(max(0.85vw, 12px), 14px);
   font-family: var(--font);
   font-weight: 600;
-  line-height: 12px;
+  line-height: min(max(0.85vw, 13px), 15px);
   word-wrap: break-word
 }
 
@@ -337,19 +344,19 @@
 .maininfotext {
   text-align: center;
   color: var(--light-grey);
-  font-size: 11px;
+  font-size: min(max(0.8vw, 12px), 14px);
   font-family: var(--font);
   font-weight: 600;
-  line-height: 12px;
+  line-height: min(max(0.8vw, 12px), 14px);
   word-wrap: break-word
 }
 
 .alltitle {
   color: var(--blue);
-  font-size: 0.8vw;
+  font-size: min(max(0.85vw, 13px), 15px);
   font-family: var(--font);
   font-weight: 400;
-  line-height: 18px;
+  line-height: min(max(0.85vw, 13px), 15px);
   word-wrap: break-word;
   padding-top: 3px;
   padding-bottom: 3px;
@@ -357,10 +364,10 @@
 
 .alltext {
   color: black;
-  font-size: 11px;
+  font-size: min(max(0.8vw, 12px), 14px);
   font-family: var(--font);
   font-weight: 300;
-  line-height: 12px;
+  line-height: min(max(0.8vw, 12px), 14px);
   letter-spacing: 0.11px;
   word-wrap: break-word;
   margin-bottom: 10px

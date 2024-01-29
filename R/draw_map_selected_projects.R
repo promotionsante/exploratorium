@@ -75,6 +75,11 @@ draw_map_selected_projects <- function(
           ),
           freezeAtZoom = zoom_level, 
           spiderfyDistanceMultiplier = 1.5
+        ),
+        labelOptions = labelOptions(
+          style = list(
+            fontSize = "13px"
+          )
         )
       )
   }
