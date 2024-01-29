@@ -1,3 +1,8 @@
+# exploratorium 0.10.9
+
+* Change the localization of SERO
+* Change the short titles used to print the projects
+
 # exploratorium 0.10.8
 
 * Standardize the term used for the responsible organization
