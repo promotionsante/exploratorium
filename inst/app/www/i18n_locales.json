@@ -27,7 +27,7 @@
             "pi2": "Domaines d’intervention transversaux",
             "budget": "Budget",
             "prop_self_funded" : "Contribution de l’organisation responsable",
-            "cantons_main_org" : "Canton de l'organisation principale",
+            "cantons_main_org" : "Canton de l'organisation responsable",
             "filter_projects" : "Filtrer les projets",
             "cantons_main_org_title" : "Veuillez sélectionner les cantons",
             "cantons_main_org_select_all_text" : "Tout sélectionner",

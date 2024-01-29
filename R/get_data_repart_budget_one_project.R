@@ -75,7 +75,7 @@ get_data_repart_budget_one_project <- function(
     
     data_repart$name <- c(
       "PSCH", 
-      "Organisation principale", 
+      "Organisation responsable", 
       "Tiers"
     )
     
