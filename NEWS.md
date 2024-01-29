@@ -1,3 +1,7 @@
+# exploratorium 0.10.10
+
+* Increase the font size everywhere
+
 # exploratorium 0.10.9
 
 * Change the localization of SERO
