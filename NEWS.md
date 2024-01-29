@@ -1,3 +1,7 @@
+# exploratorium 0.10.7
+
+* Add a UAT version of the app 
+
 # exploratorium 0.10.6
 
 * Fix the title of the app

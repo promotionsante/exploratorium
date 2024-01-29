@@ -46,6 +46,7 @@ current_git_branch <- get_current_git_branch()
 switch (
   EXPR = current_git_branch,
   "main" = paste0(app_name_base, "-dev"),
+  "uat" = paste0(app_name_base, "-uat"),
   "production" = app_name_base,
   "test-ci" = paste0(app_name_base, "-test-ci"),
   stop(
