@@ -1,3 +1,8 @@
+# exploratorium 0.10.8
+
+* Standardize the term used for the responsible organization
+* Standardize certain titles and subtitles to match the terminology used by PSCH
+
 # exploratorium 0.10.7
 
 * Add a UAT version of the app 
