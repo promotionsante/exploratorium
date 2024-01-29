@@ -14,7 +14,7 @@ test_that("get_data_repart_budget_one_project works for FR data", {
     object = data_repart_budget_one_proj_fr,
     expected = structure(
                  list(
-                   name = c("PSCH", "Organisation principale", "Tiers"),
+                   name = c("PSCH", "Organisation responsable", "Tiers"),
                    value = c(
                      prop_budget_gfch = 34.1,
                      prop_budget_orga = 4.3,

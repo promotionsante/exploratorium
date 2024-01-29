@@ -9,13 +9,13 @@ Projektende;Projektende;Fin du projet;project_end
 Beschreibung;Beschreibung;Description;description
 Reichweite;Reichweite;Etendu;geo_range
 Thema;Thema;Thème;topic
-Hauptverantwortliche Organisation;Hauptverantwortliche Organisation;Organisation principale;main_resp_orga
-PLZ hauptverantwortliche Organisation;PLZ hauptverantwortliche Organisation;Code Postal Organisation principale;zip_code_main_resp_orga
-Ort hauptverantwortliche Organisation;Ort hauptverantwortliche Organisation;Ville Organisation principale;city_code_main_resp_orga
+Hauptverantwortliche Organisation;Hauptverantwortliche Organisation;Organisation responsable;main_resp_orga
+PLZ hauptverantwortliche Organisation;PLZ hauptverantwortliche Organisation;Code Postal Organisation responsable;zip_code_main_resp_orga
+Ort hauptverantwortliche Organisation;Ort hauptverantwortliche Organisation;Ville Organisation responsable;city_code_main_resp_orga
 Art der Organisation;Art der Organisation;Type d'organisation;orga_type
 Projektbegleitung GFCH;Projektbegleitung GFCH;Responsable de projets;project_support_gfch
 Beitrag von GFCH;Beitrag von GFCH;Contribution PSCH;budget_gfch
-Budget Haupt-Org;Budget Haupt-Org;Contribution Organisation principale;budget_orga
+Budget Haupt-Org;Budget Haupt-Org;Contribution Organisation responsable;budget_orga
 Budget Dritte;Budget Dritte;Budget Tiers;budget_third_party
 Gesamtbudget;Gesamtbudget;Budget total;total_budget
 PI 1: Schnittstellen;PI 1: Schnittstellen;PI 1 : Interfaces;pi_1_interfaces
