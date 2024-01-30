@@ -177,13 +177,13 @@ mod_projects_selection_ui <- function(id){
           with_i18n("cantons_main_org"),
 
         div(
+          class = "contonpicker",
           pickerInput(
             inputId = ns("cantons_main_org"),
             label = NULL,
             choices = c("AI", "AR", "BG"),
             selected = c("AI", "AR", "BG"),
             multiple = TRUE,
-            width = "100%",
             options = pickerOptions(
               actionsBox = TRUE
             )
