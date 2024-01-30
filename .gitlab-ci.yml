@@ -39,6 +39,7 @@ deploying:
   stage: deploy_shinyapps_io
   only:
     - main
+    - uat
     - production
     - test-ci
   script:
@@ -60,6 +61,7 @@ coverage:
   only:
     - main
     - master
+    - uat
     - production
   script:
     - Rscript -e 'remotes::install_local(upgrade = "never")'
@@ -81,6 +83,7 @@ integration:
   only:
     - main
     - master
+    - uat
     - production
     - test-ci
   script:
@@ -136,6 +139,25 @@ integration-production:
       - public
     expire_in: 30 days
 
+integration-uat:
+  stage: pkgdown-move
+  dependencies:
+    - integration
+  only:
+    - uat
+  script:
+    - mkdir -p public
+    - 'curl --location --output artifacts.zip --header "JOB-TOKEN: $CI_JOB_TOKEN" "$CI_API_V4_URL/projects/$CI_PROJECT_ID/jobs/artifacts/uat/download?job=pages" &&
+      unzip artifacts.zip &&
+      rm artifacts.zip &&
+      echo "copied production artifacts" ||
+      echo "copied production artifacts failed"'
+    - cp -r docs/* public
+  artifacts:
+    paths:
+      - public
+    expire_in: 30 days
+
 integration-main:
   stage: pkgdown-move
   dependencies:
@@ -166,5 +188,6 @@ pages:
   only:
     - main
     - master
+    - uat
     - production
     - test-ci

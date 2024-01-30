@@ -1,3 +1,21 @@
+# exploratorium 0.10.10
+
+* Increase the font size everywhere
+
+# exploratorium 0.10.9
+
+* Change the localization of SERO
+* Change the short titles used to print the projects
+
+# exploratorium 0.10.8
+
+* Standardize the term used for the responsible organization
+* Standardize certain titles and subtitles to match the terminology used by PSCH
+
+# exploratorium 0.10.7
+
+* Add a UAT version of the app 
+
 # exploratorium 0.10.6
 
 * Fix the title of the app

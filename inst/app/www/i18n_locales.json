@@ -2,12 +2,12 @@
     "de": {
         "translation": {
             "app-title": "Exploratorium Projektförderung Prävention in der Gesundheitsversorgung",
-            "app-desc": "Eine attraktive und spielerische Bürger- und Bundesplattform zur räumlichen und typologischen Erkundung der unterstützten Projekte zur Förderung von Krankheiten in der Schweiz",
+            "app-desc": "Eine attraktive und spielerische Plattform für die Öffentlichkeit und den Bund, um die in der Schweiz unterstützten Projekte der Prävention in der Gesundheitsversorgung räumlich und typologisch zu erkunden",
             "topic": "Themen",
             "pi1": "Hauptbereiche",
             "pi2": "Querschnittsbereiche",
             "budget": "Budget",
-            "prop_self_funded" : "Selbstfinanzierter Anteil des Budgets",
+            "prop_self_funded" : "Anteil hauptverantwortliche Organisation",
             "cantons_main_org" : "Kanton der Hauptorganisation",
             "filter_projects" : "Projekte filtern",
             "cantons_main_org_title" : "Bitte Kantone auswählen",
@@ -21,13 +21,13 @@
     "fr": {
         "translation": {
             "app-title": "Exploratorium du soutien de projets Prévention dans le domaine des soins",
-            "app-desc": "Une plateforme citoyenne et fédérale, attractive et ludique, pour explorer spatialement et typologiquement les projets soutenus dans la promotion des maladies en Suisse",
+            "app-desc": "Une plateforme citoyenne et fédérale, attractive et ludique, pour explorer spatialement et typologiquement les projets soutenus dans la prévention dans le domaine des soins en Suisse",
             "topic": "Thèmes",
             "pi1": "Domaines d'intervention principaux",
             "pi2": "Domaines d’intervention transversaux",
             "budget": "Budget",
-            "prop_self_funded" : "Proportion du budget auto-financée",
-            "cantons_main_org" : "Canton de l'organisation principale",
+            "prop_self_funded" : "Contribution de l’organisation responsable",
+            "cantons_main_org" : "Canton de l'organisation responsable",
             "filter_projects" : "Filtrer les projets",
             "cantons_main_org_title" : "Veuillez sélectionner les cantons",
             "cantons_main_org_select_all_text" : "Tout sélectionner",
