@@ -1,3 +1,7 @@
+# exploratorium 0.10.11
+
+* Make checkbox borders more visible
+
 # exploratorium 0.10.10
 
 * Increase the font size everywhere
