@@ -206,45 +206,6 @@
   color: var(--light-orange);
 }
 
-/* Button to filter */
-.filter-projects-button {
-  color: var(--dark-grey);
-  background-color: var(--beige-background);
-  padding-left: 2rem;
-  padding-right: 2rem;
-  padding-top: 1.25rem;
-  padding-bottom: 1.1rem;
-  text-align: center;
-  font-size: min(max(0.8vw, 12px), 14px);
-  line-height: 1.25rem;
-  font-weight: 500;
-  display: inline-block;
-  border-radius: 9999px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--dark-grey);
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 40px;
-  display: block;
-}
-
-.filter-projects-button:hover,
-.filter-projects-button:active {
-  color: var(--light-orange);
-  background-color: var(--beige-background);
-  border-color: var(--light-orange);
-}
-
-.filter-projects-button:focus,
-.filter-projects-button:active:focus {
-  color: var(--dark-grey);
-  background-color: var(--beige-background);
-  border-color: var(--dark-grey);
-  outline:none;
-  box-shadow: none;
-}
-
 /* Projects cards */
 .globalcard {
   height: auto;
