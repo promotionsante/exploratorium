@@ -181,8 +181,8 @@ mod_projects_selection_ui <- function(id){
           pickerInput(
             inputId = ns("cantons_main_org"),
             label = NULL,
-            choices = c("AI", "AR", "BG"),
-            selected = c("AI", "AR", "BG"),
+            choices = NULL,
+            selected = NULL,
             multiple = TRUE,
             options = pickerOptions(
               actionsBox = TRUE
