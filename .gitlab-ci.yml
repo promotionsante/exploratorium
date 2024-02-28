@@ -1,8 +1,8 @@
-image: docker.thinkr.fr/thinkr/bakacode/bk_santacruz:default-4.2.3
+image: rocker/verse:4.3.2
 
 variables:
   GIT_DEPTH: 10
-  REPO_NAME: "https://packagemanager.posit.co/cran/__linux__/jammy/latest/2023-04-20"
+  REPO_NAME: "https://packagemanager.posit.co/cran/__linux__/jammy/latest/2023-11-09"
   R_LIBS_USER: "ci/lib"
 
 cache:

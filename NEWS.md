@@ -1,3 +1,7 @@
+# exploratorium 0.10.13
+
+* Update CI environement to match new dev env. 
+
 # exploratorium 0.10.12
 
 * Fix bug app closing at startup after removing filtering button.
