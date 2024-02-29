@@ -181,22 +181,13 @@ mod_projects_selection_ui <- function(id){
           pickerInput(
             inputId = ns("cantons_main_org"),
             label = NULL,
-            choices = c("AI", "AR", "BG"),
-            selected = c("AI", "AR", "BG"),
+            choices = NULL,
+            selected = NULL,
             multiple = TRUE,
             options = pickerOptions(
               actionsBox = TRUE
             )
           )
-        )
-      ),
-
-      div(
-        actionButton(
-          inputId = ns("filter_projects"),
-          label = "Projekte filtern" |>
-            with_i18n("filter_projects"),
-          class = "filter-projects-button"
         )
       ),
 
@@ -286,7 +277,14 @@ mod_projects_selection_server <- function(id, r_global){
       })
 
     observeEvent(
-      input$filter_projects, {
+      c(
+        input$topic,
+        input$pi1,
+        input$pi2,
+        input$budget,
+        input$prop_self_funded,
+        input$cantons_main_org
+      ), {
         log_all_current_module_input()
         r_global$selected_projects_sf <- filter_projects_data(
           projects_data_sf = r_global$projects_data_sf,

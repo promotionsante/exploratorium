@@ -1,3 +1,11 @@
+# exploratorium 0.10.12
+
+* Fix bug app closing at startup after removing filtering button.
+
+# exploratorium 0.10.11
+
+* Make checkbox borders more visible
+
 # exploratorium 0.10.10
 
 * Increase the font size everywhere

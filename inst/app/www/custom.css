@@ -109,27 +109,12 @@
   padding-top: 3px
 }
 
-.awesome-checkbox label::after:focus {
-  box-shadow: none !important;
-  border-color: #f0f0f0
-}
-
 .awesome-checkbox label::before {
-  background-color: var(--beige-background);
-  color: transparent;
-  border-color: #f0f0f0
-}
-
-.awesome-checkbox label::after {
-  width: 20px;
-  height: 20px;
-  background-color: var(--beige-background);
-  border-color: #f0f0f0
+  border-color: black;
 }
 
 .checkbox-warning input[type="checkbox"]:checked+label::after, .checkbox-warning input[type="radio"]:checked+label::after {
   color: var(--light-orange);
-  border-color: #f0f0f0
 }
 
 .awesome-checkbox input[type="checkbox"]:focus+label::before, .awesome-checkbox input[type="radio"]:focus+label::before {
@@ -139,7 +124,6 @@
 
 .checkbox-warning input[type="checkbox"]:checked+label::before, .checkbox-warning input[type="radio"]:checked+label::before {
   background-color: transparent;
-  border-color: #f0f0f0
 }
 
 /* Sliders inputs */
@@ -220,45 +204,6 @@
 
 .glyphicon {
   color: var(--light-orange);
-}
-
-/* Button to filter */
-.filter-projects-button {
-  color: var(--dark-grey);
-  background-color: var(--beige-background);
-  padding-left: 2rem;
-  padding-right: 2rem;
-  padding-top: 1.25rem;
-  padding-bottom: 1.1rem;
-  text-align: center;
-  font-size: min(max(0.8vw, 12px), 14px);
-  line-height: 1.25rem;
-  font-weight: 500;
-  display: inline-block;
-  border-radius: 9999px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--dark-grey);
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 40px;
-  display: block;
-}
-
-.filter-projects-button:hover,
-.filter-projects-button:active {
-  color: var(--light-orange);
-  background-color: var(--beige-background);
-  border-color: var(--light-orange);
-}
-
-.filter-projects-button:focus,
-.filter-projects-button:active:focus {
-  color: var(--dark-grey);
-  background-color: var(--beige-background);
-  border-color: var(--dark-grey);
-  outline:none;
-  box-shadow: none;
 }
 
 /* Projects cards */
