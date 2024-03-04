@@ -5,3 +5,4 @@ docs
 !.gitlab/*/*
 inst/doc
 rsconnect
+.Renviron

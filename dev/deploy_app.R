@@ -65,6 +65,20 @@ cli::cat_rule(
 
 cli::cat_rule("Deploying app")
 
+options(
+  # Tell renv to exclude app from snapshot
+  renv.settings.ignored.packages = app_name_base,
+  # On ThinkR's workbench the repos option is overloaded
+  # The default behaviour of R is to look up all repos to retrieve the most recent package version
+  # The usual fix of setting the available_packages_filters does not work here
+  # We need to make sure packages are only installed from the CRAN snapshot repos configured on workbench
+  repos = c(
+    getOption("repos")[names(getOption("repos")) == "CRAN"]
+  )
+)
+
+getOption("repos")
+
 rsconnect::deployApp(
   appName = app_name,
   appFiles = appFiles,
