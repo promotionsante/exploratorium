@@ -6,7 +6,16 @@ options(shiny.port = httpuv::randomPort())
 
 # Detach all loaded packages and clean your environment
 golem::detach_all_attached()
-# rm(list=ls(all.names = TRUE))
+
+# Launch app in external browser
+if (
+  # Make sure that {rstudioapi} is available
+  requireNamespace("rstudioapi", quietly = TRUE) &&
+  # Returns TRUE if RStudio is running
+  rstudioapi::hasFun("viewer")
+) {
+  options(shiny.launch.browser = .rs.invokeShinyWindowExternal)
+}
 
 # Document and reload your package
 golem::document_and_reload()
