@@ -12,6 +12,7 @@ library(here)
 library(tools)
 library(readr)
 library(dplyr)
+library(lubridate)
 library(tidyr)
 library(tidygeocoder)
 library(sf)
@@ -2026,6 +2027,71 @@ test_that("Test that the preparation of the projects data is ok", {
 })
 ```
 
+
+# Compute project completion percentage
+
+```{r function-compute_project_completion_percentage}
+#' @importFrom lubridate interval int_length
+#' @noRd
+compute_project_completion_percentage <- function(
+    date_project_start, 
+    date_project_end
+) {
+  
+  if (Sys.Date() > date_project_end ) {
+    completion_percentage <- 100
+    return(completion_percentage)
+  } 
+  
+  whole_project_duration <- interval(
+    start = date_project_start,
+    end = date_project_end
+  ) |> int_length()
+  
+  current_state <- interval(
+    start = date_project_start,
+    end = Sys.Date()
+  ) |> int_length()
+  
+  
+  completion_percentage <- round(
+    x = (current_state / whole_project_duration) * 100,
+    digits = 0
+  )
+  
+  return(completion_percentage)
+}
+
+```
+  
+```{r example-compute_project_completion_percentage}
+compute_project_completion_percentage(
+  date_project_start = as.Date("2023-01-01"),
+  date_project_end = as.Date("2026-12-31")
+)
+```
+  
+```{r tests-compute_project_completion_percentage}
+test_that("compute_project_completion_percentage works", {
+  # We need a dummy binding to be able to mock a function from {base}
+  Sys.Date <- NULL
+  with_mocked_bindings(
+    code = {
+      completion_percentage <- compute_project_completion_percentage(
+        date_project_start = as.Date("2023-01-01"),
+        date_project_end = as.Date("2026-12-31")
+      )
+    },
+    Sys.Date = function() as.Date("2024-03-04") 
+  )  
+  expect_equal(
+    completion_percentage,
+    29
+  )
+})
+```
+  
+
 # Prepare the project card for one project and one language with `prepare_one_project_card()`
 
 ```{r function-prepare_one_project_card}
@@ -2179,6 +2245,13 @@ prepare_one_project_card <- function(
     start_year_value = start_year_value,
     project_manager_value = HTML(project_manager_value),
     main_orga_value = main_orga_value,
+    completion_status = "completion_status",
+    start_year = year(data_one_project$project_start),
+    completion_percentage = compute_project_completion_percentage(
+      date_project_start = data_one_project$project_start,
+      date_project_end = data_one_project$project_end
+    ),
+    end_year = year(data_one_project$project_end),
     project_description_title = list_titles[["project_description_title"]],
     description_value = description_value,
     more_description_value = HTML(more_description_value),
@@ -2233,7 +2306,7 @@ file.copy(
 data("toy_dic_titles_pages")
 
 prepare_one_project_card(
-  id_project = "1+1=3  PGV03.038", 
+  id_project = "1+1=3", 
   data_projects = read_projects_data(language = "de"),
   language = "de", 
   pkg_dir = my_temp_dir, 
@@ -2244,7 +2317,7 @@ browseURL(
   file.path(
     my_temp_dir, 
     "data-projects-cards", 
-    "project_card_113PGV03038_de.html"
+    "project_card_113_de.html"
   )
 )
 

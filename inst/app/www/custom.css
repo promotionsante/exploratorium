@@ -286,6 +286,19 @@
   gap: 0px;
 }
 
+.progress-label-left {
+  float: left;
+  margin-right: 1em;
+}
+
+.progress-label-right {
+  float: right;
+  margin-left: 1em;
+}
+.progress-bar {
+  background-color: var(--light-orange);
+}
+
 .maininfotext {
   text-align: center;
   color: var(--light-grey);
