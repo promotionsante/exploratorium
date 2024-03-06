@@ -4,6 +4,7 @@
 * Make section titles more visible in selection and project pages
 * Add a completion bar tracking project completion percentage based on 
 the postion of the current date between project start and end date.
+* Use specific CRAN snapshot in all ci jobs via a CI specific .Rprofile.
 
 
 # exploratorium 0.10.13
