@@ -2,7 +2,6 @@ image: rocker/geospatial:4.3.2
 
 variables:
   GIT_DEPTH: 10
-  REPO_NAME: "https://packagemanager.posit.co/cran/__linux__/jammy/latest/2023-11-09"
   R_LIBS_USER: "ci/lib"
 
 cache:
@@ -26,6 +25,7 @@ building:
     - if [[ $CI_DEFAULT_BRANCH == "master" || $CI_DEFAULT_BRANCH = "main" ]]; then echo "OK - Default branch is master or main"; else echo "Default branch is not master or main; please add yours ($CI_DEFAULT_BRANCH) where needed, as well as in the present line of code" ; exit 1; fi
     - echo "Library path for packages :" $R_LIBS_USER
     - mkdir -p $R_LIBS_USER
+    - bash dev/ci/set_repos_option_to_match_thinkr_dev_env.sh
     - Rscript -e 'install.packages("remotes")'
     - Rscript -e 'install.packages("rcmdcheck")'
     - Rscript -e 'remotes::install_local(upgrade = "always", dependencies = TRUE)'
@@ -45,6 +45,7 @@ deploying:
   script:
     - echo "Library path for packages :" $R_LIBS_USER
     - mkdir -p $R_LIBS_USER
+    - bash dev/ci/set_repos_option_to_match_thinkr_dev_env.sh
     - Rscript -e 'remotes::install_local(dependencies = TRUE)'
     - Rscript dev/deploy_app.R
 
@@ -65,6 +66,7 @@ coverage:
     - production
     - test-ci
   script:
+    - bash dev/ci/set_repos_option_to_match_thinkr_dev_env.sh
     - Rscript -e 'remotes::install_local(upgrade = "never", dependencies = TRUE)'
     - Rscript -e 'remotes::install_cran(c("covr", "DT"), upgrade = "never")'
     - Rscript -e 'covr::gitlab(quiet = FALSE)'
@@ -88,6 +90,7 @@ integration:
     - production
     - test-ci
   script:
+    - bash dev/ci/set_repos_option_to_match_thinkr_dev_env.sh
     - Rscript -e 'install.packages("thinkrtemplate", repos = c("thinkropen" = "https://thinkr-open.r-universe.dev"))'
     - Rscript -e 'remotes::install_cran(c("pkgdown"), upgrade = "never")'
     - Rscript -e 'remotes::install_local(upgrade = "never", dependencies = TRUE)'
