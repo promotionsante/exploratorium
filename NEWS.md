@@ -1,3 +1,7 @@
+# exploratorium 0.10.15
+
+* Correct DE translation of project completion section in project cards
+
 # exploratorium 0.10.14
 
 * Shorten intro text
@@ -5,7 +9,6 @@
 * Add a completion bar tracking project completion percentage based on 
 the postion of the current date between project start and end date.
 * Use specific CRAN snapshot in all ci jobs via a CI specific .Rprofile.
-
 
 # exploratorium 0.10.13
 
