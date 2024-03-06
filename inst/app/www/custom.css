@@ -286,6 +286,26 @@
   gap: 0px;
 }
 
+.progress-label-left {
+  float: left;
+  margin-right: 1em;
+  font-weight: 600;
+  font-family: var(--font);
+}
+
+.progress-label-right {
+  float: right;
+  margin-left: 1em;
+  font-weight: 600;
+  font-family: var(--font);
+}
+.progress-bar {
+  background-color: var(--light-orange);
+  color: black;
+  font-weight: 800;
+  font-family: var(--font);
+}
+
 .maininfotext {
   text-align: center;
   color: var(--light-grey);
@@ -297,10 +317,10 @@
 }
 
 .alltitle {
-  color: var(--blue);
-  font-size: min(max(0.85vw, 13px), 15px);
+  color: black;
+  font-size: min(max(0.85vw, 16px), 20px);
   font-family: var(--font);
-  font-weight: 400;
+  font-weight: 800;
   line-height: min(max(0.85vw, 13px), 15px);
   word-wrap: break-word;
   padding-top: 3px;

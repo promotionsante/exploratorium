@@ -36,38 +36,33 @@
 #'     )
 #' )
 #'
-#' # Load toy dataset
-#' data("toy_dic_titles_pages")
-#'
 #' prepare_one_project_card(
-#'   id_project = "1+1=3  PGV03.038", 
+#'   id_project = "1+1=3", 
 #'   data_projects = read_projects_data(language = "de"),
 #'   language = "de", 
-#'   pkg_dir = my_temp_dir, 
-#'   dic_titles_pages = toy_dic_titles_pages 
+#'   pkg_dir = my_temp_dir
 #' )
 #'
 #' browseURL(
 #'   file.path(
 #'     my_temp_dir, 
 #'     "data-projects-cards", 
-#'     "project_card_113PGV03038_de.html"
+#'     "project_card_113_de.html"
 #'   )
 #' )
 #'
 #' prepare_one_project_card(
-#'   id_project = "1+1=3  PGV03.038", 
+#'   id_project = "1+1=3", 
 #'   data_projects = read_projects_data(language = "fr"),
 #'   language = "fr", 
-#'   pkg_dir = my_temp_dir, 
-#'   dic_titles_pages = toy_dic_titles_pages
+#'   pkg_dir = my_temp_dir
 #' )
 #'
 #' browseURL(
 #'   file.path(
 #'     my_temp_dir, 
 #'     "data-projects-cards", 
-#'     "project_card_113PGV03038_fr.html"
+#'     "project_card_113_fr.html"
 #'   )
 #' )
 #'
@@ -99,11 +94,13 @@ prepare_one_project_card <- function(
     "project_start_year_title",
     "project_project_manager_title", 
     "project_main_orga_title", 
+    "project_advancement",
     "project_description_title", 
     "project_theme_title", 
     "project_risk_title", 
     "project_budget_title", 
-    "project_prop_budget_title")
+    "project_prop_budget_title"
+    )
   
   list_titles <- vec_id_titles_in_project_card |>
     map(
@@ -204,6 +201,13 @@ prepare_one_project_card <- function(
     start_year_value = start_year_value,
     project_manager_value = HTML(project_manager_value),
     main_orga_value = main_orga_value,
+    project_advancement = list_titles[["project_advancement"]],
+    start_year = year(data_one_project$project_start),
+    completion_percentage = compute_project_completion_percentage(
+      date_project_start = data_one_project$project_start,
+      date_project_end = data_one_project$project_end
+    ),
+    end_year = year(data_one_project$project_end),
     project_description_title = list_titles[["project_description_title"]],
     description_value = description_value,
     more_description_value = HTML(more_description_value),

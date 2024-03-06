@@ -3,7 +3,6 @@
 test_that("Test that the preparation of a project card works", {
   
   data("toy_projects_data_sf")
-  data("toy_dic_titles_pages")
   
   # Create a temp folder with data-projects-cards subfolder
   my_temp_dir <- tempfile("test-create-project-card")
@@ -26,8 +25,7 @@ test_that("Test that the preparation of a project card works", {
     id_project = "1+1=3  PGV03.038",
     data_projects = toy_projects_data_sf,
     language = "de", 
-    pkg_dir = my_temp_dir, 
-    dic_titles_pages = toy_dic_titles_pages
+    pkg_dir = my_temp_dir
   )
   
   expect_true(
