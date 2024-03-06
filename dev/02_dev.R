@@ -30,6 +30,7 @@ golem::add_module(name = "projects_graph_summary", with_test = TRUE)
 ## Add helper functions ----
 ## Creates fct_* and utils_*
 golem::add_fct("map", with_test = TRUE)
+golem::add_fct("card_update", with_test = TRUE)
 golem::add_utils("helpers", with_test = TRUE)
 
 ## External resources
