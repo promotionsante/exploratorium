@@ -40,6 +40,27 @@
   </div>
 
   <div class = "alltitle">
+    {{project_advancement}}
+  </div>
+    <div class="row">
+      <div class="col-sm-1">
+        <span class="progress-label-left">{{start_year}}</span>
+      </div>
+      <div class="col-sm-10">
+        <div class="progress">
+          <div
+            class="progress-bar"
+            role="progressbar"
+            style="width: {{completion_percentage}}%"
+          >{{completion_percentage}}%</div>
+        </div>
+      </div>
+      <div class="col-sm-1">
+        <span class="progress-label-right">{{end_year}}</span>
+      </div>
+    </div>
+
+  <div class = "alltitle">
     {{project_description_title}}
   </div>
 

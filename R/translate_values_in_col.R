@@ -90,44 +90,44 @@ translate_values_in_col <- function(
     )
   }
   
-  # Translate the column
-  data_values_translated <- data |> 
-    st_drop_geometry() |> 
+# Translate the column
+  data_values_translated <- data |>
+    st_drop_geometry() |>
     rename(
-      "col_to_translate" = col_to_translate
-      ) |> 
-    select(short_title, col_to_translate) |> 
+      "col_to_translate" = all_of(col_to_translate)
+      ) |>
+    select(short_title, col_to_translate) |>
     separate_rows(
-      col_to_translate, 
+      col_to_translate,
       sep = sep
-    ) |> 
+    ) |>
     left_join(
-      dic_values |> 
-        select(value, language) |> 
-        rename("language" = language), 
+      dic_values |>
+        select(value, all_of(language)) |>
+        rename("language" = all_of(language)),
       by = c("col_to_translate" = "value")
-    ) |> 
+    ) |>
     group_by(
       short_title
-    ) |> 
+    ) |>
     mutate(
       col_translated = paste(
-        language, 
+        language,
         collapse = ", "
       )
-    ) |> 
+    ) |>
     select(
-      short_title, 
+      short_title,
       col_translated
-      ) |> 
+      ) |>
     distinct()
-  
-  data_translated <- data |> 
+
+  data_translated <- data |>
     left_join(
-      data_values_translated, 
+      data_values_translated,
       by = "short_title"
-    ) |> 
-    select(- col_to_translate)
+    ) |>
+    select(- all_of(col_to_translate))
   
   colnames(data_translated)[
     which(colnames(data_translated) == "col_translated")
