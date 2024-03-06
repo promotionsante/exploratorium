@@ -289,14 +289,21 @@
 .progress-label-left {
   float: left;
   margin-right: 1em;
+  font-weight: 600;
+  font-family: var(--font);
 }
 
 .progress-label-right {
   float: right;
   margin-left: 1em;
+  font-weight: 600;
+  font-family: var(--font);
 }
 .progress-bar {
   background-color: var(--light-orange);
+  color: black;
+  font-weight: 800;
+  font-family: var(--font);
 }
 
 .maininfotext {
