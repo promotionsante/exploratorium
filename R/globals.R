@@ -26,3 +26,7 @@ globalVariables(unique(c(
   "funding_round", "sum_value",
   NULL
 )))
+
+# We need a dummy binding to be able to mock a function from {base}
+# Needed for tests/testthat/test-compute_project_completion_percentage.R
+Sys.Date <- NULL

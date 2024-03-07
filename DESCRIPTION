@@ -1,7 +1,7 @@
 Package: exploratorium
 Title: Exploratorium De La Promotion De La Santé et La Prévention Des
     Maladies en Suisse
-Version: 0.10.13
+Version: 0.10.15
 Authors@R: c(
     person("Margot", "Brard", , "margot@thinkr.fr", role = c("aut", "cre")),
     person("Antoine", "Languillaume", , "antoine@thinkr.fr", role = "aut")
@@ -41,14 +41,13 @@ Suggests:
     DT,
     knitr,
     rmarkdown,
-    rsconnect,
     rstudioapi,
     stringr,
     testthat (>= 3.0.0),
     writexl
 VignetteBuilder: 
     knitr
-Config/fusen/version: 0.5.2.9000
+Config/fusen/version: 0.5.2
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
