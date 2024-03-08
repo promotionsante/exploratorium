@@ -2,14 +2,13 @@
 % Please edit documentation in R/prepare_app_data.R
 \name{prepare_app_data}
 \alias{prepare_app_data}
-\title{Prepare the app data}
+\title{Prepare the projects data in FR and DE to be included in the app as .rds files}
 \usage{
 prepare_app_data(
   name_raw_file = "PGV.xlsx",
   pkg_dir = system.file(package = "exploratorium"),
   dic_variables = NULL,
   dic_cantons = NULL,
-  dic_titles_pages = NULL,
   cantons_sf = NULL
 )
 }
@@ -22,22 +21,19 @@ prepare_app_data(
 
 \item{dic_cantons}{Tibble. Canton dictionary. Mainly used for examples and unit testing purpose.}
 
-\item{dic_titles_pages}{Tibble. Title of the pages dictionaries. Mainly used for examples and unit testing purpose.}
-
 \item{cantons_sf}{Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.}
 }
 \value{
-Nothing to return, used for side effect. A message is displayed in the console.
+A list with the projects data in FR and DE.
 }
 \description{
-Prepare the app data
+Prepare the projects data in FR and DE to be included in the app as .rds files
 }
 \examples{
 # Load the toy datasets
 data("toy_data_pgv")
 data("toy_dic_variables")
 data("toy_dic_cantons")
-data("toy_dic_titles_pages")
 data("toy_cantons_sf")
 
 # Create a temp folder with data-projects-raw and ata-projects subfolder
@@ -45,7 +41,6 @@ my_temp_dir <- tempfile("test-prepare-data")
 dir.create(my_temp_dir)
 dir.create(file.path(my_temp_dir, "data-projects-raw"))
 dir.create(file.path(my_temp_dir, "data-projects"))
-dir.create(file.path(my_temp_dir, "data-projects-cards"))
 
 # Save the toy PGV file inside
 writexl::write_xlsx(
@@ -63,7 +58,6 @@ prepare_app_data(
   pkg_dir = my_temp_dir, 
   dic_variables = toy_dic_variables, 
   dic_cantons = toy_dic_cantons,
-  dic_titles_pages = toy_dic_titles_pages,
   cantons_sf = toy_cantons_sf
 )
 

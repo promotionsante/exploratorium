@@ -12,6 +12,36 @@ get_dic_titles_app <- function(language) {
     setNames(dic_titles_pages$id)
 }
 
+#' @importFrom lubridate interval int_length
+#' @noRd
+compute_project_completion_percentage <- function(
+    date_project_start,
+    date_project_end
+) {
+
+  if (Sys.Date() > date_project_end ) {
+    completion_percentage <- 100
+    return(completion_percentage)
+  }
+
+  whole_project_duration <- interval(
+    start = date_project_start,
+    end = date_project_end
+  ) |> int_length()
+
+  current_state <- interval(
+    start = date_project_start,
+    end = Sys.Date()
+  ) |> int_length()
+
+
+  completion_percentage <- round(
+    x = (current_state / whole_project_duration) * 100,
+    digits = 0
+  )
+
+  return(completion_percentage)
+}
 
 #' Fill projects cards HTML template
 #'
