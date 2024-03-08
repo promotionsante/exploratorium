@@ -34,7 +34,7 @@ test_that("DE app titles are correct", {
       project_start_year_title = "Projektstart",
       project_project_manager_title = "Projektbegleitung<br>GFCH",
       project_main_orga_title = "Hauptverantwortliche Organisation",
-      project_advancement = "Förderung",
+      project_advancement = "Fortschritt",
       project_description_title = "Beschreibung",
       project_theme_title = "Thema",
       project_risk_title = "Risikofaktoren",
