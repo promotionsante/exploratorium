@@ -78,7 +78,7 @@ mod_one_project_server <- function(id, r_global){
             ),
             fill_card_html_template(
               id_project = r_global$id_selected_project,
-              data_projects = r_global$selected_projects_sf,
+              data_projects = r_global$projects_data_sf,
               language = r_global$language
             ),
             div(
