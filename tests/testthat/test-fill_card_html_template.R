@@ -48,6 +48,24 @@ test_that("DE app titles are correct", {
 
 })
 
+test_that("compute_project_completion_percentage works", {
+  # We need a dummy binding to be able to mock a function from {base}
+  Sys.Date <- NULL
+  with_mocked_bindings(
+    code = {
+      completion_percentage <- compute_project_completion_percentage(
+        date_project_start = as.Date("2023-01-01"),
+        date_project_end = as.Date("2026-12-31")
+      )
+    },
+    Sys.Date = function() as.Date("2024-03-04")
+  )
+  expect_equal(
+    completion_percentage,
+    29
+  )
+})
+
 test_that("project card template in properly filled", {
   html_card <- fill_card_html_template(
     id_project = "1+1=3",

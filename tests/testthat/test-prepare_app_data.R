@@ -7,14 +7,12 @@ test_that("Test that the preparation of the projects data is ok", {
   data("toy_dic_variables")
   data("toy_dic_cantons")
   data("toy_cantons_sf")
-  data("toy_dic_titles_pages")
   
   # Create a temp folder with data-projects-raw and ata-projects subfolder
   my_temp_dir <- tempfile("test-prepare-data")
   dir.create(my_temp_dir)
   dir.create(file.path(my_temp_dir, "data-projects-raw"))
   dir.create(file.path(my_temp_dir, "data-projects"))
-  dir.create(file.path(my_temp_dir, "data-projects-cards"))
   
   # Save the toy PGV file inside
   writexl::write_xlsx(toy_data_pgv,
@@ -28,7 +26,6 @@ test_that("Test that the preparation of the projects data is ok", {
     pkg_dir = my_temp_dir, 
     dic_variables = toy_dic_variables, 
     dic_cantons = toy_dic_cantons,
-    dic_titles_pages = toy_dic_titles_pages,
     cantons_sf = toy_cantons_sf
   )
   
