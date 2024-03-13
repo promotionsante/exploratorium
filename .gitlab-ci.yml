@@ -27,7 +27,7 @@ building:
     - mkdir -p $R_LIBS_USER
     - bash dev/ci/set_repos_option_to_match_thinkr_dev_env.sh
     - Rscript -e 'install.packages("pak")'
-    - Rscript -e 'pak::local_install(dependencies = TRUE)'
+    - Rscript -e 'pak::local_install(upgrade = FALSE, dependencies = TRUE)'
     - R -e 'rcmdcheck::rcmdcheck(args = c("--no-manual"), error_on = "warning", check_dir = "check")'
   artifacts:
     paths:
@@ -45,7 +45,8 @@ deploying:
     - echo "Library path for packages :" $R_LIBS_USER
     - mkdir -p $R_LIBS_USER
     - bash dev/ci/set_repos_option_to_match_thinkr_dev_env.sh
-    - Rscript -e 'pak::local_install(dependencies = TRUE)'
+    - Rscript -e 'install.packages("pak")'
+    - Rscript -e 'pak::local_install(upgrade = FALSE, dependencies = TRUE)'
     - Rscript dev/deploy_app.R
 
 # For gitlab versions below 15.0,
@@ -66,8 +67,9 @@ coverage:
     - test-ci
   script:
     - bash dev/ci/set_repos_option_to_match_thinkr_dev_env.sh
-    - Rscript -e 'remotes::install_local(upgrade = "never", dependencies = TRUE)'
-    - Rscript -e 'remotes::install_cran(c("covr", "DT"), upgrade = "never")'
+    - Rscript -e 'install.packages("pak")'
+    - Rscript -e 'pak::pkg_install(c("covr", "DT"), upgrade = FALSE)'
+    - Rscript -e 'pak::local_install(upgrade = FALSE, dependencies = TRUE)'
     - Rscript -e 'covr::gitlab(quiet = FALSE)'
   coverage: '/Coverage: \d+\.\d+/'
   artifacts:
@@ -90,9 +92,10 @@ integration:
     - test-ci
   script:
     - bash dev/ci/set_repos_option_to_match_thinkr_dev_env.sh
-    - Rscript -e 'install.packages("thinkrtemplate", repos = c("thinkropen" = "https://thinkr-open.r-universe.dev"))'
-    - Rscript -e 'remotes::install_cran(c("pkgdown"), upgrade = "never")'
-    - Rscript -e 'remotes::install_local(upgrade = "never", dependencies = TRUE)'
+    - Rscript -e 'install.packages("pak")'
+    - Rscript -e "pak::repo_add(universe = 'https://thinkr-open.r-universe.dev'); pak::pkg_install('thinkrtemplate')"
+    - Rscript -e 'pak::pkg_install("pkgdown", upgrade = FALSE)'
+    - Rscript -e 'pak::local_install(upgrade = FALSE, dependencies = TRUE)'
     - Rscript -e 'pkgdown::build_site()'
   artifacts:
     paths:
