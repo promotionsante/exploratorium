@@ -1,3 +1,8 @@
+# exploratoirun 0.10.16
+
+* Use {pak} instead of {remotes} in CI to avoid silent errors when
+a package fails to install.
+
 # exploratorium 0.10.15
 
 * Correct DE translation of project completion section in project cards
