@@ -1,3 +1,7 @@
+# exploratoirun 0.10.17
+
+* Only display PSCH share in yearly cumulative budget graph.
+
 # exploratoirun 0.10.16
 
 * Use {pak} instead of {remotes} in CI to avoid silent errors when
