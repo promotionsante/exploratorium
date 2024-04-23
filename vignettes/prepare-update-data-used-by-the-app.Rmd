@@ -22,61 +22,58 @@ library(exploratorium)
 
 ```{r parsermd-chunk-1, include = FALSE}
 knitr::opts_chunk$set(
-  eval=FALSE,
-  echo=TRUE
+  eval = FALSE,
+  echo = TRUE
 )
 ```
 
 *The aim of this article is to show you how to update the data used by the app.*
 
-The app uses 2 types of data: 
+# Projects data
 
-- Projects data saved in a .rds format with all the data
-- Projects cards in a .html format
+The projects data preparation workflow is shown below. 
 
-
-```{r parsermd-chunk-2, echo = FALSE, eval = TRUE, fig.align = 'center', out.width = '40%'}
-knitr::include_graphics("../man/figures/type_data.png")
-```
-
-The data preparation workflow is shown below. **This data preparation process must be repeated each time the raw data is modified or each time a modification is required to the data dictionaries.**
-
+**This data preparation process must be repeated each time the raw data is modified or each time a modification is required to the data dictionaries.**
 
 ```{r parsermd-chunk-3, echo = FALSE, eval = TRUE, fig.align = 'center', out.width = '100%'}
 knitr::include_graphics("../man/figures/data_prep_workflow.png")
 ```
 
-# Modify the raw data about the projects or modify the translations
+The final output of this pipeline consists in two datasets: 
+
+* `projects_fr.rds`
+* `projects_de.rds`
+
+which are used directly within the app.
 
 ## Modify the raw data about the projects
 
 You must upload the new version of the file `PGV.xlsx` in the `inst/data-projects-raw` folder.
 
-
-```{r parsermd-chunk-4, echo = FALSE, eval = TRUE, fig.align = 'center', out.width = '20%'}
-knitr::include_graphics("../man/figures/update_raw_projects_data.png")
+```{r parsermd-chunk-4, echo = FALSE}
+fs::dir_tree("inst/data-projects-raw/")
 ```
 
-## Modify the data concerning the translations
+## Modify the translations for projects data
 
-You must modify directly the dictionaries used for the translations. They are saved in the `inst/data-dic` folder, in a `.csv` format.
+You must modify directly the dictionaries used for the translations. 
 
+Dictionnaries used during data preparation are  `.csv` files located in `inst/data-dic` folder:
 
-```{r parsermd-chunk-5, echo = FALSE, eval = TRUE, fig.align = 'center', out.width = '80%'}
-knitr::include_graphics("../man/figures/update_dic_data.png")
-```
+* `dic_variables.csv`
+* `dic_cantons.csv`
+* `dic_values.csv` 
 
 ### dic_variables.csv
 
-The content of **"dic_variables.csv"** is the following one:
-
+Contains translations of all variables names of the raw data file `inst/data-projects-raw/PGV.xlsx`.
 
 ```{r parsermd-chunk-6, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
 DT::datatable(
   readr::read_csv2(
     system.file(
       "data-dic",
-      "dic_variables.csv", 
+      "dic_variables.csv",
       package = "exploratorium"
     )
   )
@@ -85,59 +82,67 @@ DT::datatable(
 
 ### dic_cantons.csv
 
-The content of **"dic_cantons.csv"** is the following one:
-
+Contains translations of cantons names.
 
 ```{r parsermd-chunk-7, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
 DT::datatable(
   readr::read_csv(
     system.file(
       "data-dic",
-      "dic_cantons.csv", 
+      "dic_cantons.csv",
       package = "exploratorium"
     )
   )
 )
 ```
 
-  
-
 ### dic_values.csv
 
-The content of **"dic_values.csv"** is the following one:
-
+Contains values in the columns status, risk factors, topics of `PGV.xlsx`
 
 ```{r parsermd-chunk-8, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
 DT::datatable(
   readr::read_csv2(
     system.file(
       "data-dic",
-      "dic_values.csv", 
+      "dic_values.csv",
       package = "exploratorium"
     )
   )
 )
 ```
 
-### dic_titles_app.csv and i18n_locales.json
 
-The content of **"dic_titles_app.csv"** is the following one:
+## Update projects data
 
+To rebuild the projects`prepare_app_data()` function as follows:
+
+```{r parsermd-chunk-11, eval = FALSE}
+prepare_app_data()
+```
+
+
+# Translation data used in the app
+
+### dic_titles_app.csv  
+
+Contains translations all titles of the app 
 
 ```{r parsermd-chunk-9, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
 DT::datatable(
   readr::read_csv2(
     system.file(
       "data-dic",
-      "dic_titles_app.csv", 
+      "dic_titles_app.csv",
       package = "exploratorium"
     )
   )
 )
 ```
 
-The content of **"i18n_locales.json"** is the following one:
+### i18n_locales.json
 
+Contains translation of all app elements other than titles.
 
 ```{r parsermd-chunk-10, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
 json_content <- jsonlite::fromJSON(
@@ -160,51 +165,4 @@ DT::datatable(
 )
 ```
 
-# Update the data used by the app
-
-Then, to update the data used by the application, you can use the `prepare_app_data()` function as follows:
-
-
-
-  
-
-```{r example-prepare_app_data, echo = FALSE}
-# Load the toy datasets
-data("toy_data_pgv")
-data("toy_dic_variables")
-data("toy_dic_cantons")
-data("toy_cantons_sf")
-
-# Create a temp folder with data-projects-raw and ata-projects subfolder
-my_temp_dir <- tempfile("test-prepare-data")
-dir.create(my_temp_dir)
-dir.create(file.path(my_temp_dir, "data-projects-raw"))
-dir.create(file.path(my_temp_dir, "data-projects"))
-
-# Save the toy PGV file inside
-writexl::write_xlsx(
-  toy_data_pgv, 
-  file.path(
-    my_temp_dir, 
-    "data-projects-raw", 
-    "toy_PGV.xlsx"
-  )
-)
-
-# Prepare the data
-prepare_app_data(
-  name_raw_file = "toy_PGV.xlsx",
-  pkg_dir = my_temp_dir, 
-  dic_variables = toy_dic_variables, 
-  dic_cantons = toy_dic_cantons,
-  cantons_sf = toy_cantons_sf
-)
-
-# Delete the tempdir
-unlink(my_temp_dir, recursive = TRUE)
-```
-
-```{r parsermd-chunk-11, eval = FALSE}
-prepare_app_data()
-```
 
