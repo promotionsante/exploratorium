@@ -115,7 +115,7 @@ DT::datatable(
 
 ## Update projects data
 
-To rebuild the projects`prepare_app_data()` function as follows:
+To rebuild the projects data, run:
 
 ```{r parsermd-chunk-11, eval = FALSE}
 prepare_app_data()
@@ -126,7 +126,7 @@ prepare_app_data()
 
 ### dic_titles_app.csv  
 
-Contains translations all titles of the app 
+Contains translations of all app titles
 
 ```{r parsermd-chunk-9, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
 DT::datatable(
