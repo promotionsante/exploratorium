@@ -1,8 +1,5 @@
 # Before sending to the server
 
-## Inflate all flat files
-fusen::inflate_all_no_check()
-
 ## Update doc
 attachment::att_amend_desc(
   path = here::here(),
@@ -17,4 +14,3 @@ usethis::use_version("patch")
 
 ## Build the pkgdown
 pkgdown::build_site()
-
