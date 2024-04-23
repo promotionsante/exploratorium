@@ -67,7 +67,6 @@ mod_one_project_server <- function(id, r_global){
           r_local$card_ui <- tags$script('$("#project_selection_panel").show()')
 
         } else {
-
           r_local$card_ui <- tagList(
             actionButton(
               inputId = ns("back_to_project_selection_view"),
@@ -77,12 +76,10 @@ mod_one_project_server <- function(id, r_global){
               class = "orange-arrow-button",
               get_back_arrow_html()
             ),
-            includeHTML(
-              system.file(
-                "data-projects-cards",
-                glue("project_card_{clean_id_project}_{language}.html"),
-                package = "exploratorium"
-              )
+            fill_card_html_template(
+              id_project = r_global$id_selected_project,
+              data_projects = r_global$projects_data_sf,
+              language = r_global$language
             ),
             div(
               id = ns("project_repart_budget_plot")
