@@ -1,0 +1,50 @@
+on:
+  push:
+    branches: [main, uat, production, test-ci]
+  pull_request:
+    branches: [main, uat, production, test-ci]
+  release:
+    types: [published]
+  workflow_dispatch:
+
+name: pkgdown
+
+jobs:
+  pkgdown:
+    runs-on: ubuntu-latest
+    container: rocker/geospatial:4.3.2
+    # Only restrict concurrency for non-PR jobs
+    concurrency:
+      group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies Linux
+        run: sudo apt-get update -qq && apt-get install -y rsync
+
+      - name: Set repos option to match thinkr dev env
+        run: bash dev/ci/set_repos_option_to_match_thinkr_dev_env.sh
+
+      - name: Install application dependencies
+        run: |
+          install.packages("pak")
+          pak::pkg_install("pkgdown", upgrade = FALSE)
+          pak::local_install(upgrade = FALSE, dependencies = TRUE)
+          rcmdcheck::rcmdcheck(args = c("--no-manual"), error_on = "warning", check_dir = "check")
+        shell: Rscript {0}
+
+      - name: Build site
+        run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
+        shell: Rscript {0}
+
+      - name: Deploy to GitHub pages 🚀
+        if: github.event_name != 'pull_request'
+        uses: JamesIves/github-pages-deploy-action@v4.5.0
+        with:
+          clean: false
+          branch: gh-pages
+          folder: docs
