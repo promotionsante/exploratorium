@@ -1,10 +1,11 @@
 Package: exploratorium
 Title: Exploratorium De La Promotion De La Santé et La Prévention Des
     Maladies en Suisse
-Version: 0.10.18
+Version: 0.11
 Authors@R: c(
     person("Margot", "Brard", , "margot@thinkr.fr", role = c("aut", "cre")),
-    person("Antoine", "Languillaume", , "antoine@thinkr.fr", role = "aut")
+    person("Antoine", "Languillaume", , "antoine@thinkr.fr", role = "aut"),
+    person("Yohann", "Mansiaux", , "yohann@thinkr.fr", role = "aut")
   )
 Description: Rendre accessible et valoriser les données d’investissement
     dans la promotion de la santé et de la prévention des maladies en
