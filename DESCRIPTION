@@ -9,7 +9,7 @@ Authors@R: c(
 Description: Rendre accessible et valoriser les données d’investissement
     dans la promotion de la santé et de la prévention des maladies en
     Suisse.
-License: file LICENSE
+License: GPL (>= 3)
 Depends: 
     R (>= 2.10)
 Imports: 
