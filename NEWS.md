@@ -1,3 +1,7 @@
+# exploratoritum 0.11.0
+
+* Moving from Gitlab to Github
+
 # exploratoritum 0.10.18
 
 * Update architecture schema to reflect real time project cards rendering
