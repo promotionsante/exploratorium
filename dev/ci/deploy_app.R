@@ -1,15 +1,18 @@
-
 cli::cat_rule("Connect to shinyapps.io account")
 
+stopifnot(Sys.getenv("SHINYAPPS_IO_NAME") != "")
+stopifnot(Sys.getenv("SHINYAPPS_IO_TOKEN") != "")
+stopifnot(Sys.getenv("SHINYAPPS_IO_SECRET") != "")
+
 rsconnect::setAccountInfo(
-  name = "prevention",
+  name = Sys.getenv("SHINYAPPS_IO_NAME"),
   token = Sys.getenv("SHINYAPPS_IO_TOKEN"),
   secret = Sys.getenv("SHINYAPPS_IO_SECRET")
 )
 
 # Keep only relevant files
 
-file_to_ignore_regex <-  c(
+file_to_ignore_regex <- c(
   ".Rprofile$",
   "^.Renviron$",
   "renv/",
@@ -33,17 +36,24 @@ appFiles <- appFiles[!grepl(
 get_current_git_branch <- function() {
   if (interactive()) {
     # On dev computer
-    system("git rev-parse --abbrev-ref HEAD", intern = TRUE)
+    branch_name <- system("git rev-parse --abbrev-ref HEAD", intern = TRUE)
   } else {
-    # On gitlba CI
-    Sys.getenv("CI_COMMIT_REF_NAME")
+    # ON CI
+    branch_name <- c(
+      # GITLAB CI
+      Sys.getenv("CI_COMMIT_REF_NAME"),
+      # GITHUB ACTIONS
+      Sys.getenv("GITHUB_REF_NAME")
+    )
+    branch_name <- branch_name[branch_name != ""]
   }
+  return(branch_name)
 }
 
 app_name_base <- basename(normalizePath("."))
 current_git_branch <- get_current_git_branch()
 
-switch (
+switch(
   EXPR = current_git_branch,
   "main" = paste0(app_name_base, "-dev"),
   "uat" = paste0(app_name_base, "-uat"),
