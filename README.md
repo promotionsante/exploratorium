@@ -5,8 +5,7 @@
 
 <!-- badges: start -->
 
-[![Codecov test
-coverage](https://codecov.io/gh/promotionsante/exploratorium/branch/main/graph/badge.svg)](https://app.codecov.io/gh/promotionsante/exploratorium?branch=main)
+[![codecov](https://codecov.io/gh/promotionsante/exploratorium/graph/badge.svg?token=TP6V4VMH6B)](https://codecov.io/gh/promotionsante/exploratorium)
 [![R-CMD-check](https://github.com/promotionsante/exploratorium/actions/workflows/check.yaml/badge.svg)](https://github.com/promotionsante/exploratorium/actions/workflows/check.yaml)
 <!-- badges: end -->
 
