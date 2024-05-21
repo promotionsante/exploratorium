@@ -30,8 +30,8 @@ version](https://prevention.shinyapps.io/exploratorium-dev/)
 # Documentation
 
 The technical documentation for the developers is available in the
-[pkgdown](https://promotionsante.pages.thinkr.fr/exploratorium). You
-will find global information about:
+[pkgdown](https://promotionsante.github.io/exploratorium/). You will
+find global information about:
 
 - The architecture of the app
 - How to **update and modify the data used by the app**
