@@ -11,9 +11,9 @@
 
 # Overview
 
-An attractive and playful **platform** for citizens and the federal
-government to explore the **projects supported in the promotion of
-diseases in Switzerland**.
+An interactive **platform** for citizens and the federal government to
+explore **projects in the realm of health promotion and disease
+prevention in Switzerland**.
 
 <img src="man/figures/screenshot_app.png" align="center" alt="" width="80%" />
 
