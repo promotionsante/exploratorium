@@ -16,3 +16,4 @@ $run_dev.*
 ^docs$
 ^observatoire\.Rproj$
 ^LICENSE\.md$
+^\.github$
