@@ -5,10 +5,8 @@
 
 <!-- badges: start -->
 
-[![R build
-status](https://forge.thinkr.fr/promotionsante/exploratorium/badges/main/pipeline.svg)](https://forge.thinkr.fr/promotionsante/exploratorium/-/pipelines)
-[![Codecov test
-coverage](https://forge.thinkr.fr/promotionsante/exploratorium/badges/main/coverage.svg)](https://forge.thinkr.fr/promotionsante/exploratorium/commits/main)
+[![codecov](https://codecov.io/gh/promotionsante/exploratorium/graph/badge.svg?token=TP6V4VMH6B)](https://codecov.io/gh/promotionsante/exploratorium)
+[![R-CMD-check](https://github.com/promotionsante/exploratorium/actions/workflows/check.yaml/badge.svg)](https://github.com/promotionsante/exploratorium/actions/workflows/check.yaml)
 <!-- badges: end -->
 
 # Overview
@@ -32,8 +30,8 @@ version](https://prevention.shinyapps.io/exploratorium-dev/)
 # Documentation
 
 The technical documentation for the developers is available in the
-[pkgdown](https://promotionsante.pages.thinkr.fr/exploratorium). You will
-find global information about:
+[pkgdown](https://promotionsante.pages.thinkr.fr/exploratorium). You
+will find global information about:
 
 - The architecture of the app
 - How to **update and modify the data used by the app**

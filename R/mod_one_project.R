@@ -7,8 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_one_project_ui <- function(id){
-
+mod_one_project_ui <- function(id) {
   ns <- NS(id)
 
   tagList(
@@ -16,16 +15,13 @@ mod_one_project_ui <- function(id){
       outputId = ns("project_card")
     )
   )
-
 }
 
 #' one_project Server Functions
 #'
 #' @noRd
-mod_one_project_server <- function(id, r_global){
-
-  moduleServer( id, function(input, output, session){
-
+mod_one_project_server <- function(id, r_global) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     r_local <- reactiveValues(
@@ -37,14 +33,16 @@ mod_one_project_server <- function(id, r_global){
       input$back_to_project_selection_view,
       {
         r_global$id_selected_project <- NULL
-      })
+      }
+    )
     observeEvent(
       r_global$click_map,
       {
         if (r_global$click_map == "click-on-map-in-project-view") {
           r_global$id_selected_project <- NULL
         }
-      })
+      }
+    )
 
     # Construct card to be displayed based on project id and app language
     observeEvent(
@@ -53,7 +51,6 @@ mod_one_project_server <- function(id, r_global){
         r_global$language
       ),
       {
-
         clean_id_project <- clean_id_project(
           id_project = r_global$id_selected_project
         )
@@ -63,9 +60,7 @@ mod_one_project_server <- function(id, r_global){
         if (
           is.null(r_global$id_selected_project)
         ) {
-
           r_local$card_ui <- tags$script('$("#project_selection_panel").show()')
-
         } else {
           r_local$card_ui <- tagList(
             actionButton(
@@ -104,13 +99,12 @@ mod_one_project_server <- function(id, r_global){
             session = session
           )
         }
-
-      })
+      }
+    )
 
     output$project_card <- renderUI({
       r_local$card_ui
     })
-
   })
 }
 

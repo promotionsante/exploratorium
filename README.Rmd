@@ -16,8 +16,8 @@ knitr::opts_chunk$set(
 # {exploratorium} <img src="man/figures/logo.png" align="right" alt="" width="120" /> {.unlisted}
 
 <!-- badges: start -->
-[![R build status](https://forge.thinkr.fr/promotionsante/exploratorium/badges/main/pipeline.svg)](https://forge.thinkr.fr/promotionsante/exploratorium/-/pipelines)
-[![Codecov test coverage](https://forge.thinkr.fr/promotionsante/exploratorium/badges/main/coverage.svg)](https://forge.thinkr.fr/promotionsante/exploratorium/commits/main)
+[![codecov](https://codecov.io/gh/promotionsante/exploratorium/graph/badge.svg?token=TP6V4VMH6B)](https://codecov.io/gh/promotionsante/exploratorium)
+[![R-CMD-check](https://github.com/promotionsante/exploratorium/actions/workflows/check.yaml/badge.svg)](https://github.com/promotionsante/exploratorium/actions/workflows/check.yaml)
 <!-- badges: end -->
 
 # Overview

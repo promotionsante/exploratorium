@@ -1,3 +1,12 @@
+# exploratoritum 0.11.0
+
+* Moving from Gitlab to Github
+
+# exploratoritum 0.10.18
+
+* Update architecture schema to reflect real time project cards rendering
+* Make the ditinction between project and app translation data in data preparation vignette
+
 # exploratoirun 0.10.17
 
 * Only display PSCH share in yearly cumulative budget graph.
