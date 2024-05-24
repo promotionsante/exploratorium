@@ -1,7 +1,7 @@
 Package: exploratorium
 Title: Exploring Investements in Health Promotion and Disease Prevention
     in Switzerland
-Version: 0.11.0.9000
+Version: 0.12.0
 Authors@R: c(
     person("Margot", "Brard", , "margot@thinkr.fr", role = c("aut", "cre")),
     person("Antoine", "Languillaume", , "antoine@thinkr.fr", role = "aut"),
