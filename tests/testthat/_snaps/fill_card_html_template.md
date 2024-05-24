@@ -35,7 +35,7 @@
             </div>
             <div style = "width: 1px; border-left: 1px solid transparent; height: 20px; vertical-align: top"></div>
             <div class = "maininfotext">
-              <a href="https://promotionsante.ch/fondation/equipe?views_search_api_fulltext=Raphaël Trémeaud" target="_blank">Raphaël Trémeaud</a>
+              <a href="https://promotionsante.ch/fondation/equipe?views_search_api_fulltext=raphael.tremeaud" target="_blank">Raphaël Trémeaud</a>
             </div>
             <div style = "width: 1px; border-left: 1px solid transparent; height: 20px; vertical-align: top"></div>
             <div class = "maininfotext">
