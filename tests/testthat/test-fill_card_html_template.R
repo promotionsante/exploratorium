@@ -31,19 +31,19 @@ test_that("DE app titles are correct", {
   )
 
   expected_list_titles <- list(
-      project_start_year_title = "Projektstart",
-      project_project_manager_title = "Projektbegleitung<br>GFCH",
-      project_main_orga_title = "Hauptverantwortliche Organisation",
-      project_advancement = "Fortschritt",
-      project_description_title = "Beschreibung",
-      project_theme_title = "Thema",
-      project_risk_title = "Risikofaktoren",
-      project_budget_title = "Gesamtbudget",
-      project_prop_budget_title = "Verteilung der Projektfinanzierung"
-    )
+    project_start_year_title = "Projektstart",
+    project_project_manager_title = "Projektbegleitung<br>GFCH",
+    project_main_orga_title = "Hauptverantwortliche Organisation",
+    project_advancement = "Fortschritt",
+    project_description_title = "Beschreibung",
+    project_theme_title = "Thema",
+    project_risk_title = "Risikofaktoren",
+    project_budget_title = "Gesamtbudget",
+    project_prop_budget_title = "Verteilung der Projektfinanzierung"
+  )
 
   expect_equal(list_titles,
-    expected_list_titles
+               expected_list_titles
   )
 
 })
@@ -73,4 +73,23 @@ test_that("project card template in properly filled", {
     language = "de"
   )
   expect_snapshot(html_card)
+})
+
+test_that("Derive project manager api query string", {
+  expect_equal(
+    derive_project_manager_api_query_string("Franziska Widmer Howald"),
+    "franziska.widmer"
+  )
+  expect_equal(
+    derive_project_manager_api_query_string("Raphaël Trémeaud"),
+    "raphael.tremeaud"
+  )
+  expect_equal(
+    derive_project_manager_api_query_string("Karin Wyss Müller"),
+    "karin.wyss"
+  )
+  expect_equal(
+    derive_project_manager_api_query_string("Karin Lörvall"),
+    "karin.loervall"
+  )
 })

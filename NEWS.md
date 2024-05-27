@@ -1,3 +1,7 @@
+# exploratorium 0.12.0
+
+* Fix project manager broken links.
+
 # exploratoritum 0.11.0
 
 * Moving from Gitlab to Github

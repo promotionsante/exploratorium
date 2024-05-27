@@ -12,7 +12,7 @@ draw_map_focus_one_project(
 )
 }
 \arguments{
-\item{projects_data_sf}{A sf data.frame containing coordinates of project 
+\item{projects_data_sf}{A sf data.frame containing coordinates of project
 main organisation and project `short_title`.}
 
 \item{id_project}{Character. Id of the project.}
@@ -34,7 +34,7 @@ data("toy_cantons_sf")
 
 draw_map_focus_one_project(
   projects_data_sf = toy_projects_data_sf,
-  id_project = "1+1=3  PGV03.038", 
+  id_project = "1+1=3  PGV03.038",
   cantons_sf = toy_cantons_sf
 )
 }
