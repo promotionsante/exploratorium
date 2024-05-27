@@ -44,10 +44,10 @@ dir.create(file.path(my_temp_dir, "data-projects"))
 
 # Save the toy PGV file inside
 writexl::write_xlsx(
-  toy_data_pgv, 
+  toy_data_pgv,
   file.path(
-    my_temp_dir, 
-    "data-projects-raw", 
+    my_temp_dir,
+    "data-projects-raw",
     "toy_PGV.xlsx"
   )
 )
@@ -55,8 +55,8 @@ writexl::write_xlsx(
 # Prepare the data
 prepare_app_data(
   name_raw_file = "toy_PGV.xlsx",
-  pkg_dir = my_temp_dir, 
-  dic_variables = toy_dic_variables, 
+  pkg_dir = my_temp_dir,
+  dic_variables = toy_dic_variables,
   dic_cantons = toy_dic_cantons,
   cantons_sf = toy_cantons_sf
 )

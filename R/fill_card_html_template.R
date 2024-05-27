@@ -43,6 +43,19 @@ compute_project_completion_percentage <- function(
   return(completion_percentage)
 }
 
+
+derive_project_manager_api_query_string <- function(
+    project_manager_chr
+) {
+  project_manager_chr |>
+    switch(
+      "Franziska Widmer Howald" = "franziska.widmer",
+      "Rapha\u00ebl Tr\u00e9meaud" = "raphael.tremeaud",
+      "Karin Wyss M\u00fcller" = "karin.wyss",
+      "Karin L\u00f6rvall" = "karin.loervall"
+    )
+}
+
 #' Fill projects cards HTML template
 #'
 #' @param id_project Character. ID of the project, 'short_title' in data.
@@ -99,7 +112,7 @@ fill_card_html_template <- function(
   project_manager_url <-
     paste0(
       "https://promotionsante.ch/fondation/equipe?views_search_api_fulltext=",
-      project_manager
+      derive_project_manager_api_query_string(project_manager)
     )
   project_manager_value <- glue(
     '<a href=\"{project_manager_url}\" target=\"_blank\">{project_manager}</a>'
