@@ -87,17 +87,15 @@ prepare_app_data <- function(
   data_translated <- data_with_prop_budget |>
     translate_values_in_data(
       cols_to_translate = c(
-        "status",
-        "topic",
-        "risk_factors"
+        "status"
       )
     )
 
   cli_alert("Save the data")
-  # save_projects_data(
-  #   list_data_fr_de = data_translated,
-  #   pkg_dir = pkg_dir
-  # )
+  save_projects_data(
+    list_data_fr_de = data_translated,
+    pkg_dir = pkg_dir
+  )
 
   cli_process_done(
     "Prepare projects_fr.rds and projects_de.rds"
