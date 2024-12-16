@@ -79,18 +79,8 @@ prepare_app_data <- function(
       cantons_sf = cantons_sf
     )
 
-  cli_alert("Detect the id of the cantons influenced")
-  data_with_id_cantons_influenced <- data_with_cantons |>
-    get_id_cantons_influenced(
-      dic_cantons = dic_cantons
-    )
-
-  cli_alert("Add the number of cantons influenced")
-  data_with_nb_cantons_influenced <- data_with_id_cantons_influenced |>
-    get_nb_cantons_influenced()
-
   cli_alert("Add the proportion of the budget")
-  data_with_prop_budget <- data_with_nb_cantons_influenced |>
+  data_with_prop_budget <- data_with_cantons |>
     get_prop_budget()
 
   cli_alert("Translate the data")
