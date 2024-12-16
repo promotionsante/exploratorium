@@ -30,10 +30,9 @@
 #'     cantons_sf = toy_cantons_sf
 #'   )
 get_coord_main_resp_orga <- function(
-    data,
-    cantons_sf = NULL
-){
-
+  data,
+  cantons_sf = NULL
+) {
   # Check if some cities are missing
   nb_missing_cities <- data |>
     filter(is.na(city_code_main_resp_orga)) |>
@@ -60,10 +59,10 @@ get_coord_main_resp_orga <- function(
       postalcode = zip_code_main_resp_orga,
       country = country,
       method = "osm",
-      lat = latitude ,
+      lat = latitude,
       long = longitude
     ) |>
-    select(- country)
+    select(-country)
 
   # Create sf points
   data_with_coord <- data_with_long_lat |>
@@ -104,5 +103,4 @@ get_coord_main_resp_orga <- function(
   }
 
   return(data_with_coord)
-
 }
