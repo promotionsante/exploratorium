@@ -34,9 +34,12 @@
 #'     cantons_sf = toy_cantons_sf
 #'   )
 get_canton_main_resp_orga <- function(
-    data,
-    cantons_sf = NULL
-){
+  data,
+  cantons_sf = NULL
+) {
+  if (is.null(cantons_sf)) {
+    cantons_sf <- read_cantons_sf()
+  }
 
   # Check if some GPS points are missing
   nb_missing_gps_points <- data |>
@@ -52,11 +55,6 @@ get_canton_main_resp_orga <- function(
         .sep = "\n"
       )
     )
-  }
-
-  # Detect the id of the cantons
-  if (is.null(cantons_sf)) {
-    cantons_sf <- read_cantons_sf()
   }
 
   data_with_coord <- data |>
@@ -97,5 +95,4 @@ get_canton_main_resp_orga <- function(
   }
 
   return(data_with_canton)
-
 }
