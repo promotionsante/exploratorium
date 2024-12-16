@@ -47,29 +47,19 @@
 #' # Delete the tempdir
 #' unlink(my_temp_dir, recursive = TRUE)
 prepare_app_data <- function(
-    name_raw_file = "PGV.xlsx",
-    pkg_dir = system.file(package = "exploratorium"),
-    dic_variables = NULL,
-    dic_cantons = NULL,
-    cantons_sf = NULL
-  ){
-
+  name_raw_file = "PGV.xlsx",
+  pkg_dir = system.file(package = "exploratorium"),
+  dic_variables = NULL,
+  dic_cantons = NULL,
+  cantons_sf = NULL
+) {
   cli_process_start(
     "Prepare projects_fr.rds and projects_de.rds"
   )
 
   # Prepare the data and save them
   cli_alert("Import the raw data")
-  data_import <- import_raw_data(
-    name_raw_file = name_raw_file,
-    pkg_dir = pkg_dir
-  )
-
-  cli_alert("Add the columns")
-  data_with_col <- data_import |>
-    add_col_raw_data(
-      dic_variables = dic_variables
-    )
+  data_import <- retrieve_project_data_from_promotion_digitale_db()
 
   cli_alert("Clean the data")
   data_cleaned <- data_with_col |>
@@ -116,13 +106,12 @@ prepare_app_data <- function(
     )
 
   cli_alert("Save the data")
-  save_projects_data(
-    list_data_fr_de = data_translated,
-    pkg_dir = pkg_dir
-  )
+  # save_projects_data(
+  #   list_data_fr_de = data_translated,
+  #   pkg_dir = pkg_dir
+  # )
 
   cli_process_done(
     "Prepare projects_fr.rds and projects_de.rds"
   )
-
 }
