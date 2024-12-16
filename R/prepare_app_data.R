@@ -61,13 +61,6 @@ prepare_app_data <- function(
   cli_alert("Import the raw data")
   data_import <- retrieve_project_data_from_promotion_digitale_db()
 
-  cli_alert("Clean the data")
-  data_cleaned <- data_with_col |>
-    clean_raw_data()
-
-  cli_alert("Consolidate topic data")
-  data_topic_consolidated <- data_cleaned |>
-    consolidate_topic_data()
 
   cli_alert("Add the coordinates of the main organization")
   data_with_coord <- data_topic_consolidated |>
