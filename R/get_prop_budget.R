@@ -24,16 +24,14 @@
 #' raw_data |>
 #'   get_prop_budget()
 get_prop_budget <- function(
-    data
-    ){
-
+  data) {
   data |>
     mutate(
+      total_budget = budget_orga + budget_third_party + budget_gfch,
       across(
         starts_with("budget_"),
         ~ .x / total_budget,
         .names = "prop_{.col}"
       )
     )
-
 }
