@@ -60,6 +60,13 @@ prepare_app_data <- function(
   cli_alert("Import the raw data")
   data_import <- retrieve_project_data_from_promotion_digitale_db()
 
+  cli_alert("Clean raw data")
+  data_import$city_code_main_resp_orga <- sub(
+    pattern = "(Bern) \\d{2}",
+    replacement = "\\1",
+    x = data_import$city_code_main_resp_orga
+  )
+
   cli_alert("Add the coordinates of the main organization")
   data_with_coord <- data_import |>
     get_coord_main_resp_orga(
