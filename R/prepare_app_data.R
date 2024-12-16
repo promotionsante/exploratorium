@@ -57,13 +57,11 @@ prepare_app_data <- function(
     "Prepare projects_fr.rds and projects_de.rds"
   )
 
-  # Prepare the data and save them
   cli_alert("Import the raw data")
   data_import <- retrieve_project_data_from_promotion_digitale_db()
 
-
   cli_alert("Add the coordinates of the main organization")
-  data_with_coord <- data_topic_consolidated |>
+  data_with_coord <- data_import |>
     get_coord_main_resp_orga(
       cantons_sf = cantons_sf
     )
