@@ -104,3 +104,5 @@ get_coord_main_resp_orga <- function(
 
   return(data_with_coord)
 }
+
+memoised_get_coord_main_resp_orga <- memoise::memoise(get_coord_main_resp_orga)
