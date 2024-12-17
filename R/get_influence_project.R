@@ -22,10 +22,13 @@
 #'   cantons_sf = toy_cantons_sf
 #' )
 get_influence_project <- function(
-    projects_data_sf,
-    id_project,
-    cantons_sf = NULL
-    ){
+  projects_data_sf,
+  id_project,
+  cantons_sf = NULL
+) {
+  dic_cantons_by_project <- read_csv_in_inst(
+    "data-projects/dic_cantons_by_project.csv"
+  )
 
   # Create a coord_sf_project object
   projects_data_sf_filtered <- projects_data_sf |>
@@ -35,21 +38,15 @@ get_influence_project <- function(
     select(short_title, geometry)
 
   # Extract target cantons from project_data_sf
-  project_data_cantons_sf <- projects_data_sf_filtered |>
-    st_drop_geometry() |>
-    select(short_title, geo_range_id) |>
-    separate_rows(
-      geo_range_id,
-      sep = ", "
-    )
+  project_data_cantons_sf <- dic_cantons_by_project |>
+    filter(short_title == id_project)
 
   # Create a cantons_sf_project object with column target_cantons (TRUE/FALSE)
   cantons_sf_project <- left_join(
     x = cantons_sf |>
       select(HASC_1, NAME_1, geometry),
-    y = project_data_cantons_sf |>
-      rename(HASC_1 = geo_range_id),
-    by = "HASC_1"
+    y = project_data_cantons_sf,
+    by = c("HASC_1" = "geo_range_id")
   ) |>
     mutate(
       target_cantons = ifelse(
@@ -58,12 +55,11 @@ get_influence_project <- function(
         TRUE
       )
     ) |>
-    select(- short_title)
+    select(-short_title)
 
   # Add the lines from the centroid
   if (nrow(cantons_sf_project |>
-           filter(target_cantons == TRUE)) > 0) {
-
+    filter(target_cantons == TRUE)) > 0) {
     st_agr(cantons_sf_project) <- "constant"
 
     cantons_centroid <- cantons_sf_project |>
@@ -78,13 +74,10 @@ get_influence_project <- function(
     cantons_influenced_lines <- st_union(
       cantons_centroid$geometry,
       cantons_centroid$project
-      ) |>
+    ) |>
       st_cast("LINESTRING")
-
   } else {
-
     cantons_influenced_lines <- NULL
-
   }
 
   return(
@@ -94,5 +87,4 @@ get_influence_project <- function(
       cantons_influenced_lines = cantons_influenced_lines
     )
   )
-
 }
