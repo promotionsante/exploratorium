@@ -25,9 +25,9 @@ Imports:
     jsonlite,
     leaflet,
     lubridate,
+    memoise,
     purrr,
     readr,
-    readxl,
     RPostgres,
     scales,
     sf,
@@ -38,7 +38,6 @@ Imports:
     tidygeocoder,
     tidyr,
     tidyselect,
-    tools,
     waiter,
     withr
 Suggests: 
@@ -48,7 +47,6 @@ Suggests:
     rmarkdown,
     rsconnect,
     rstudioapi,
-    stringr,
     testthat (>= 3.0.0),
     writexl
 VignetteBuilder: 
