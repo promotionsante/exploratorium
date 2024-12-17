@@ -67,22 +67,9 @@ prepare_app_data <- function(
     x = data_import$city_code_main_resp_orga
   )
 
-  cli_alert("Add the coordinates of the main organization")
-  data_with_coord <- data_import |>
-    memoised_get_coord_main_resp_orga(
-      cantons_sf = cantons_sf
-    )
-
-  cli_alert("Add the canton of the main organization")
-  data_with_cantons <- data_with_coord |>
-    get_canton_main_resp_orga(
-      cantons_sf = cantons_sf
-    )
-
   cli_alert("Add the proportion of the budget")
-  data_with_prop_budget <- data_with_cantons |>
+  data_with_prop_budget <- data_import |>
     get_prop_budget()
-
 
   raw_features <- retrieve_project_features_from_promotion_digitale_db()
 
@@ -132,14 +119,26 @@ prepare_app_data <- function(
   data_with_pi2 <- feature_pi2 |>
     inner_join(data_with_pi1, by = "short_title")
 
+  cli_alert("Add the coordinates of the main organization")
+  data_with_coord <- data_with_pi2 |>
+    memoised_get_coord_main_resp_orga(
+      cantons_sf = cantons_sf
+    )
+
+  cli_alert("Add the canton of the main organization")
+  data_with_cantons <- data_with_coord |>
+    get_canton_main_resp_orga(
+      cantons_sf = cantons_sf
+    )
+
+
   cli_alert("Translate data")
-  data_translated <- data_with_pi2 |>
+  data_translated <- data_with_cantons |>
     translate_values_in_data(
       cols_to_translate = c(
         "status"
       )
     )
-
   cli_alert("Save the data")
   save_projects_data(
     list_data_fr_de = data_translated,
