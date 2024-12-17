@@ -9,6 +9,7 @@
 #' @importFrom glue glue
 #' @importFrom here here
 #' @importFrom cli cli_process_start cli_alert cli_process_done
+#' @importFrom readr write_csv
 #' @export
 #'
 #' @return A list with the projects data in FR and DE.
@@ -74,9 +75,12 @@ prepare_app_data <- function(
   raw_features <- retrieve_project_features_from_promotion_digitale_db()
 
   cli_alert("Saving cantons by project dictionary")
-  save_dic_cantons_by_project(
-    raw_features_df = raw_features,
-    path = file.path(
+  dic_cantons_by_project <- compute_dic_cantons_by_project(
+    raw_features_df = raw_features
+  )
+  readr::write_csv(
+    x = dic_cantons_by_project,
+    file = file.path(
       app_sys("data-projects"),
       "dic_cantons_by_project.csv"
     )
