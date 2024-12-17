@@ -83,8 +83,57 @@ prepare_app_data <- function(
   data_with_prop_budget <- data_with_cantons |>
     get_prop_budget()
 
-  cli_alert("Translate the data")
-  data_translated <- data_with_prop_budget |>
+
+  raw_features <- retrieve_project_features_from_promotion_digitale_db()
+
+  cli_alert("Add topics")
+  feature_topic <- raw_features |>
+    derive_feature_binary_columns(
+      variable = "topic"
+    )
+  names(feature_topic) <- sub(
+    # Matches any entry but "short_title"
+    pattern = "^(?!short_title$)(\\w+)$",
+    replacement = "topic_\\1",
+    x = names(feature_topic),
+    perl = TRUE
+  )
+  data_with_topics <- feature_topic |>
+    inner_join(data_with_prop_budget, by = "short_title")
+
+
+  cli_alert("Add PI1")
+  feature_pi1 <- raw_features |>
+    derive_feature_binary_columns(
+      variable = "priority_areas_for_intervention_main"
+    )
+  names(feature_pi1) <- sub(
+    # Matches any entry but "short_title"
+    pattern = "^(?!short_title$)(\\w+)$",
+    replacement = "pi1_\\1",
+    x = names(feature_pi1),
+    perl = TRUE
+  )
+  data_with_pi1 <- feature_pi1 |>
+    inner_join(data_with_topics, by = "short_title")
+
+  cli_alert("Add PI2")
+  feature_pi2 <- raw_features |>
+    derive_feature_binary_columns(
+      variable = "priority_areas_for_intervention_crosssection"
+    )
+  names(feature_pi2) <- sub(
+    # Matches any entry but "short_title"
+    pattern = "^(?!short_title$)(\\w+)$",
+    replacement = "pi1_\\1",
+    x = names(feature_pi2),
+    perl = TRUE
+  )
+  data_with_pi2 <- feature_pi2 |>
+    inner_join(data_with_pi1, by = "short_title")
+
+  cli_alert("Translate data")
+  data_translated <- data_with_pi2 |>
     translate_values_in_data(
       cols_to_translate = c(
         "status"
