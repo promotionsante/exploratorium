@@ -2,7 +2,7 @@
 #'
 #' @param data Tibble. Raw data about projects, with the good columns names.
 #'
-#' @importFrom dplyr mutate across
+#' @importFrom dplyr mutate across rowwise
 #' @importFrom tidyselect starts_with
 #'
 #' @return A tibble with 3 columns about the proportion of the budget paid by each actor
@@ -23,11 +23,16 @@
 #' # Get the proportion of the budget for GFCH, principale organization and third party
 #' raw_data |>
 #'   get_prop_budget()
-get_prop_budget <- function(
-  data) {
+get_prop_budget <- function(data) {
   data |>
+    rowwise() |>
     mutate(
-      total_budget = budget_orga + budget_third_party + budget_gfch,
+      total_budget = sum(
+        budget_orga,
+        budget_third_party,
+        budget_gfch,
+        na.rm = TRUE
+      ),
       across(
         starts_with("budget_"),
         ~ .x / total_budget,
