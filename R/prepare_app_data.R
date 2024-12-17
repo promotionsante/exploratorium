@@ -73,6 +73,15 @@ prepare_app_data <- function(
 
   raw_features <- retrieve_project_features_from_promotion_digitale_db()
 
+  cli_alert("Saving cantons by project dictionary")
+  save_dic_cantons_by_project(
+    raw_features_df = raw_features,
+    path = file.path(
+      app_sys("data-projects"),
+      "dic_cantons_by_project.csv"
+    )
+  )
+
   cli_alert("Add topics")
   feature_topic <- raw_features |>
     derive_feature_binary_columns(

@@ -1,3 +1,19 @@
+#' @importFrom dplyr filter select
+#' @importFrom readr write_csv
+#' @noRd
+save_dic_cantons_by_project <- function(
+  raw_features_df,
+  path
+) {
+  raw_features |>
+    filter(feature_variable == "project_reach") |>
+    select(short_title, geo_range = feature_value) |>
+    readr::write_csv(
+      x = _,
+      file = path
+    )
+}
+
 #' @importFrom dplyr filter select mutate
 #' @importFrom tidyr pivot_wider
 #' @noRd
