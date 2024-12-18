@@ -41,6 +41,7 @@ Imports:
     waiter,
     withr
 Suggests: 
+    dbplyr,
     DT,
     fs,
     knitr,
