@@ -76,7 +76,6 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prepare_app_data</span><span class="op">(</span></span>
 <span>  name_raw_file <span class="op">=</span> <span class="st">"PGV.xlsx"</span>,</span>
 <span>  pkg_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"exploratorium"</span><span class="op">)</span>,</span>
-<span>  dic_variables <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  dic_cantons <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  cantons_sf <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -90,10 +89,6 @@
 
 <dt>pkg_dir</dt>
 <dd><p>Character. Path to the package (must contain a data-raw folder).</p></dd>
-
-
-<dt>dic_variables</dt>
-<dd><p>Tibble. Variables dictionaries. Mainly used for examples and unit testing purpose.</p></dd>
 
 
 <dt>dic_cantons</dt>
@@ -111,74 +106,6 @@
 <p>A list with the projects data in FR and DE.</p>
     </div>
 
-    <div id="ref-examples">
-    <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Load the toy datasets</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"toy_data_pgv"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"toy_dic_variables"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"toy_dic_cantons"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"toy_cantons_sf"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Create a temp folder with data-projects-raw and ata-projects subfolder</span></span></span>
-<span class="r-in"><span><span class="va">my_temp_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"test-prepare-data"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">my_temp_dir</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">my_temp_dir</span>, <span class="st">"data-projects-raw"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">my_temp_dir</span>, <span class="st">"data-projects"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Save the toy PGV file inside</span></span></span>
-<span class="r-in"><span><span class="fu">writexl</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/writexl/reference/write_xlsx.html" class="external-link">write_xlsx</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">toy_data_pgv</span>,</span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="va">my_temp_dir</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"data-projects-raw"</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"toy_PGV.xlsx"</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Prepare the data</span></span></span>
-<span class="r-in"><span><span class="fu">prepare_app_data</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  name_raw_file <span class="op">=</span> <span class="st">"toy_PGV.xlsx"</span>,</span></span>
-<span class="r-in"><span>  pkg_dir <span class="op">=</span> <span class="va">my_temp_dir</span>,</span></span>
-<span class="r-in"><span>  dic_variables <span class="op">=</span> <span class="va">toy_dic_variables</span>,</span></span>
-<span class="r-in"><span>  dic_cantons <span class="op">=</span> <span class="va">toy_dic_cantons</span>,</span></span>
-<span class="r-in"><span>  cantons_sf <span class="op">=</span> <span class="va">toy_cantons_sf</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Prepare projects_fr.rds and projects_de.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Import the raw data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Prepare projects_fr.rds and projects_de.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Add the columns</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Prepare projects_fr.rds and projects_de.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Clean the data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Prepare projects_fr.rds and projects_de.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Consolidate topic data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Prepare projects_fr.rds and projects_de.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Add the coordinates of the main organization</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Prepare projects_fr.rds and projects_de.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Passing 5 addresses to the Nominatim single address geocoder</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Query completed in: 5 seconds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Add the canton of the main organization</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Prepare projects_fr.rds and projects_de.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Detect the id of the cantons influenced</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Prepare projects_fr.rds and projects_de.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Add the number of cantons influenced</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Prepare projects_fr.rds and projects_de.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Add the proportion of the budget</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Prepare projects_fr.rds and projects_de.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Translate the data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Prepare projects_fr.rds and projects_de.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using <span style="color: #0000BB;">"','"</span> as decimal and <span style="color: #0000BB;">"'.'"</span> as grouping mark. Use `read_delim()` for more control.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Prepare projects_fr.rds and projects_de.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Save the data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Prepare projects_fr.rds and projects_de.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> projects_fr.rds has been updated at 2024-05-27 09:03:16.203605</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> projects_de.rds has been updated at 2024-05-27 09:03:16.203605</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Prepare projects_fr.rds and projects_de.rds ... done</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Delete the tempdir</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">my_temp_dir</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-</code></pre></div>
-    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
