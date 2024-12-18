@@ -98,7 +98,7 @@ retrieve_project_data_from_promotion_digitale_db <- function() {
       suffix = c("", "_project_budget")
     )
 
-  pgv_db_all_one_to_one <- pgv_db_budget |>
+  pgv_db_all_one_to_one_raw <- pgv_db_budget |>
     select(
       id,
       short_title,
@@ -117,6 +117,18 @@ retrieve_project_data_from_promotion_digitale_db <- function() {
       -id_project_budget,
     ) |>
     collect()
+
+  pgv_db_all_one_to_one <- pgv_db_all_one_to_one_raw |>
+    # NAs in budget columns correspond to 0s
+    mutate(
+      across(
+        starts_with("budget"),
+        ~ case_when(
+          is.na(.x) ~ 0,
+          TRUE ~ .x
+        )
+      )
+    )
 
   return(pgv_db_all_one_to_one)
 }
