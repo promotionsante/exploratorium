@@ -1,65 +1,56 @@
-test_that("Test that the translation of a column works", {
+test_that("Test that the translation for column status", {
 
-  # Load the toy datasets
-  data("toy_data_pgv")
-  data("toy_dic_variables")
-  data("toy_dic_values")
+  data_raw <- data.frame(
+    status = c(
+      "FINISHED",
+      "IMPLEMENTATION",
+      "CANCELED"
+    ),
+    geometry = sf::st_sfc(
+      st_point(c(1,1)),
+      st_point(c(1,1)),
+      st_point(c(1,1))
+    )
+  ) |>
+    st_as_sf()
 
-  # Import the raw data and perform the first preparations
-  raw_data <- toy_data_pgv |>
-    add_col_raw_data(
-      dic_variables = toy_dic_variables
-    ) |>
-    clean_raw_data()
-
-  # Translate the column status
   col_status_fr <- translate_values_in_col(
-    data = raw_data,
+    data = data_raw,
     col_to_translate = "status",
-    dic_values = toy_dic_values,
     language = "fr"
-  )$status |> unique()
+  )
+
+  expect_s3_class(
+    col_status_fr,
+    c("sf", "data.frame")
+  )
 
   expect_equal(
-    object = col_status_fr,
+    object = col_status_fr$status,
     expected = c(
       "Termin\u00e9",
-      "En cours"
+      "En cours",
+      "Annul\u00e9"
     )
   )
 
   col_status_de <- translate_values_in_col(
-    data = raw_data,
+    data = data_raw,
     col_to_translate = "status",
-    dic_values = toy_dic_values,
     language = "de"
-  )$status |> unique()
-
-  expect_equal(
-    object = col_status_de,
-    expected = c(
-      "Abschluss",
-      "Umsetzung"
-    )
   )
 
-  # Translate the column topic
-  col_topic_fr <- translate_values_in_col(
-    data = raw_data,
-    col_to_translate = "topic",
-    dic_values = toy_dic_values,
-    language = "fr"
-  )$topic |> unique()
+  expect_s3_class(
+    col_status_de,
+    c("sf", "data.frame")
+  )
 
   expect_equal(
-    object = col_topic_fr,
+    object = col_status_de$status,
     expected = c(
-      "D\u00e9pendances",
-      "Diab\u00e8tes",
-      "Autres th\u00e8mes, Maladies mentales",
-      "Autres th\u00e8mes, Maladies respiratoires, Cancers, Maladies musculosquelettiques, D\u00e9pendances",
-      "Maladies mentales, D\u00e9pendances",
-      "Information non renseign\u00e9e"
+      "Abschluss",
+      "Umsetzung",
+      "Abbruch"
     )
   )
 

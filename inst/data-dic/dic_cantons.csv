@@ -1,28 +1,27 @@
-id,fr,de
-CH.AI,Appenzell Rhodes intérieures,Appenzell Innerrhoden
-CH.AR,Appenzell Rhodes extérieures,Appenzell Ausserrhoden
-CH.AG,Argovie,Aargau
-CH.BL,Bâle Campagne,Basel-Landschaft
-CH.BS,Bâle Ville,Basel-Stadt
-CH.BE,Berne,Bern
-CH.FR,Fribourg,Freiburg
-CH.GE,Genève,Genf
-CH.GL,Glaris,Glarus
-CH.GR,Grisons,Graubünden
-CH.JU,Jura,Jura
-CH.LU,Lucerne,Luzern
-CH.NE,Neuchâtel,Neuenburg
-CH.NW,Nidwald,Nidwalden
-CH.OW,Obwald,Obwalden
-CH.SG,Saint-Gall,St. Gallen
-CH.SH,Schaffhouse,Schaffhausen
-CH.SZ,Schwytz,Schwyz
-CH.SO,Soleure,Solothurn
-CH.TG,Thurgovie,Thurgau
-CH.TI,Ticino,Tessin
-CH.UR,Uri,Uri
-CH.VS,Valais,Wallis
-CH.VD,Vaud,Waadt
-CH.ZG,Zoug,Zug
-CH.ZH,Zurich,Zürich
-CH.XX,À déterminer,Noch offen
+id,fr,de,database
+CH.AI,Appenzell Rhodes intérieures,Appenzell Innerrhoden,appenzell_innerrhoden
+CH.AR,Appenzell Rhodes extérieures,Appenzell Ausserrhoden,appenzell_ausserrhoden
+CH.BL,Bâle Campagne,Basel-Landschaft,basel-landschaft
+CH.BS,Bâle Ville,Basel-Stadt,basel-stadt
+CH.BE,Berne,Bern,bern
+CH.FR,Fribourg,Freiburg,freiburg
+CH.GE,Genève,Genf,genf
+CH.GL,Glaris,Glarus,glarus
+CH.GR,Grisons,Graubünden,graubünden
+CH.JU,Jura,Jura,jura
+CH.LU,Lucerne,Luzern,luzern
+CH.NE,Neuchâtel,Neuenburg,neuenburg
+CH.NW,Nidwald,Nidwalden,nidwalden
+CH.OW,Obwald,Obwalden,obwalden
+CH.SG,Saint-Gall,St. Gallen,st._gallen
+CH.SH,Schaffhouse,Schaffhausen,schaffhausen
+CH.SZ,Schwytz,Schwyz,schwyz
+CH.SO,Soleure,Solothurn,solothurn
+CH.TG,Thurgovie,Thurgau,thurgau
+CH.TI,Ticino,Tessin,tessin
+CH.UR,Uri,Uri,uri
+CH.VS,Valais,Wallis,wallis
+CH.VD,Vaud,Waadt,waadt
+CH.ZG,Zoug,Zug,zug
+CH.ZH,Zurich,Zürich,zürich
+CH.XX,À déterminer,Noch offen,open

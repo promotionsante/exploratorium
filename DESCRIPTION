@@ -16,6 +16,7 @@ Depends:
 Imports: 
     cli,
     config (>= 0.3.1),
+    DBI,
     dplyr,
     glue,
     golem (>= 0.3.5),
@@ -24,9 +25,10 @@ Imports:
     jsonlite,
     leaflet,
     lubridate,
+    memoise,
     purrr,
     readr,
-    readxl,
+    RPostgres,
     scales,
     sf,
     shiny (>= 1.7.3),
@@ -36,16 +38,16 @@ Imports:
     tidygeocoder,
     tidyr,
     tidyselect,
-    tools,
-    waiter
+    waiter,
+    withr
 Suggests: 
+    dbplyr,
     DT,
     fs,
     knitr,
     rmarkdown,
     rsconnect,
     rstudioapi,
-    stringr,
     testthat (>= 3.0.0),
     writexl
 VignetteBuilder: 

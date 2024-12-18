@@ -37,7 +37,7 @@ filter_projects_data <- function(
       filter(
         if_any(
           contains(vec_topics),
-          ~ .x == 1
+          ~ .x == TRUE
         )
       )
   }
@@ -49,7 +49,7 @@ filter_projects_data <- function(
       filter(
         if_any(
           contains(vec_pi_1),
-          ~ .x == "X"
+          ~ .x == TRUE
         )
       )
   }
@@ -61,7 +61,7 @@ filter_projects_data <- function(
       filter(
         if_any(
           contains(vec_pi_2),
-          ~ .x == "X"
+          ~ .x == TRUE
         )
       )
   }
