@@ -6,12 +6,12 @@
       <div class = "globalcard">
       
         <div class = "shorttitle">
-            1+1=3
+            1+1=3  PGV03.038
         </div>
       
         <div class = "placestatus">
-          <div class = "textstatus" style="background: #fbbc00">
-            Abschluss
+          <div class = "textstatus" style="background: NA">
+            NA
           </div>
         </div>
       
@@ -70,7 +70,7 @@
         </div>
       
         <div class = "alltext">
-          Im Pilotprojekt wird in interprofessioneller Zusammenarbeit ein Modellkonzept zur kooperativen Versorgung von Menschen mit Abhängigkeit oder Suchtgefährdung entwickelt. Durch die Festigung der Zusammenarbeit zwischen Spitexorganisationen und Sucht-Fachstellen können schwer erreichbare Klientinnen und Klienten besser mit Angeboten der Suchthilfe vernetzt werden. Fachpersonen aus der Suchthilfe und der aufsuchenden Pflege erhalten mehr Sicherheit im professionellen Umgang mit der genannten Klient_innengruppe.
+          
         </div>
       
         <div class = "alltext" style = "margin-top: -20px">
@@ -83,7 +83,7 @@
       
         <div class = "alltext">
           <ul>
-            <li>Sucht</li>
+            <li></li>
           </ul>
         </div>
       
@@ -93,7 +93,7 @@
       
         <div class = "alltext">
           <ul>
-            <li>Alkohol</li><li>Tabak</li><li>Inaktivität</li><li>Psychische Belastungen</li><li>Illegale Drogen</li>
+            <li></li>
           </ul>
         </div>
       
@@ -102,7 +102,7 @@
         </div>
       
         <div class = "budgettext">
-          586 720 CHF
+          182 635 CHF
         </div>
       
         <div class = "alltitle">

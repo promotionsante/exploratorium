@@ -68,7 +68,7 @@ test_that("compute_project_completion_percentage works", {
 
 test_that("project card template in properly filled", {
   html_card <- fill_card_html_template(
-    id_project = "1+1=3",
+    id_project = "1+1=3  PGV03.038",
     data_projects = read_projects_data(language = "de"),
     language = "de"
   )
