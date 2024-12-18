@@ -53,7 +53,8 @@ test_that("compute_project_completion_percentage works", {
   Sys.Date <- NULL
   with_mocked_bindings(
     code = {
-      completion_percentage <- compute_project_completion_percentage(
+      completion_percentage_current_date_within_project_span <-
+        compute_project_completion_percentage(
         date_project_start = as.Date("2023-01-01"),
         date_project_end = as.Date("2026-12-31")
       )
@@ -61,9 +62,40 @@ test_that("compute_project_completion_percentage works", {
     Sys.Date = function() as.Date("2024-03-04")
   )
   expect_equal(
-    completion_percentage,
+    completion_percentage_current_date_within_project_span,
     29
   )
+
+  with_mocked_bindings(
+    code = {
+      completion_percentage_current_date_before_start_date <-
+        compute_project_completion_percentage(
+          date_project_start = as.Date("2023-01-01"),
+          date_project_end = as.Date("2026-12-31")
+        )
+    },
+    Sys.Date = function() as.Date("2022-03-04")
+  )
+  expect_equal(
+    completion_percentage_current_date_before_start_date,
+    0
+  )
+
+  with_mocked_bindings(
+    code = {
+      completion_percentage_current_date_after_end_date <-
+        compute_project_completion_percentage(
+          date_project_start = as.Date("2023-01-01"),
+          date_project_end = as.Date("2026-12-31")
+        )
+    },
+    Sys.Date = function() as.Date("2027-03-04")
+  )
+  expect_equal(
+    completion_percentage_current_date_after_end_date,
+    100
+  )
+
 })
 
 test_that("project card template in properly filled", {

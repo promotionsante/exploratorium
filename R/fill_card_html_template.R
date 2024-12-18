@@ -40,6 +40,11 @@ compute_project_completion_percentage <- function(
     digits = 0
   )
 
+  # If current date is before start date set project completion to zero
+  if (completion_percentage < 0 ) {
+    completion_percentage <- 0
+  }
+
   return(completion_percentage)
 }
 
