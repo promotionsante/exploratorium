@@ -24,6 +24,20 @@ globalVariables(unique(c(
   "name", "present", "value_tooltip",
   # get_data_budget_by_year_selected_projects
   "funding_round", "sum_value", "budget_gfch",
+  # compute_dic_cantons_by_project:
+  "database", "feature_value", "feature_variable",
+  # derive_feature_binary_columns:
+  "feature_value", "feature_variable",
+  # get_prop_budget:
+  "budget_orga", "budget_third_party",
+  # prepare_app_data:
+  "addiction", "cancer", "cardiovascular_disease_", "chronic_respiratory_diseases", "collaboration,_interprofessionality,_multiprofessionality", "diabetes", "education,_training_and_continuing_education_of_health_professionals", "interfaces_within_health_care_and_between_health_care,_public_health_and_the_community", "mental_illness", "musculoskeletal_diseases", "new_financing_models_(hybrid_financing,_incentive_systems)", "new_technologies_(especially_in_the_area_of_data/outcomes,_ehealth_and_mhealth)", "other", "other_ncd", "self-management_of_chronic_diseases_and_of_addiction_problems_and/or_mental_illnesses",
+  # retrieve_project_data_from_promotion_digitale_db:
+  "city", "description", "end_date", "first_name", "funding_round_id", "gfch_share_approved", "id_project_budget", "last_name", "main_resp_orga", "other_funding_approved", "postal_code", "project_support_gfch", "share_responsible_organization_approved", "start_date", "status", "type",
+  # retrieve_project_features_from_promotion_digitale_db:
+  "code_feature_config", "code_feature_type_config", "id_short_title", "names_feature_config", "status", "type",
+  # translate_values_in_col:
+  "status",
   NULL
 )))
 
