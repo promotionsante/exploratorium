@@ -30,7 +30,7 @@ connect_to_promotion_digitale_db <- function() {
 #' \item{other_funding_approved}{Approved other funding}
 #' \item{gfch_share_approved}{Approved GFCH share}
 #'
-#' @importFrom dplyr filter select inner_join mutate tbl collect
+#' @importFrom dplyr filter select inner_join mutate tbl collect across case_when
 #' @importFrom withr local_db_connection
 #' @noRd
 retrieve_project_data_from_promotion_digitale_db <- function() {
