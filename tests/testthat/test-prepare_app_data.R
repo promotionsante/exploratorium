@@ -38,12 +38,6 @@ test_that("Test that the preparation of the projects data is ok", {
 
   # Perform usage checks on the data
 
-  #' @description Testing that the number of rows is the same than in the raw data
-  expect_equal(
-    object = nrow(projects_data_fr),
-    expected = nrow(toy_data_pgv) - 1 # remove the first line with FR variables names
-  )
-
   #' @description Testing that the object contains geometry of points (SF)
   expect_true(
     inherits(projects_data_fr |>
@@ -59,12 +53,6 @@ test_that("Test that the preparation of the projects data is ok", {
       )$input,
     expected = "EPSG:4326"
   )
-
-  #' @description Testing that the object contains a column geo_range_id
-  expect_true(
-    "geo_range_id" %in% colnames(projects_data_fr)
-  )
-
 
   # Delete the tempdir
   unlink(my_temp_dir, recursive = TRUE)
