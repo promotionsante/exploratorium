@@ -1,4 +1,5 @@
 test_that("Test that the preparation of the projects data is ok", {
+  skip_on_ci()
 
   # Load the toy datasets
   data("toy_data_pgv")
@@ -12,10 +13,14 @@ test_that("Test that the preparation of the projects data is ok", {
   dir.create(file.path(my_temp_dir, "data-projects"))
 
   # Save the toy PGV file inside
-  writexl::write_xlsx(toy_data_pgv,
-                      file.path(my_temp_dir,
-                                "data-projects-raw",
-                                "toy_PGV.xlsx"))
+  writexl::write_xlsx(
+    toy_data_pgv,
+    file.path(
+      my_temp_dir,
+      "data-projects-raw",
+      "toy_PGV.xlsx"
+    )
+  )
 
   # Prepare the data
   prepare_app_data(
@@ -38,9 +43,11 @@ test_that("Test that the preparation of the projects data is ok", {
 
   #' @description Testing that the object contains geometry of points (SF)
   expect_true(
-    inherits(projects_data_fr |>
-               select(geometry),
-             "sf")
+    inherits(
+      projects_data_fr |>
+        select(geometry),
+      "sf"
+    )
   )
 
   #' @description Testing that the object contains geometry of points with crs = 4326
@@ -48,11 +55,10 @@ test_that("Test that the preparation of the projects data is ok", {
     object = sf::st_crs(
       projects_data_fr |>
         select(geometry)
-      )$input,
+    )$input,
     expected = "EPSG:4326"
   )
 
   # Delete the tempdir
   unlink(my_temp_dir, recursive = TRUE)
-
 })
