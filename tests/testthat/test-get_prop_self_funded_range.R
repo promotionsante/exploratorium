@@ -1,24 +1,10 @@
-test_that("get_prop_self_funded_range() yield well formed range in FR", {
-  projects_data_sf <- load_projects_data("fr")
+test_that("get_prop_self_funded_range() yield well formed range", {
+  projects_data_sf <- data.frame(
+    prop_budget_orga = c(0, 0.671)
+  )
   budget_range <- get_prop_self_funded_range(projects_data_sf)
-  expect_length(
+  expect_equal(
     budget_range,
-    2
-  )
-  expect_type(
-    budget_range,
-    "double"
-  )
-})
-test_that("get_prop_self_funded_range() yield well formed range in DE", {
-  projects_data_sf <- load_projects_data("de")
-  budget_range <- get_prop_self_funded_range(projects_data_sf)
-  expect_length(
-    budget_range,
-    2
-  )
-  expect_type(
-    budget_range,
-    "double"
+    c(0, 68)
   )
 })
