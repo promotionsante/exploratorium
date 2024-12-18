@@ -120,7 +120,7 @@ fill_card_html_template <- function(
 
   main_orga_value <- data_one_project[["main_resp_orga"]]
 
-  description_value <- data_one_project[[glue("desc_{language}")]]
+  description_value <- data_one_project[[glue("description")]]
 
   completion_percentage <- compute_project_completion_percentage(
     date_project_start = data_one_project$project_start,
@@ -178,7 +178,7 @@ fill_card_html_template <- function(
     completion_percentage = completion_percentage,
     end_year = year(data_one_project$project_end),
     project_description_title = list_titles[["project_description_title"]],
-    description_value = description_value,
+    description_value = HTML(description_value),
     more_description_value = HTML(more_description_value),
     project_theme_title = list_titles[["project_theme_title"]],
     theme_value = HTML(theme_value),
