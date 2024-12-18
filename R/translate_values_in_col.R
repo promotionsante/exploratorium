@@ -2,67 +2,18 @@
 #'
 #' @param data Tibble. Data to be translated.
 #' @param col_to_translate Character. Column to be translated.
-#' @param dic_values Tibble. Values dictionaries. Mainly used for examples and unit testing purpose.
 #' @param language Character. Language. Should be "fr" or "de".
-#' @param sep Character. Regex used in the raw data to separate words in the columns.
 #'
 #' @importFrom readr read_csv2
-#' @importFrom glue glue
-#' @importFrom dplyr rename select group_by mutate
-#' @importFrom tidyr separate_rows
-#' @importFrom sf st_join st_drop_geometry
+#' @importFrom dplyr left_join select
 #'
 #' @return Data with the column translated.
 #'
 #' @noRd
-#' @examples
-#' # Load the toy datasets
-#' data("toy_data_pgv")
-#' data("toy_dic_variables")
-#' data("toy_dic_values")
-#'
-#' # Import the raw data and perform the first preparations
-#' raw_data <- toy_data_pgv |>
-#'   add_col_raw_data(
-#'     dic_variables = toy_dic_variables
-#'   ) |>
-#'   clean_raw_data()
-#'
-#' # Translate the column status
-#' translate_values_in_col(
-#'   data = raw_data,
-#'   col_to_translate = "status",
-#'   dic_values = toy_dic_values,
-#'   language = "fr"
-#' )$status
-#'
-#' translate_values_in_col(
-#'   data = raw_data,
-#'   col_to_translate = "status",
-#'   dic_values = toy_dic_values,
-#'   language = "de"
-#' )$status
-#'
-#' # Translate the column topic
-#' translate_values_in_col(
-#'   data = raw_data,
-#'   col_to_translate = "topic",
-#'   dic_values = toy_dic_values,
-#'   language = "fr"
-#' )$topic
-#'
-#' translate_values_in_col(
-#'   data = raw_data,
-#'   col_to_translate = "topic",
-#'   dic_values = toy_dic_values,
-#'   language = "de"
-#' )$topic
 translate_values_in_col <- function(
     data,
     col_to_translate,
-    dic_values = NULL,
-    language = c("de", "fr"),
-    sep = ",*\r\n|, |;"
+    language = c("de", "fr")
     ){
 
   language <- match.arg(language)
@@ -77,7 +28,6 @@ translate_values_in_col <- function(
   }
 
   # Import the values dictionary saved in the package
-  if (is.null(dic_values)) {
     dic_values <- read_csv2(
       system.file(
         "data-dic",
@@ -86,50 +36,17 @@ translate_values_in_col <- function(
       ),
       show_col_types = FALSE
     )
-  }
 
-# Translate the column
-  data_values_translated <- data |>
-    st_drop_geometry() |>
-    rename(
-      "col_to_translate" = all_of(col_to_translate)
-      ) |>
-    select(short_title, col_to_translate) |>
-    separate_rows(
-      col_to_translate,
-      sep = sep
+    # Translate the column
+    data_translated <- left_join(
+      data,
+      dic_values[c("value", language)],
+      by = c("status"  = "value")
     ) |>
-    left_join(
-      dic_values |>
-        select(value, all_of(language)) |>
-        rename("language" = all_of(language)),
-      by = c("col_to_translate" = "value")
-    ) |>
-    group_by(
-      short_title
-    ) |>
-    mutate(
-      col_translated = paste(
-        language,
-        collapse = ", "
+      select(
+        -status,
+        status = {{language}}
       )
-    ) |>
-    select(
-      short_title,
-      col_translated
-      ) |>
-    distinct()
-
-  data_translated <- data |>
-    left_join(
-      data_values_translated,
-      by = "short_title"
-    ) |>
-    select(- all_of(col_to_translate))
-
-  colnames(data_translated)[
-    which(colnames(data_translated) == "col_translated")
-  ] <- col_to_translate
 
   return(data_translated)
 

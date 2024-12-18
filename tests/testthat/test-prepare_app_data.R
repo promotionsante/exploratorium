@@ -2,7 +2,6 @@ test_that("Test that the preparation of the projects data is ok", {
 
   # Load the toy datasets
   data("toy_data_pgv")
-  data("toy_dic_variables")
   data("toy_dic_cantons")
   data("toy_cantons_sf")
 
@@ -22,7 +21,6 @@ test_that("Test that the preparation of the projects data is ok", {
   prepare_app_data(
     name_raw_file = "toy_PGV.xlsx",
     pkg_dir = my_temp_dir,
-    dic_variables = toy_dic_variables,
     dic_cantons = toy_dic_cantons,
     cantons_sf = toy_cantons_sf
   )
