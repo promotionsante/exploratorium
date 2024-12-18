@@ -10,8 +10,8 @@
         </div>
       
         <div class = "placestatus">
-          <div class = "textstatus" style="background: NA">
-            NA
+          <div class = "textstatus" style="background: #fbbc00">
+            Abschluss
           </div>
         </div>
       
@@ -70,7 +70,7 @@
         </div>
       
         <div class = "alltext">
-          
+          <p>Es wird ein Modellkonzept zur Versorgung von Menschen mit Abhängigkeit entwickelt: Durch die Zusammenarbeit zwischen Spitex und Sucht-Fachstellen erhalten schwer erreichbare KlientInnen Zugang zu Früherkennung und Suchtberatung. Fachpersonen aus Suchthilfe und Spitex erhalten mehr Sicherheit im Umgang mit dieser Gruppe. Die Entwicklung umfasst 3 Phasen:</p><p><br></p><p><strong>A)&nbsp;Modellkonzept</strong></p><p>In drei Workshops wird ein Konzept für die Spitex erarbeitet. Es wird mit der Spitex Region Lenzburg entwickelt und für die Regionen Baden und St. Gallen adaptiert.</p><p><br></p><p><strong>B) Spitex-Schulungen </strong></p><p>Für die Mitarbeitenden der Spitex Region Lenzburg, Spitex Limmat-Aare-Reuss und Spitex St. Gallen werden Schulungen konzipiert, umgesetzt und überprüft.</p><p><br></p><p><strong>C) Aufsuchende Suchtberatung</strong></p><p>Das Angebot der aufsuchenden Suchtberatung wird in den Regionen Lenzburg, Baden und St. Gallen pilotweise umgesetzt und evaluiert. Das Modellkonzept ist für die Übertragung in weitere Regionen adaptierbar.</p>
         </div>
       
         <div class = "alltext" style = "margin-top: -20px">
