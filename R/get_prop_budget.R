@@ -2,7 +2,7 @@
 #'
 #' @param data Tibble. Raw data about projects, with the good columns names.
 #'
-#' @importFrom dplyr mutate across rowwise
+#' @importFrom dplyr mutate across rowwise case_when ungroup
 #' @importFrom tidyselect starts_with
 #'
 #' @return A tibble with 3 columns about the proportion of the budget paid by each actor
@@ -37,6 +37,14 @@ get_prop_budget <- function(data) {
         starts_with("budget_"),
         ~ .x / total_budget,
         .names = "prop_{.col}"
+      ),
+      across(
+        starts_with("prop_"),
+        ~ case_when(
+          is.na(.x) ~ 0,
+          TRUE ~ .x
+        )
       )
-    )
+    ) |>
+    ungroup()
 }
