@@ -124,9 +124,9 @@ mod_projects_selection_ui <- function(id){
           noUiSliderInput(
             inputId = ns("budget"),
             label = NULL,
-            min = 100000,
+            min = 0,
             max = 6e6,
-            value = c(100000, 6e6),
+            value = c(0, 6e6),
             width = "100%",
             color = "#578397",
             format = wNumbFormat(
