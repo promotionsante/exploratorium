@@ -1,21 +1,16 @@
 #' Prepare the projects data in FR and DE to be included in the app as .rds files
 #'
-#' @param name_raw_file Character. Name of the raw data file.
 #' @param pkg_dir Character. Path to the package (must contain a data-raw folder).
-#' @param dic_cantons Tibble. Canton dictionary. Mainly used for examples and unit testing purpose.
 #' @param cantons_sf Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.
 #'
-#' @importFrom glue glue
-#' @importFrom here here
 #' @importFrom cli cli_process_start cli_alert cli_process_done
 #' @importFrom readr write_csv
+#' @importFrom dplyr inner_join rename
 #' @export
 #'
 #' @return A list with the projects data in FR and DE.
 prepare_app_data <- function(
-  name_raw_file = "PGV.xlsx",
   pkg_dir = system.file(package = "exploratorium"),
-  dic_cantons = NULL,
   cantons_sf = NULL
 ) {
   cli_process_start(
