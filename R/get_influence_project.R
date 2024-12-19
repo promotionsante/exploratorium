@@ -3,7 +3,6 @@
 #' @param projects_data_sf A sf data.frame containing coordinates of project
 #' main organisation and project `short_title`.
 #' @param id_project Character. Id of the project.
-#' @param cantons_sf Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.
 #'
 #' @importFrom dplyr filter select left_join mutate rename
 #' @importFrom sf st_drop_geometry st_centroid st_union st_cast st_agr<-
@@ -14,12 +13,13 @@
 #' @noRd
 get_influence_project <- function(
   projects_data_sf,
-  id_project,
-  cantons_sf = NULL
+  id_project
 ) {
   dic_cantons_by_project <- read_csv_in_inst(
     "data-projects/dic_cantons_by_project.csv"
   )
+
+  cantons_sf <- read_cantons_sf()
 
   # Create a coord_sf_project object
   projects_data_sf_filtered <- projects_data_sf |>

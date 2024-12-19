@@ -3,7 +3,6 @@
 #' @param projects_data_sf A sf data.frame containing coordinates of project
 #' main organisation and project `short_title`.
 #' @param id_project Character. Id of the project.
-#' @param cantons_sf Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.
 #' @param zoom_level An integer. The zoom level for the map. Defines
 #' default zoom level.
 #'
@@ -13,33 +12,18 @@
 #' @return A leaflet object.
 #'
 #' @export
-#' @examples
-#' data("toy_projects_data_sf")
-#' data("toy_cantons_sf")
-#'
-#' draw_map_focus_one_project(
-#'   projects_data_sf = toy_projects_data_sf,
-#'   id_project = "1+1=3  PGV03.038",
-#'   cantons_sf = toy_cantons_sf
-#' )
 draw_map_focus_one_project <- function(
   projects_data_sf,
   id_project,
-  cantons_sf = NULL,
   zoom_level = 8
 ) {
-  if (is.null(cantons_sf)) {
-    cantons_sf <- read_cantons_sf()
-  }
-
   # Extract the elements needed for the map
   ## The coordinates of the project
   ## The polygons of the canton with the info influenced/not influenced
   ## If appropriate, the lines between the projects and the cantons influenced
   geo_elements_influence <- get_influence_project(
     projects_data_sf = projects_data_sf,
-    id_project = id_project,
-    cantons_sf = cantons_sf
+    id_project = id_project
   )
 
   # Draw the map

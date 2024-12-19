@@ -1,10 +1,10 @@
 test_that(
   "get_data_budget_by_year_selected_projects() yield propre data.frame for FR data",
   {
-    data("toy_projects_data_sf")
+    projects_data_sf <- read_projects_data("fr")
 
     data_graph_year <- get_data_budget_by_year_selected_projects(
-      projects_data_sf = toy_projects_data_sf,
+      projects_data_sf = projects_data_sf,
       language = "fr"
     )
 
@@ -24,10 +24,10 @@ test_that(
 test_that(
   "get_data_budget_by_year_selected_projects() yield propre data.frame for DE data",
   {
-    data("toy_projects_data_sf")
+    projects_data_sf <- read_projects_data("de")
 
     data_graph_year <- get_data_budget_by_year_selected_projects(
-      projects_data_sf = toy_projects_data_sf,
+      projects_data_sf = projects_data_sf,
       language = "de"
     )
 
