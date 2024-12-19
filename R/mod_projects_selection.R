@@ -8,36 +8,29 @@
 #'
 #' @importFrom shiny NS tagList
 #' @importFrom shinyWidgets noUiSliderInput wNumbFormat awesomeCheckboxGroup pickerInput pickerOptions
-mod_projects_selection_ui <- function(id){
+mod_projects_selection_ui <- function(id) {
   ns <- NS(id)
 
   tagList(
-
     div(
-
       class = "globalpanel",
-
       div(
         class = "apptitle",
         "init"
       ) |>
         with_i18n("app-title"),
-
       div(
         class = "appdesc",
         "init"
       ) |>
         with_i18n("app-desc"),
-
       div(
-
         div(
           class = "alltitle",
           style = "margin-bottom: 20px",
           "init"
         ) |>
           with_i18n("topic"),
-
         div(
           class = "custom-checkbox custom-checkbox-2col",
           awesomeCheckboxGroup(
@@ -47,22 +40,16 @@ mod_projects_selection_ui <- function(id){
             status = "warning"
           )
         )
-
       ),
-
       div(
-
         class = "two-column-div",
-
         div(
-
           div(
             class = "alltitle",
             style = "margin-bottom: 20px;",
             "init"
           ) |>
             with_i18n("pi1"),
-
           div(
             class = "custom-checkbox",
             awesomeCheckboxGroup(
@@ -80,16 +67,13 @@ mod_projects_selection_ui <- function(id){
             )
           )
         ),
-
         div(
-
           div(
             class = "alltitle",
             style = "margin-bottom: 20px;",
             "init"
           ) |>
             with_i18n("pi2"),
-
           div(
             class = "custom-checkbox",
             awesomeCheckboxGroup(
@@ -107,18 +91,14 @@ mod_projects_selection_ui <- function(id){
             )
           )
         )
-
       ),
-
       div(
-
         div(
           class = "alltitle",
           style = "margin-bottom: 20px",
           "init"
         ) |>
           with_i18n("budget"),
-
         div(
           style = "margin-top: 50px",
           noUiSliderInput(
@@ -136,18 +116,14 @@ mod_projects_selection_ui <- function(id){
             )
           )
         )
-
       ),
-
       div(
-
         div(
           class = "alltitle",
           style = "margin-bottom: 20px",
           "init"
         ) |>
           with_i18n("prop_self_funded"),
-
         div(
           style = "margin-top: 50px",
           noUiSliderInput(
@@ -164,18 +140,14 @@ mod_projects_selection_ui <- function(id){
             )
           )
         )
-
       ),
-
       div(
-
         div(
           class = "alltitle",
           style = "margin-bottom: 20px",
           "init"
         ) |>
           with_i18n("cantons_main_org"),
-
         div(
           class = "contonpicker",
           pickerInput(
@@ -190,31 +162,25 @@ mod_projects_selection_ui <- function(id){
           )
         )
       ),
-
       div(
         class = "alltitle",
         style = "margin-bottom: 20px",
         "init"
       ) |>
         with_i18n("budget_by_theme"),
-
       div(
         id = ns("projects_budget_by_theme_plot")
       ),
-
       div(
         class = "alltitle",
         style = "margin-bottom: 20px",
         "init"
       ) |>
         with_i18n("budget_by_year"),
-
       div(
         id = ns("projects_year_by_theme_plot")
       )
-
     )
-
   )
 }
 
@@ -224,8 +190,8 @@ mod_projects_selection_ui <- function(id){
 #' @importFrom shinyWidgets updatePickerInput
 #'
 #' @noRd
-mod_projects_selection_server <- function(id, r_global){
-  moduleServer( id, function(input, output, session){
+mod_projects_selection_server <- function(id, r_global) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     r_local <- reactiveValues(
@@ -242,39 +208,53 @@ mod_projects_selection_server <- function(id, r_global){
     # when changing language
     observeEvent(
       input$topic,
-      ignoreNULL = FALSE, {
+      ignoreNULL = FALSE,
+      {
         r_local$topic <- input$topic
-      })
+      }
+    )
 
     observeEvent(
-      input$pi1, {
+      input$pi1,
+      {
         r_local$pi1 <- input$pi1
-      })
+      }
+    )
 
     observeEvent(
-      input$pi2, {
+      input$pi2,
+      {
         r_local$pi2 <- input$pi2
-      })
+      }
+    )
 
     observeEvent(
-      input$budget_range, {
+      input$budget_range,
+      {
         r_local$budget_range <- input$budget_range
-      })
+      }
+    )
     observeEvent(
-      input$prop_self_funded, {
+      input$prop_self_funded,
+      {
         r_local$prop_self_funded <- input$prop_self_funded
-      })
+      }
+    )
     observeEvent(
-      input$cantons_main_org, {
+      input$cantons_main_org,
+      {
         r_local$cantons_main_org <- input$cantons_main_org
-      })
+      }
+    )
 
     # Set initial condition: all projects are displayed
     observeEvent(
       TRUE,
-      once = TRUE, {
+      once = TRUE,
+      {
         r_global$selected_projects_sf <- r_global$projects_data_sf
-      })
+      }
+    )
 
     observeEvent(
       c(
@@ -284,7 +264,8 @@ mod_projects_selection_server <- function(id, r_global){
         input$budget,
         input$prop_self_funded,
         input$cantons_main_org
-      ), {
+      ),
+      {
         log_all_current_module_input()
         r_global$selected_projects_sf <- filter_projects_data(
           projects_data_sf = r_global$projects_data_sf,
@@ -293,17 +274,18 @@ mod_projects_selection_server <- function(id, r_global){
           vec_pi_2 = input$pi2,
           range_budget = input$budget,
           range_self_funded_budget = input$prop_self_funded,
-          cantons_main_org =  input$cantons_main_org
+          cantons_main_org = input$cantons_main_org
         )
 
         # Make sure graphs are recomputed after each filter
         r_local$recompute_graph <- r_local$recompute_graph + 1
-      })
+      }
+    )
 
 
     observeEvent(
-      c(r_global$language, r_local$recompute_graph), {
-
+      c(r_global$language, r_local$recompute_graph),
+      {
         # Budget by theme
         r_local$data_budget_by_theme_selected_projects <-
           get_data_budget_by_theme_selected_projects(
@@ -344,13 +326,13 @@ mod_projects_selection_server <- function(id, r_global){
           prefixer = " CHF",
           session = session
         )
-
-      })
+      }
+    )
 
     # Set input value based on app language
     observeEvent(
-      r_global$language, {
-
+      r_global$language,
+      {
         updateAwesomeCheckboxGroup(
           session = session,
           inputId = "topic",
@@ -397,7 +379,7 @@ mod_projects_selection_server <- function(id, r_global){
           session = session,
           inputId = "prop_self_funded",
           range = prop_self_funded_range,
-          value =  r_local$prop_self_funded
+          value = r_local$prop_self_funded
         )
 
         updatePickerInput(
@@ -422,9 +404,8 @@ mod_projects_selection_server <- function(id, r_global){
             )
           )
         )
-
-      })
-
+      }
+    )
   })
 }
 

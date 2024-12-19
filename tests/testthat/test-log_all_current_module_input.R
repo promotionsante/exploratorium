@@ -3,7 +3,7 @@ test_that("log_all_current_module_input works", {
   mock_session$setInputs(x = 1, y = c("a", "b"))
   shiny::reactiveConsole(TRUE)
 
-  header <-  capture.output(
+  header <- capture.output(
     log_all_current_module_input(
       session = mock_session
     ),
@@ -29,7 +29,7 @@ test_that("log_all_current_module_input works", {
   expect_true(
     all(
       grepl(
-        pattern =  c("y: a, b|x: 1"),
+        pattern = c("y: a, b|x: 1"),
         x = input_values
       )
     )

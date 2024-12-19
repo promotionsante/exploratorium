@@ -1,7 +1,7 @@
 #' Get the coordinates of the principale organization
 #'
 #' @param data Tibble. Raw data about projects, with the good columns names.
-#' @param cantons_sf Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.
+#' @param cantons_sf Sf data. Cantons geometry.
 #'
 #' @importFrom tidygeocoder geocode
 #' @importFrom dplyr mutate select filter
@@ -14,7 +14,7 @@
 #' @noRd
 get_coord_main_resp_orga <- function(
   data,
-  cantons_sf = NULL
+  cantons_sf = read_cantons_sf()
 ) {
   # Check if some cities are missing
   nb_missing_cities <- data |>
@@ -55,11 +55,6 @@ get_coord_main_resp_orga <- function(
       remove = FALSE,
       na.fail = FALSE
     )
-
-  # Check if the points are in Switzerland
-  if (is.null(cantons_sf)) {
-    cantons_sf <- read_cantons_sf()
-  }
 
   switzerland_sf <- st_union(
     x = cantons_sf

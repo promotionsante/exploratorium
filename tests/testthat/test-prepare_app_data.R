@@ -1,33 +1,14 @@
 test_that("Test that the preparation of the projects data is ok", {
   skip_on_ci()
 
-  # Load the toy datasets
-  data("toy_data_pgv")
-  data("toy_dic_cantons")
-  data("toy_cantons_sf")
-
   # Create a temp folder with data-projects-raw and ata-projects subfolder
   my_temp_dir <- tempfile("test-prepare-data")
   dir.create(my_temp_dir)
-  dir.create(file.path(my_temp_dir, "data-projects-raw"))
   dir.create(file.path(my_temp_dir, "data-projects"))
-
-  # Save the toy PGV file inside
-  writexl::write_xlsx(
-    toy_data_pgv,
-    file.path(
-      my_temp_dir,
-      "data-projects-raw",
-      "toy_PGV.xlsx"
-    )
-  )
 
   # Prepare the data
   prepare_app_data(
-    name_raw_file = "toy_PGV.xlsx",
-    pkg_dir = my_temp_dir,
-    dic_cantons = toy_dic_cantons,
-    cantons_sf = toy_cantons_sf
+    pkg_dir = my_temp_dir
   )
 
   # Read the created data
@@ -38,8 +19,6 @@ test_that("Test that the preparation of the projects data is ok", {
       "projects_fr.rds"
     )
   )
-
-  # Perform usage checks on the data
 
   #' @description Testing that the object contains geometry of points (SF)
   expect_true(

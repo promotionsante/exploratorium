@@ -21,8 +21,8 @@ library(exploratorium)
 
 ```{r parsermd-chunk-1, include = FALSE}
 knitr::opts_chunk$set(
-  eval=TRUE,
-  echo=FALSE
+  eval = TRUE,
+  echo = FALSE
 )
 ```
 

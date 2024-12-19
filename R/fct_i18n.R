@@ -123,9 +123,9 @@ read_translation_json <- function() {
 #'
 #' @noRd
 translate_entry_server_side <- function(
-    l_translation = getDefaultReactiveDomain()$userData$l_translation,
-    language,
-    key
+  l_translation = getDefaultReactiveDomain()$userData$l_translation,
+  language,
+  key
 ) {
   l_translation[[language]][["translation"]][[key]]
 }

@@ -28,11 +28,9 @@ test_that("read_cantons_sf works", {
     cantons_sf,
     c("sf", "data.frame")
   )
-
 })
 
 test_that("Test that the reading of projects data works", {
-
   expect_error(
     data_projects_fr <- read_projects_data(
       language = "fr"
@@ -44,7 +42,7 @@ test_that("Test that the reading of projects data works", {
     inherits(data_projects_fr, "data.frame")
   )
 
-   expect_error(
+  expect_error(
     data_projects_de <- read_projects_data(
       language = "de"
     ),
@@ -54,11 +52,9 @@ test_that("Test that the reading of projects data works", {
   expect_true(
     inherits(data_projects_de, "data.frame")
   )
-
-
 })
 
-test_that("psch color function return proper color",{
+test_that("psch color function return proper color", {
   expect_equal(
     psch_blue(),
     "#578397"

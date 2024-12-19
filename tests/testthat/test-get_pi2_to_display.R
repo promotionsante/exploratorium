@@ -47,4 +47,3 @@ test_that("get_pi2_to_display() returns well formed named vector in DE", {
     )
   )
 })
-

@@ -28,15 +28,15 @@ app_server <- function(input, output, session) {
       cli::cat_rule(
         sprintf("input$screen_width: %s", input$screen_width)
       )
-      if( input$screen_width > 1000) {
+      if (input$screen_width > 1000) {
         r_global$zoom_level <- 9
       } else {
         r_global$zoom_level <- 8
       }
-    })
+    }
+  )
 
   mod_map_server("map_1", r_global = r_global)
 
   mod_right_panel_server("right_panel_1", r_global = r_global)
-
 }

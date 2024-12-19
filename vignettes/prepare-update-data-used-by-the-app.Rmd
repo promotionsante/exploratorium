@@ -45,12 +45,24 @@ The final output of this pipeline consists in two datasets:
 
 which are used directly within the app.
 
-## Modify the raw data about the projects
+## Update the project data
 
-You must upload the new version of the file `PGV.xlsx` in the `inst/data-projects-raw` folder.
+Make sure that: 
 
-```{r parsermd-chunk-4, echo = FALSE}
-fs::dir_tree("inst/data-projects-raw/")
+* the following environment variables are set:
+
+```
+DB_HOST
+DB_PORT
+DB_USER
+DB_PASSWORD
+```
+* You have unrestricted access the internet so that {tidygeocoder} can query the geocoding API.
+
+Then run the etl withL
+
+```{r, eval = FALSE}
+prepare_app_data()
 ```
 
 ## Modify the translations for projects data
@@ -112,9 +124,9 @@ DT::datatable(
 ```
 
 
-## Update projects data
+### Update projects data
 
-To rebuild the projects data, run:
+You will then need to rebuild the projects data:
 
 ```{r parsermd-chunk-11, eval = FALSE}
 prepare_app_data()

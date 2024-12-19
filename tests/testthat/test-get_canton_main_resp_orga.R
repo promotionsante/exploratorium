@@ -1,5 +1,4 @@
 test_that("Test that the detection of the canton is ok", {
-
   toy_data <-
     structure(
       list(
@@ -10,22 +9,62 @@ test_that("Test that the detection of the canton is ok", {
           "DZ SUCHT",
           "EMIA"
         ),
-        longitude = c(8.5410422,
-                      7.3588795, 7.4521749, NA, 6.957368),
-        latitude = c(47.3744489,
-                     46.2311749, 46.9484742, NA, 47.184604),
+        longitude = c(
+          8.5410422,
+          7.3588795,
+          7.4521749,
+          NA,
+          6.957368
+        ),
+        latitude = c(
+          47.3744489,
+          46.2311749,
+          46.9484742,
+          NA,
+          47.184604
+        ),
         geometry = structure(
           list(
-            structure(c(8.5410422, 47.3744489), class = c("XY", "POINT",
-                                                          "sfg")),
-            structure(c(7.3588795, 46.2311749), class = c("XY",
-                                                          "POINT", "sfg")),
-            structure(c(7.4521749, 46.9484742), class = c("XY",
-                                                          "POINT", "sfg")),
-            structure(c(NA_real_, NA_real_), class = c("XY",
-                                                       "POINT", "sfg")),
-            structure(c(6.957368, 47.184604), class = c("XY",
-                                                        "POINT", "sfg"))
+            structure(
+              c(8.5410422, 47.3744489),
+              class = c(
+                "XY",
+                "POINT",
+                "sfg"
+              )
+            ),
+            structure(
+              c(7.3588795, 46.2311749),
+              class = c(
+                "XY",
+                "POINT",
+                "sfg"
+              )
+            ),
+            structure(
+              c(7.4521749, 46.9484742),
+              class = c(
+                "XY",
+                "POINT",
+                "sfg"
+              )
+            ),
+            structure(
+              c(NA_real_, NA_real_),
+              class = c(
+                "XY",
+                "POINT",
+                "sfg"
+              )
+            ),
+            structure(
+              c(6.957368, 47.184604),
+              class = c(
+                "XY",
+                "POINT",
+                "sfg"
+              )
+            )
           ),
           class = c("sfc_POINT", "sfc"),
           precision = 0,
@@ -45,8 +84,10 @@ test_that("Test that the detection of the canton is ok", {
           n_empty = 1L
         )
       ),
-      row.names = c(NA,
-                    -5L),
+      row.names = c(
+        NA,
+        -5L
+      ),
       sf_column = "geometry",
       agr = structure(
         c(
@@ -55,20 +96,19 @@ test_that("Test that the detection of the canton is ok", {
           latitude = NA_integer_
         ),
         class = "factor",
-        levels = c("constant",
-                   "aggregate", "identity")
+        levels = c(
+          "constant",
+          "aggregate",
+          "identity"
+        )
       ),
       class = c("sf", "tbl_df", "tbl", "data.frame")
     )
 
-  # Load the toy cantons geometry
-  data("toy_cantons_sf")
-
   #' @description Testing that there is a message if there is an issue
   expect_message(
     get_canton_main_resp_orga(
-      data = toy_data,
-      cantons_sf = toy_cantons_sf
+      data = toy_data
     ),
     regexp = "1 project.s is.are not associated to a GPS point"
   )
@@ -76,8 +116,7 @@ test_that("Test that the detection of the canton is ok", {
   #' @description Testing that there is no error in an usual case
   expect_error(
     res_toy_data <- get_canton_main_resp_orga(
-      data = toy_data,
-      cantons_sf = toy_cantons_sf
+      data = toy_data
     ),
     regexp = NA
   )
@@ -93,5 +132,4 @@ test_that("Test that the detection of the canton is ok", {
       "CH.BE"
     )
   )
-
 })

@@ -8,7 +8,8 @@ connect_to_promotion_digitale_db <- function() {
     drv = RPostgres::Postgres(),
     host = Sys.getenv("DB_HOST", "localhost"),
     port = Sys.getenv("DB_PORT", "5433"),
-    user = Sys.getenv("DB_USER", "postgres")
+    user = Sys.getenv("DB_USER", "postgres"),
+    password = Sys.getenv("DB_PASSWORD", "postgres")
   )
 }
 

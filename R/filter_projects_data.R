@@ -16,19 +16,14 @@
 #' @return A sf data.frame
 #'
 #' @noRd
-#' @examples
-#' projects_fr <- load_projects_data(
-#'   language = "fr"
-#' )
-#' filter_projects_data(projects_fr)
 filter_projects_data <- function(
-    projects_data_sf,
-    vec_topics = NULL,
-    vec_pi_1 = NULL,
-    vec_pi_2 = NULL,
-    range_budget = NULL,
-    range_self_funded_budget = NULL,
-    cantons_main_org = NULL
+  projects_data_sf,
+  vec_topics = NULL,
+  vec_pi_1 = NULL,
+  vec_pi_2 = NULL,
+  range_budget = NULL,
+  range_self_funded_budget = NULL,
+  cantons_main_org = NULL
 ) {
   if (
     !is.null(vec_topics)

@@ -4,12 +4,9 @@
 #'
 #' @noRd
 clean_id_project <- function(
-    id_project
-    ){
-
-    iconv(
-      gsub("[[:punct:]]| ", "", id_project),
-      to = "ASCII//TRANSLIT"
-    )
-
+  id_project) {
+  iconv(
+    gsub("[[:punct:]]| ", "", id_project),
+    to = "ASCII//TRANSLIT"
+  )
 }

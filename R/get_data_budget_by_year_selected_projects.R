@@ -10,28 +10,16 @@
 #' @importFrom scales number
 #'
 #' @noRd
-#' @examples
-#' data("toy_projects_data_sf")
-#'
-#' get_data_budget_by_year_selected_projects(
-#'   projects_data_sf = toy_projects_data_sf,
-#'   language = "fr"
-#' )
 get_data_budget_by_year_selected_projects <- function(
-    projects_data_sf,
-    language
+  projects_data_sf,
+  language
 ) {
-
   if (language == "fr") {
-
     word_en <- "en"
     word_cum <- "cumul\u00e9 depuis"
-
   } else if (language == "de") {
-
     word_en <- "im Jahr"
     word_cum <- "kumuliert seit"
-
   }
 
   projects_data_sf |>
@@ -61,7 +49,7 @@ get_data_budget_by_year_selected_projects <- function(
           number(
             sum_value,
             suffix = " CHF"
-            ),
+          ),
           word_en,
           year
         ),
@@ -79,5 +67,4 @@ get_data_budget_by_year_selected_projects <- function(
     rename(
       name = year
     )
-
 }

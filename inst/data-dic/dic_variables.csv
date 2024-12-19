@@ -1,23 +1,4 @@
 id;de;fr
-short_title;Kurztitel;Titre court
-status;Status;statut
-language;Sprache;Langue
-funding_round;Förderrunde;Cycle de soutien
-funding_area;Förderbereich;Domaine de soutien
-project_start;Projektstart;Début du projet
-project_end;Projektende;Fin du projet
-description;Beschreibung;Description
-geo_range;Reichweite;Etendu
-topic;Thema;Thème
-main_resp_orga;Hauptverantwortliche Organisation;Organisation responsable
-zip_code_main_resp_orga;PLZ hauptverantwortliche Organisation;Code Postal Organisation responsable
-city_code_main_resp_orga;Ort hauptverantwortliche Organisation;Ville Organisation responsable
-orga_type;Art der Organisation;Type d'organisation
-project_support_gfch;Projektbegleitung GFCH;Responsable de projets
-budget_gfch;Beitrag von GFCH;Contribution PSCH
-budget_orga;Budget Haupt-Org;Contribution Organisation responsable
-budget_third_party;Budget Dritte;Budget Tiers
-total_budget;Gesamtbudget;Budget total
 pi_1_interfaces;PI 1: Schnittstellen;PI 1 : Interfaces
 pi_1_health_pathways;PI 1: Gesundheitspfade;PI 1 : Parcours de santé
 pi_1_self_gestion;PI 1: Selbstmanagement;PI 1 : Autogestion
@@ -45,10 +26,3 @@ risk_factor_too_high_blood_sugar_level;Zu hoher Blutzuckerwert;Hyperglycémie
 risk_factor_mental_illness;Psychische Belastungen;Contraintes psychiques
 risk_factor_illegal_drugs;Illegale Drogen;Drogues illégales
 risk_factor_socioeconomic_status;Sozioökonomischer Status;Statut socio-économique
-target_groups;Zielgruppe;Groupe cible
-multipliers;Multiplikatoren;Multiplicateurs
-settings;Settings;Settings
-desc_fr;desc_FR;desc_FR
-desc_de;desc_DE;desc_DE
-title_de;Titre_DE;Titre_DE
-title_fr;Titre_FR;Titre_FR
