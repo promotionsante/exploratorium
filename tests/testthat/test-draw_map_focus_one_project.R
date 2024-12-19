@@ -13,7 +13,7 @@ test_that("Test that the map for one project is ok", {
 
   expect_s3_class(
     draw_map_focus_one_project(
-      projects_data_sf = toy_projects_data_sf,
+      projects_data_sf = projects_data_sf,
       id_project = "1+1=3  PGV03.038"
     ),
     c("leaflet", "htmlwidget")
