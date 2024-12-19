@@ -46,6 +46,8 @@ globalVariables(unique(
     "funding_round",
     "sum_value",
     "value",
+    # get_project_items_from_binary_columns
+    "item",
     # get_data_repart_budget_one_project:
     "short_title",
     # get_influence_project:
