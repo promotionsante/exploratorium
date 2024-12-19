@@ -158,7 +158,7 @@ fill_card_html_template <- function(
 
   main_orga_value <- data_one_project[["main_resp_orga"]]
 
-  description_value <- data_one_project[[glue("description")]]
+  description_value <- data_one_project[["description"]]
 
   completion_percentage <- compute_project_completion_percentage(
     date_project_start = data_one_project$project_start,
