@@ -6,7 +6,7 @@
 #' @param dictionary name of the dictionary to use. One of the dic_*.csv files
 #' present in inst/data-dic.
 #'
-#' @importFrom readr read_csv2
+#' @importFrom readr read_delim
 #' @importFrom dplyr left_join select
 #'
 #' @return Data with the column translated.
@@ -30,13 +30,18 @@ translate_values_in_col <- function(
     )
   }
 
-  # Import the values dictionary saved in the package
-    dic_values <- read_csv2(
-      system.file(
+  ## Import the values dictionary saved in the package
+  # use read_delim to have more control and avoid default value verbose
+  # message of read_csv2
+    dic_values <- read_delim(
+      file = system.file(
         "data-dic",
         dictionary,
         package = "exploratorium"
       ),
+      delim = ";",
+      escape_double = FALSE,
+      trim_ws = TRUE,
       show_col_types = FALSE
     )
 
