@@ -69,6 +69,20 @@ prepare_app_data <- function(
   data_with_topics <- feature_topic |>
     inner_join(data_with_prop_budget, by = "short_title")
 
+  cli_alert("Add risk factors")
+  feature_risk_factors <- raw_features |>
+    derive_feature_binary_columns(
+      variable = "risk_factors"
+    )
+  # prefix names with risk_factor to be later able to select all related columns
+  names(feature_risk_factors) <- sub(
+    pattern = "^(?!short_title$)(\\w+)$",
+    replacement = "risk_factor_\\1",
+    x = names(feature_risk_factors),
+    perl = TRUE
+  )
+  data_with_risk_factors <- feature_risk_factors |>
+    inner_join(data_with_topics, by = "short_title")
 
   cli_alert("Add PI1")
   feature_pi1 <- raw_features |>
@@ -81,7 +95,7 @@ prepare_app_data <- function(
       pi_1_self_gestion = `self-management_of_chronic_diseases_and_of_addiction_problems_and/or_mental_illnesses`
     )
   data_with_pi1 <- feature_pi1 |>
-    inner_join(data_with_topics, by = "short_title")
+    inner_join(data_with_risk_factors, by = "short_title")
 
   cli_alert("Add PI2")
   feature_pi2 <- raw_features |>

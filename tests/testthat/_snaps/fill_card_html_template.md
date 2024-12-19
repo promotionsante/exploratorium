@@ -93,7 +93,7 @@
       
         <div class = "alltext">
           <ul>
-            <li></li>
+            <li>Alkohol</li> <li>Tabak</li> <li>Inaktivität</li> <li>Psychische Belastungen</li> <li>Illegale Drogen</li>
           </ul>
         </div>
       

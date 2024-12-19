@@ -58,13 +58,14 @@ derive_project_manager_api_query_string <- function(
     )
 }
 
-#' Get Project Topics
+#' Extracts Items from binary columns (`topic_*`, `risk_factors_*`)
 #'
-#' This function extracts and translates the topics associated with a given project.
+#' and translate them in the target language.
 #'
 #' @param data_one_project A data frame containing project data.
+#' @param binary_colum_prefix A character. Binary column prefix .i.e "topic"
 #' @param language A character string specifying the language for translation.
-#' @return A character vector of translated topics.
+#' @return A character vector of translated items.
 #'
 #' @importFrom dplyr select starts_with filter pull
 #' @importFrom tidyselect everything
@@ -72,22 +73,26 @@ derive_project_manager_api_query_string <- function(
 #' @importFrom tidyr pivot_longer
 #'
 #' @noRd
-get_project_topics <- function(data_one_project, language) {
+get_project_items_from_binary_columns <- function(
+    data_one_project,
+    binary_colum_prefix,
+    language
+) {
   data_topic <- data_one_project |>
-    select(starts_with("topic_")) |>
+    select(starts_with(binary_colum_prefix)) |>
     st_drop_geometry() |>
     pivot_longer(
       cols = everything(),
-      names_to = "topic",
+      names_to = "item",
       values_to = "presence"
     ) |>
     translate_values_in_col(
-      col_to_translate = "topic",
+      col_to_translate = "item",
       language = language,
       dictionary = "dic_variables.csv"
     ) |>
     filter(presence) |>
-    pull(topic)
+    pull(item)
 }
 
 #' Fill projects cards HTML template
@@ -166,18 +171,19 @@ fill_card_html_template <- function(
     more_description_value <- 'Vous trouverez des informations compl\u00e9mentaires  sur le <a href=\"https://promotionsante.ch/prevention-dans-le-domaine-des-soins/soutien-de-projets/projets-soutenus\" target=\"_blank\">site de Promotion Sant\u00e9 Suisse</a>'
   }
 
-  data_topic <- get_project_topics(data_one_project, language)
+  data_topic <- get_project_items_from_binary_columns(
+    data_one_project = data_one_project,
+    binary_colum_prefix = "topic",
+    language = language
+  )
   theme_value <- sprintf("<li>%s</li>", data_topic)
 
-  risk_value <- paste0(
-    "<li>",
-    gsub(
-      pattern = ",*\r\n|, ",
-      "</li><li>",
-      data_one_project[["risk_factors"]]
-    ),
-    "</li>"
+  data_risk_factors <- get_project_items_from_binary_columns(
+    data_one_project = data_one_project,
+    binary_colum_prefix = "risk_factor",
+    language = language
   )
+  risk_value <- sprintf("<li>%s</li>", data_risk_factors)
 
   budget_value <- number(
     as.numeric(data_one_project[["total_budget"]]),

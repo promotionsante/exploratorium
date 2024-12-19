@@ -33,7 +33,18 @@ topic_mental_diseases;Psychische Erkrankungen;Maladies psychiques
 topic_addictions;Sucht;Addiction
 topic_other_ncd;Andere NCDs;Autres MNT
 topic_other;Andere Themen;Autres thèmes
-risk_factors;Risikofaktoren;Facteurs de risque
+risk_factor_other;Andere;Autres
+risk_factor_alcohol;Alkohol;Alcool
+risk_factor_tobacco;Tabak;Tobacco
+risk_factor_inactivity;Inaktivität;Sédentarité                                          
+risk_factor_overweight;Übergewicht;Surpoids
+risk_factor_stress;Stress;Stress
+risk_factor_unbalanced_diet;Unausgewogene Ernährung;Alimentation déséquilibrée
+risk_factor_high_blood_pressure;Bluthochdruck;Hypertension
+risk_factor_too_high_blood_sugar_level;Zu hoher Blutzuckerwert;Hyperglycémie
+risk_factor_mental_illness;Psychische Belastungen;Contraintes psychiques
+risk_factor_illegal_drugs;Illegale Drogen;Drogues illégales
+risk_factor_socioeconomic_status;Sozioökonomischer Status;Statut socio-économique
 target_groups;Zielgruppe;Groupe cible
 multipliers;Multiplikatoren;Multiplicateurs
 settings;Settings;Settings
