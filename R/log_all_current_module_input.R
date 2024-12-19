@@ -7,18 +7,8 @@
 #'
 #' @importFrom cli cat_rule cli_alert
 #' @noRd
-#' @examples
-#' mock_session <- shiny::MockShinySession$new()
-#' mock_session$setInputs(x = 1, y = c("a", "b"))
-#' shiny::reactiveConsole(TRUE)
-#' log_all_current_module_input(
-#'   session = mock_session
-#' )
-#' shiny::reactiveConsole(FALSE)
 log_all_current_module_input <- function(
-    session = shiny::getDefaultReactiveDomain()
-) {
-
+  session = shiny::getDefaultReactiveDomain()) {
   current_module <- sub(
     "-$",
     "",
@@ -46,6 +36,4 @@ log_all_current_module_input <- function(
       )
     )
   }
-
 }
-

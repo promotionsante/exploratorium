@@ -11,10 +11,7 @@
 #' @importFrom leaflet leaflet setView addProviderTiles leafletOptions setMaxBounds
 #'
 #' @noRd
-#' @examples
-#' draw_map_base()
 draw_map_base <- function(zoom_level = 8) {
-
   switzerland_centroid <- get_switzerland_centroid()
   switzerland_bounding_box <- get_switzerland_bounding_box()
 
@@ -23,7 +20,7 @@ draw_map_base <- function(zoom_level = 8) {
   ) |>
     addProviderTiles(
       provider = "CartoDB.Positron"
-      ) |>
+    ) |>
     setView(
       lng = switzerland_centroid[["lng"]],
       lat = switzerland_centroid[["lat"]],

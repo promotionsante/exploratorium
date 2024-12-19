@@ -5,10 +5,6 @@
 #' @return A sf data.frame
 #'
 #' @noRd
-#' @examples
-#' load_projects_data(
-#'   language = "fr"
-#' )
 load_projects_data <- function(language) {
   stopifnot(
     "Unknown language provided" = language %in% c("fr", "de")

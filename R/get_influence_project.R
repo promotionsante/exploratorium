@@ -12,15 +12,6 @@
 #' @return A list with 3 elements. The coord of the projetc, the polygons of the cantons and the info influenced/not influenced, the lines between the point anf the center of gravity of the cantons influenced.
 #'
 #' @noRd
-#' @examples
-#' data("toy_projects_data_sf")
-#' data("toy_cantons_sf")
-#'
-#' get_influence_project(
-#'   projects_data_sf = toy_projects_data_sf,
-#'   id_project = "1+1=3  PGV03.038",
-#'   cantons_sf = toy_cantons_sf
-#' )
 get_influence_project <- function(
   projects_data_sf,
   id_project,

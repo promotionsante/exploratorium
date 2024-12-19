@@ -8,16 +8,10 @@
 #'
 #' @importFrom readr read_csv2
 #' @noRd
-#' @examples
-#' get_input_data_to_display(
-#'   language = "fr",
-#'   pattern = "^topic_"
-#' )
 get_input_data_to_display <- function(
-    language,
-    pattern
+  language,
+  pattern
 ) {
-
   dic_variables <- suppressMessages(
     read_csv2(
       file = app_sys("data-dic/dic_variables.csv"),

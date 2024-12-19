@@ -14,28 +14,6 @@
 #'
 #'
 #' @noRd
-#' @examples
-#' data("toy_projects_data_sf")
-#'
-#' get_data_budget_by_theme_selected_projects(
-#'   projects_data_sf = toy_projects_data_sf,
-#'   language = "fr"
-#' )
-#'
-#' get_data_budget_by_theme_selected_projects(
-#'   projects_data_sf = toy_projects_data_sf,
-#'   language = "fr",
-#'   topic = "topic_diabetes"
-#' )
-#'
-#' get_data_budget_by_theme_selected_projects(
-#'   projects_data_sf = toy_projects_data_sf,
-#'   language = "fr",
-#'   topic = c(
-#'     "topic_diabetes",
-#'     "topic_addictions"
-#'   )
-#' )
 get_data_budget_by_theme_selected_projects <- function(
   projects_data_sf,
   language,

@@ -10,30 +10,17 @@
 #' @return A character. Translation.
 #'
 #' @noRd
-#' @examples
-#' data("toy_dic_titles_pages")
-#'
-#' get_trad_title(
-#'   title_id = "project_start_year_title",
-#'   language = "fr",
-#'   dic_titles_pages = toy_dic_titles_pages
-#' )
-#'
-#' get_trad_title(
-#'   title_id = "project_start_year_title",
-#'   language = "de",
-#'   dic_titles_pages = toy_dic_titles_pages
-#' )
 get_trad_title <- function(
-    title_id,
-    language,
-    dic_titles_pages = NULL
-    ) {
-
+  title_id,
+  language,
+  dic_titles_pages = NULL
+) {
   if (is.null(dic_titles_pages)) {
     dic_titles_pages <- read_csv2(
-      app_sys("data-dic",
-              "dic_titles_app.csv"),
+      app_sys(
+        "data-dic",
+        "dic_titles_app.csv"
+      ),
       show_col_types = FALSE,
       locale = locale(decimal_mark = ",", grouping_mark = ".")
     )
@@ -42,5 +29,4 @@ get_trad_title <- function(
   dic_titles_pages |>
     filter(id == title_id) |>
     pull(language)
-
 }
