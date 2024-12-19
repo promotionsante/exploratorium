@@ -8,40 +8,10 @@
 #' @return Nothing, used for side effect. Save 2 rds files in the package.
 #'
 #' @noRd
-#' @examples
-#' # Load the toy datasets
-#' data("toy_data_pgv")
-#' data("toy_dic_variables")
-#'
-#' # Perform the some preparations
-#' list_translated_data <- toy_data_pgv |>
-#'   add_col_raw_data(
-#'     dic_variables = toy_dic_variables
-#'   ) |>
-#'   clean_raw_data() |>
-#'   translate_values_in_data()
-#'
-#' # Create a temp folder with data-projects subfolder
-#' my_temp_dir <- tempfile("test-export-data")
-#' dir.create(my_temp_dir)
-#' dir.create(file.path(my_temp_dir, "data-projects"))
-#'
-#' # Save rds data in FR and DE
-#' list_translated_data |>
-#'   save_projects_data(
-#'     pkg_dir = my_temp_dir
-#'   )
-#'
-#' # Delete the temp folder
-#' unlink(
-#'   my_temp_dir,
-#'   recursive = TRUE
-#' )
 save_projects_data <- function(
-    list_data_fr_de,
-    pkg_dir = system.file(package = "exploratorium")
-    ){
-
+  list_data_fr_de,
+  pkg_dir = system.file(package = "exploratorium")
+) {
   # Check that the list contains 2 tibbles (FR and DE)
   data_fr_and_de_in_names <- all(
     c("data_fr", "data_de") %in% names(list_data_fr_de)
@@ -87,21 +57,20 @@ save_projects_data <- function(
 
   c("projects_fr.rds", "projects_de.rds") |>
     walk(
-      function(.x){
+      function(.x) {
         if (isTRUE(.x %in% available_files_in_data)) {
           message(
             glue(
               "{.x} has been updated at {file.info(file.path(pkg_dir, \'data-projects\', .x))$mtime}"
-              )
             )
-          } else {
-            message(
-              glue(
-                "{.x} does not exist in the inst/data folder"
-              )
+          )
+        } else {
+          message(
+            glue(
+              "{.x} does not exist in the inst/data folder"
             )
-          }
+          )
         }
-      )
-
+      }
+    )
 }

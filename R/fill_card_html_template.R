@@ -1,4 +1,3 @@
-
 get_dic_titles_app <- function(language) {
   dic_titles_pages <- read_csv2(
     app_sys("data-dic", "dic_titles_app.csv"),
@@ -15,11 +14,10 @@ get_dic_titles_app <- function(language) {
 #' @importFrom lubridate interval int_length
 #' @noRd
 compute_project_completion_percentage <- function(
-    date_project_start,
-    date_project_end
+  date_project_start,
+  date_project_end
 ) {
-
-  if (Sys.Date() > date_project_end ) {
+  if (Sys.Date() > date_project_end) {
     completion_percentage <- 100
     return(completion_percentage)
   }
@@ -41,7 +39,7 @@ compute_project_completion_percentage <- function(
   )
 
   # If current date is before start date set project completion to zero
-  if (completion_percentage < 0 ) {
+  if (completion_percentage < 0) {
     completion_percentage <- 0
   }
 
@@ -50,8 +48,7 @@ compute_project_completion_percentage <- function(
 
 
 derive_project_manager_api_query_string <- function(
-    project_manager_chr
-) {
+  project_manager_chr) {
   project_manager_chr |>
     switch(
       "Franziska Widmer Howald" = "franziska.widmer",
@@ -59,6 +56,43 @@ derive_project_manager_api_query_string <- function(
       "Karin Wyss M\u00fcller" = "karin.wyss",
       "Karin L\u00f6rvall" = "karin.loervall"
     )
+}
+
+#' Extracts Items from binary columns (`topic_*`, `risk_factors_*`)
+#'
+#' and translate them in the target language.
+#'
+#' @param data_one_project A data frame containing project data.
+#' @param binary_colum_prefix A character. Binary column prefix .i.e "topic"
+#' @param language A character string specifying the language for translation.
+#' @return A character vector of translated items.
+#'
+#' @importFrom dplyr select starts_with filter pull
+#' @importFrom tidyselect everything
+#' @importFrom sf st_drop_geometry
+#' @importFrom tidyr pivot_longer
+#'
+#' @noRd
+get_project_items_from_binary_columns <- function(
+    data_one_project,
+    binary_colum_prefix,
+    language
+) {
+  data_topic <- data_one_project |>
+    select(starts_with(binary_colum_prefix)) |>
+    st_drop_geometry() |>
+    pivot_longer(
+      cols = everything(),
+      names_to = "item",
+      values_to = "presence"
+    ) |>
+    translate_values_in_col(
+      col_to_translate = "item",
+      language = language,
+      dictionary = "dic_variables.csv"
+    ) |>
+    filter(presence) |>
+    pull(item)
 }
 
 #' Fill projects cards HTML template
@@ -78,11 +112,10 @@ derive_project_manager_api_query_string <- function(
 #'
 #' @noRd
 fill_card_html_template <- function(
-    id_project,
-    data_projects,
-    language = c("de", "fr")
-){
-
+  id_project,
+  data_projects,
+  language = c("de", "fr")
+) {
   language <- match.arg(language)
 
   list_titles <- get_dic_titles_app(
@@ -133,31 +166,24 @@ fill_card_html_template <- function(
   )
 
   if (language == "de") {
-
     more_description_value <- 'Weitere informationen finden sie auf der <a href=\"https://gesundheitsfoerderung.ch/praevention-in-der-gesundheitsversorgung/projektfoerderung/gefoerderte-projekte\" target=\"_blank\">website von Gesundheitf\u00f6rdernung Schweiz</a>'
-
   } else if (language == "fr") {
-
     more_description_value <- 'Vous trouverez des informations compl\u00e9mentaires  sur le <a href=\"https://promotionsante.ch/prevention-dans-le-domaine-des-soins/soutien-de-projets/projets-soutenus\" target=\"_blank\">site de Promotion Sant\u00e9 Suisse</a>'
-
   }
 
-  theme_value <- paste0(
-    "<li>",
-    gsub(
-      pattern = ",*\r\n|, ", "</li><li>",
-      data_one_project[["topic"]]
-    ),
-    "</li>"
+  data_topic <- get_project_items_from_binary_columns(
+    data_one_project = data_one_project,
+    binary_colum_prefix = "topic",
+    language = language
   )
-  risk_value <- paste0(
-    "<li>",
-    gsub(
-      pattern = ",*\r\n|, ", "</li><li>",
-      data_one_project[["risk_factors"]]
-    ),
-    "</li>"
+  theme_value <- sprintf("<li>%s</li>", data_topic)
+
+  data_risk_factors <- get_project_items_from_binary_columns(
+    data_one_project = data_one_project,
+    binary_colum_prefix = "risk_factor",
+    language = language
   )
+  risk_value <- sprintf("<li>%s</li>", data_risk_factors)
 
   budget_value <- number(
     as.numeric(data_one_project[["total_budget"]]),

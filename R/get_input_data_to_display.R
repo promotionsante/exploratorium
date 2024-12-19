@@ -26,10 +26,10 @@ get_input_data_to_display <- function(
   )
 
   input_dic <- dic_variables[
-    grep(pattern, dic_variables$name_variable),
+    grep(pattern, dic_variables$id),
   ]
 
-  inputs_to_diplay <- input_dic$name_variable
+  inputs_to_diplay <- input_dic$id
   names(inputs_to_diplay) <- input_dic[[language]]
 
   return(inputs_to_diplay)
