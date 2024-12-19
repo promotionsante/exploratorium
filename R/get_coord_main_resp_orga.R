@@ -12,23 +12,6 @@
 #' @return A tibble with a column with the coordinates of the principale organization.
 #'
 #' @noRd
-#' @examples
-#' # Load the toy datasets
-#' data("toy_data_pgv")
-#' data("toy_dic_variables")
-#' data("toy_cantons_sf")
-#'
-#' toy_data <- toy_data_pgv |>
-#'   add_col_raw_data(
-#'     dic_variables = toy_dic_variables
-#'   ) |>
-#'   clean_raw_data()
-#'
-#' # Geocode the principale organisation of the project
-#' toy_data |>
-#'   get_coord_main_resp_orga(
-#'     cantons_sf = toy_cantons_sf
-#'   )
 get_coord_main_resp_orga <- function(
   data,
   cantons_sf = NULL
