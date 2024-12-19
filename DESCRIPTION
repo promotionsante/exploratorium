@@ -20,7 +20,6 @@ Imports:
     dplyr,
     glue,
     golem (>= 0.3.5),
-    here,
     htmltools,
     jsonlite,
     leaflet,
@@ -44,12 +43,12 @@ Suggests:
     dbplyr,
     DT,
     fs,
+    here,
     knitr,
     rmarkdown,
     rsconnect,
     rstudioapi,
-    testthat (>= 3.0.0),
-    writexl
+    testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
 Config/fusen/version: 0.5.2

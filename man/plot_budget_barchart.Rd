@@ -41,16 +41,3 @@ A Java Script plot
 \description{
 Plot the distribution of the budgets with a barchart
 }
-\examples{
-toy_data_repart <- tibble::tibble(
-  name = c("Item 1", "Item 2"),
-  value = c(75, 25),
-  value_tooltip = c("75 000 CHF", "25 000 CHF")
-)
-
-# plot_budget_barchart(
-#   id = "id-in-the-dom-maybe-with-ns",
-#   data_repart = toy_data_repart,
-#   session = session
-# )
-}
