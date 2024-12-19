@@ -11,10 +11,6 @@ articles:
   navbar: Deployment
   contents:
   - deploy-the-app
-- title: Other
-  contents:
-  - draw-the-switzerland-maps-with-projects
-  - draw-the-distribution-of-contributions
 
 reference:
 - title: Data used by the app
