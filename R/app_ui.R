@@ -1,4 +1,3 @@
-
 #' Add start-up screen
 #'
 #' Wait until the app is ready to display UI

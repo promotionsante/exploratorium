@@ -116,8 +116,10 @@ checkhelper::use_data_doc(
 
 ## code to prepare `toy_dic_titles_pages` ----
 toy_dic_titles_pages <- read_csv2(
-  app_sys("data-dic",
-          "dic_titles_app.csv"),
+  app_sys(
+    "data-dic",
+    "dic_titles_app.csv"
+  ),
   show_col_types = FALSE,
   locale = locale(decimal_mark = ",", grouping_mark = ".")
 )
@@ -133,8 +135,10 @@ checkhelper::use_data_doc(
 
 ## code to prepare `toy_dic_values` ----
 toy_dic_values <- read_csv2(
-  app_sys("data-dic",
-          "dic_values.csv"),
+  app_sys(
+    "data-dic",
+    "dic_values.csv"
+  ),
   show_col_types = FALSE,
   locale = locale(decimal_mark = ",", grouping_mark = ".")
 )

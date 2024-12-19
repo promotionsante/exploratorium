@@ -1,5 +1,4 @@
 test_that("Test that the translation of a title works", {
-
   data("toy_dic_titles_pages")
 
   expect_equal(
@@ -19,5 +18,4 @@ test_that("Test that the translation of a title works", {
     ),
     expected = "Projektstart"
   )
-
 })

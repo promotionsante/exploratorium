@@ -21,11 +21,10 @@
 #'   projects_data_sf = toy_projects_data_sf
 #' )
 draw_map_selected_projects <- function(
-    projects_data_sf,
-    zoom_level = 8,
-    language
-){
-
+  projects_data_sf,
+  zoom_level = 8,
+  language
+) {
   base_map <- draw_map_base(zoom_level)
 
   empty_data <- nrow(projects_data_sf) == 0
@@ -34,19 +33,19 @@ draw_map_selected_projects <- function(
   ) {
     ch_centroid <- get_switzerland_centroid()
     final_map <- base_map |>
-    addLabelOnlyMarkers(
-      lng = ch_centroid[["lng"]],
-      lat = ch_centroid[["lat"]],
-      label = translate_entry_server_side(
-        language = language,
-        key = "no_target_projects"
-      ),
-      labelOptions = labelOptions(
-        noHide = TRUE,
-        textsize = "20px",
-        direction = "center"
+      addLabelOnlyMarkers(
+        lng = ch_centroid[["lng"]],
+        lat = ch_centroid[["lat"]],
+        label = translate_entry_server_side(
+          language = language,
+          key = "no_target_projects"
+        ),
+        labelOptions = labelOptions(
+          noHide = TRUE,
+          textsize = "20px",
+          direction = "center"
+        )
       )
-    )
   } else {
     final_map <- base_map |>
       addPolygons(
@@ -61,7 +60,7 @@ draw_map_selected_projects <- function(
         color = psch_orange(),
         stroke = FALSE,
         fillOpacity = 0.8,
-        layerId = ~ short_title,
+        layerId = ~short_title,
         label = ~ as.character(short_title),
         clusterOptions = markerClusterOptions(
           showCoverageOnHover = FALSE,
@@ -88,5 +87,4 @@ draw_map_selected_projects <- function(
   )
 
   return(final_map)
-
 }

@@ -1,5 +1,4 @@
 test_that("Test that the cleaning of the id of a project works", {
-
   expect_equal(
     object = clean_id_project(
       id_project = "FM_ProPCC+"
@@ -13,5 +12,4 @@ test_that("Test that the cleaning of the id of a project works", {
     ),
     expected = "SturzpraventioninderSpitex"
   )
-
 })

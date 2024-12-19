@@ -1,5 +1,4 @@
 test_that("get_data_repart_budget_one_project works for FR data", {
-
   data("toy_projects_data_sf")
 
   data_repart_budget_one_proj_fr <- get_data_repart_budget_one_project(
@@ -11,29 +10,26 @@ test_that("get_data_repart_budget_one_project works for FR data", {
   expect_equal(
     object = data_repart_budget_one_proj_fr,
     expected = structure(
-                 list(
-                   name = c("PSCH", "Organisation responsable", "Tiers"),
-                   value = c(
-                     prop_budget_gfch = 34.1,
-                     prop_budget_orga = 4.3,
-                     prop_budget_third_party = 61.7
-                   ),
-                   value_tooltip = c(
-                     budget_gfch = "200 000 CHF",
-                     budget_orga = "25 000 CHF",
-                     budget_third_party = "361 720 CHF"
-                   )
-                 ),
-                 row.names = c(NA, -3L),
-                 class = c("tbl_df", "tbl", "data.frame")
-               )
+      list(
+        name = c("PSCH", "Organisation responsable", "Tiers"),
+        value = c(
+          prop_budget_gfch = 34.1,
+          prop_budget_orga = 4.3,
+          prop_budget_third_party = 61.7
+        ),
+        value_tooltip = c(
+          budget_gfch = "200 000 CHF",
+          budget_orga = "25 000 CHF",
+          budget_third_party = "361 720 CHF"
+        )
+      ),
+      row.names = c(NA, -3L),
+      class = c("tbl_df", "tbl", "data.frame")
     )
-
-
+  )
 })
 
 test_that("get_data_repart_budget_one_project works for DE data", {
-
   data("toy_projects_data_sf")
 
   data_repart_budget_one_proj_de <- get_data_repart_budget_one_project(
@@ -45,22 +41,21 @@ test_that("get_data_repart_budget_one_project works for DE data", {
   expect_equal(
     object = data_repart_budget_one_proj_de,
     expected = structure(
-                 list(
-                   name = c("GFCH", "Haupt-Org", "Dritte"),
-                   value = c(
-                     prop_budget_gfch = 34.1,
-                     prop_budget_orga = 4.3,
-                     prop_budget_third_party = 61.7
-                   ),
-                   value_tooltip = c(
-                     budget_gfch = "200 000 CHF",
-                     budget_orga = "25 000 CHF",
-                     budget_third_party = "361 720 CHF"
-                   )
-                 ),
-                 row.names = c(NA, -3L),
-                 class = c("tbl_df", "tbl", "data.frame")
-               )
+      list(
+        name = c("GFCH", "Haupt-Org", "Dritte"),
+        value = c(
+          prop_budget_gfch = 34.1,
+          prop_budget_orga = 4.3,
+          prop_budget_third_party = 61.7
+        ),
+        value_tooltip = c(
+          budget_gfch = "200 000 CHF",
+          budget_orga = "25 000 CHF",
+          budget_third_party = "361 720 CHF"
+        )
+      ),
+      row.names = c(NA, -3L),
+      class = c("tbl_df", "tbl", "data.frame")
+    )
   )
-
 })

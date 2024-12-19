@@ -9,19 +9,18 @@
 #'
 #' @noRd
 translate_values_in_data <- function(
-    data,
-    cols_to_translate
-    ){
-
+  data,
+  cols_to_translate
+) {
   # Import the values dictionary saved in the package
-    dic_values <- read_csv2(
-      system.file(
-        "data-dic",
-        "dic_values.csv",
-        package = "exploratorium"
-      ),
-      show_col_types = FALSE
-    )
+  dic_values <- read_csv2(
+    system.file(
+      "data-dic",
+      "dic_values.csv",
+      package = "exploratorium"
+    ),
+    show_col_types = FALSE
+  )
 
   # Translate the data in DE
   for (i in 1:length(cols_to_translate)) {
@@ -45,5 +44,4 @@ translate_values_in_data <- function(
     data_fr = data_fr,
     data_de = data_de
   )
-
 }

@@ -29,7 +29,7 @@ To create the interactive plot, you can use the `plot_budget_barchart()` functio
 ```{r example-plot_budget_barchart, eval = FALSE}
 toy_data_repart <- tibble::tibble(
   name = c("Item 1", "Item 2"),
-  value = c(75, 25), 
+  value = c(75, 25),
   value_tooltip = c("75 000 CHF", "25 000 CHF")
 )
 
@@ -48,7 +48,7 @@ To create the interactive plot, you can use the `plot_budget_linechart()` functi
 ```{r example-plot_budget_linechart, eval = FALSE}
 toy_data_repart <- tibble::tibble(
   name = c("Item 1", "Item 2"),
-  value = c(75, 25), 
+  value = c(75, 25),
   value_tooltip = c("75 000 CHF", "25 000 CHF")
 )
 

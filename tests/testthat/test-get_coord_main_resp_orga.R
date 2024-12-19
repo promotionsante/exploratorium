@@ -1,5 +1,4 @@
 test_that("Test that the geocoding of the data is ok", {
-
   toy_data <-
     structure(
       list(
@@ -20,8 +19,10 @@ test_that("Test that the geocoding of the data is ok", {
           "1201"
         )
       ),
-      row.names = c(NA,
-                    -6L),
+      row.names = c(
+        NA,
+        -6L
+      ),
       class = c("tbl_df", "tbl", "data.frame")
     )
 
@@ -42,5 +43,4 @@ test_that("Test that the geocoding of the data is ok", {
     ),
     regexp = NA
   )
-
 })

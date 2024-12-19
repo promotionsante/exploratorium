@@ -74,9 +74,9 @@ derive_project_manager_api_query_string <- function(
 #'
 #' @noRd
 get_project_items_from_binary_columns <- function(
-    data_one_project,
-    binary_colum_prefix,
-    language
+  data_one_project,
+  binary_colum_prefix,
+  language
 ) {
   data_topic <- data_one_project |>
     select(starts_with(binary_colum_prefix)) |>

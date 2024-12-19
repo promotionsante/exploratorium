@@ -1,5 +1,4 @@
 test_that("get_influence_project works", {
-
   data("toy_projects_data_sf")
   data("toy_cantons_sf")
 
@@ -29,5 +28,4 @@ test_that("get_influence_project works", {
   expect_true(
     inherits(res_get_influence_project$cantons_influenced_lines, "sfc_LINESTRING")
   )
-
 })

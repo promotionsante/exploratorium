@@ -20,8 +20,8 @@ library(exploratorium)
 
 ```{r parsermd-chunk-1, include = FALSE}
 knitr::opts_chunk$set(
-  eval=FALSE,
-  echo=TRUE
+  eval = FALSE,
+  echo = TRUE
 )
 ```
 

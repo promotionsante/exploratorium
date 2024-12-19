@@ -1,5 +1,4 @@
 test_that("Test that the map for one project is ok", {
-
   data("toy_projects_data_sf")
   data("toy_cantons_sf")
 
@@ -11,5 +10,4 @@ test_that("Test that the map for one project is ok", {
     ),
     c("leaflet", "htmlwidget")
   )
-
 })
