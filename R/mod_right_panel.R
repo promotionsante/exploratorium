@@ -57,7 +57,7 @@ mod_right_panel_server <- function(id, r_global) {
         change_language(language)
         localize("html")
         r_global$language <- language
-        r_global$projects_data_sf <- load_projects_data(
+        r_global$projects_data_sf <- read_projects_data(
           language = language
         )
       }
