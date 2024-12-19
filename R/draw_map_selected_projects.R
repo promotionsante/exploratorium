@@ -13,7 +13,7 @@
 #' @importFrom leaflet addCircleMarkers addPolygons markerClusterOptions
 #' @importFrom leaflet addLabelOnlyMarkers labelOptions
 #'
-#' @export
+#' @noRd
 draw_map_selected_projects <- function(
   projects_data_sf,
   zoom_level = 8,

@@ -11,7 +11,7 @@
 #'
 #' @return A leaflet object.
 #'
-#' @export
+#' @noRd
 draw_map_focus_one_project <- function(
   projects_data_sf,
   id_project,

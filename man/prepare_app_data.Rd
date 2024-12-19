@@ -4,15 +4,10 @@
 \alias{prepare_app_data}
 \title{Prepare the projects data in FR and DE to be included in the app as .rds files}
 \usage{
-prepare_app_data(
-  pkg_dir = system.file(package = "exploratorium"),
-  cantons_sf = NULL
-)
+prepare_app_data(pkg_dir = system.file(package = "exploratorium"))
 }
 \arguments{
 \item{pkg_dir}{Character. Path to the package (must contain a data-raw folder).}
-
-\item{cantons_sf}{Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.}
 }
 \value{
 A list with the projects data in FR and DE.

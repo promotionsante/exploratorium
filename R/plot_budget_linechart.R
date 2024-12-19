@@ -15,7 +15,7 @@
 #'
 #' @return A Java Script plot
 #'
-#' @export
+#' @noRd
 plot_budget_linechart <- function(
   id,
   data_repart,

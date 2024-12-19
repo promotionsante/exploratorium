@@ -17,16 +17,6 @@ reference:
   desc: Prepare and update the data used by the app
 - contents:
   - prepare_app_data
-- title: Draw the Switzerland maps
-  desc: Build the maps with projects data
-- contents:
-  - draw_map_selected_projects
-  - draw_map_focus_one_project
-- title: Animated budget graphs
-  desc: Draw JS-based graph to visualize project budget data
-- contents:
-  - plot_budget_barchart
-  - plot_budget_linechart
 - title: Shiny app
 - contents:
   - run_app
