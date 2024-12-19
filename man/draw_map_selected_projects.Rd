@@ -21,10 +21,3 @@ A leaflet object.
 \description{
 Draw map of selected projects
 }
-\examples{
-data("toy_projects_data_sf")
-
-draw_map_selected_projects(
-  projects_data_sf = toy_projects_data_sf
-)
-}

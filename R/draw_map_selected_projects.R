@@ -14,12 +14,6 @@
 #' @importFrom leaflet addLabelOnlyMarkers labelOptions
 #'
 #' @export
-#' @examples
-#' data("toy_projects_data_sf")
-#'
-#' draw_map_selected_projects(
-#'   projects_data_sf = toy_projects_data_sf
-#' )
 draw_map_selected_projects <- function(
   projects_data_sf,
   zoom_level = 8,
