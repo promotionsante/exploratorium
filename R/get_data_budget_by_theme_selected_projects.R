@@ -35,15 +35,13 @@
 #'     "topic_diabetes",
 #'     "topic_addictions"
 #'   )
-#'
 #' )
 get_data_budget_by_theme_selected_projects <- function(
-    projects_data_sf,
-    language,
-    topic = NULL
+  projects_data_sf,
+  language,
+  topic = NULL
 ) {
-
-  data_graph_topic <-  projects_data_sf |>
+  data_graph_topic <- projects_data_sf |>
     st_drop_geometry() |>
     select(
       starts_with("topic_"),
@@ -84,7 +82,7 @@ get_data_budget_by_theme_selected_projects <- function(
   data_graph_topic_translated <- data_graph_topic |>
     inner_join(
       dic_variables,
-      by = c("name" = "name_variable")
+      by = c("name" = "id")
     ) |>
     select(
       name = all_of(language),
