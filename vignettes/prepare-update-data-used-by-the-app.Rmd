@@ -30,26 +30,27 @@ knitr::opts_chunk$set(
 
 # Projects data
 
-The projects data preparation workflow is shown below. 
+The data used by the app is extracted from Promotion Digital Database via an ETL (Extract Load Transform) pipeline 
+and then stored in `inst/` as two separated datasets:
 
-**This data preparation process must be repeated each time the raw data is modified or each time a modification is required to the data dictionaries.**
+* `projects_fr.rds`
+* `projects_de.rds`
+
+Those datasets are loaded at runtime by the app depending on the language selected by the user.
+
+The ETL pipeline also uses .csv dictionary files to translate or modify the raw data.
+
+**The data preparation process must be repeated each time the raw data is modified or each time a modification is required to the data dictionaries.**
 
 ```{r parsermd-chunk-3, echo = FALSE, eval = TRUE, fig.align = 'center', out.width = '100%'}
 knitr::include_graphics("../man/figures/data_prep_workflow.png")
 ```
 
-The final output of this pipeline consists in two datasets: 
-
-* `projects_fr.rds`
-* `projects_de.rds`
-
-which are used directly within the app.
-
 ## Update the project data
 
 Make sure that: 
 
-* the following environment variables are set:
+* the following environment variables are set in order to be able to connect to the database:
 
 ```
 DB_HOST
@@ -59,10 +60,10 @@ DB_PASSWORD
 ```
 * You have unrestricted access the internet so that {tidygeocoder} can query the geocoding API.
 
-Then run the etl withL
+Then run the etl with:
 
 ```{r, eval = FALSE}
-prepare_app_data()
+exploratorium::prepare_app_data()
 ```
 
 ## Modify the translations for projects data
@@ -109,7 +110,8 @@ DT::datatable(
 
 ### dic_values.csv
 
-Contains values in the columns status, risk factors, topics of `PGV.xlsx`
+Contains values in the columns status and other columns from the original excel file
+that was fed in the etl. Many of which should be removed in the future.
 
 ```{r parsermd-chunk-8, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
 DT::datatable(
@@ -129,15 +131,17 @@ DT::datatable(
 You will then need to rebuild the projects data:
 
 ```{r parsermd-chunk-11, eval = FALSE}
-prepare_app_data()
+exploratorium::prepare_app_data()
 ```
 
 
 # Translation data used in the app
 
+Those files are used at runtime by the app. You do **NOT** need to run the etl after modifying them.
+
 ### dic_titles_app.csv  
 
-Contains translations of all app titles
+Contains translations of all app titles.
 
 ```{r parsermd-chunk-9, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
 DT::datatable(
