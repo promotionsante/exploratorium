@@ -1,7 +1,7 @@
 #' Get the canton of the principale organization
 #'
 #' @param data Tibble. Raw data about projects, with the good columns names.
-#' @param cantons_sf Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.
+#' @param cantons_sf Sf data. Cantons geometry.
 #'
 #' @importFrom dplyr filter mutate select left_join rename distinct
 #' @importFrom glue glue
@@ -13,31 +13,10 @@
 #' @return A tibble with the name of the canton
 #'
 #' @noRd
-#' @examples
-#' # Load the toy datasets
-#' data("toy_data_pgv")
-#' data("toy_dic_variables")
-#' data("toy_cantons_sf")
-#'
-#' toy_data <- toy_data_pgv |>
-#'   add_col_raw_data(
-#'     dic_variables = toy_dic_variables
-#'   ) |>
-#'   clean_raw_data() |>
-#'   get_coord_main_resp_orga(
-#'     cantons_sf = toy_cantons_sf
-#'   )
-#'
-#' # Geocode the principale organisation of the project
-#' toy_data |>
-#'   get_canton_main_resp_orga(
-#'     cantons_sf = toy_cantons_sf
-#'   )
 get_canton_main_resp_orga <- function(
-    data,
-    cantons_sf = NULL
-){
-
+  data,
+  cantons_sf = read_cantons_sf()
+) {
   # Check if some GPS points are missing
   nb_missing_gps_points <- data |>
     filter(is.na(longitude) | is.na(latitude)) |>
@@ -52,11 +31,6 @@ get_canton_main_resp_orga <- function(
         .sep = "\n"
       )
     )
-  }
-
-  # Detect the id of the cantons
-  if (is.null(cantons_sf)) {
-    cantons_sf <- read_cantons_sf()
   }
 
   data_with_coord <- data |>
@@ -97,5 +71,4 @@ get_canton_main_resp_orga <- function(
   }
 
   return(data_with_canton)
-
 }

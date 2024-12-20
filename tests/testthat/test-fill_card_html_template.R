@@ -1,6 +1,4 @@
-
 test_that("FR app titles are correct", {
-
   list_titles <- get_dic_titles_app(
     language = "fr"
   )
@@ -21,11 +19,9 @@ test_that("FR app titles are correct", {
     list_titles,
     expected_list_titles
   )
-
 })
 
 test_that("DE app titles are correct", {
-
   list_titles <- get_dic_titles_app(
     language = "de"
   )
@@ -42,10 +38,10 @@ test_that("DE app titles are correct", {
     project_prop_budget_title = "Verteilung der Projektfinanzierung"
   )
 
-  expect_equal(list_titles,
-               expected_list_titles
+  expect_equal(
+    list_titles,
+    expected_list_titles
   )
-
 })
 
 test_that("compute_project_completion_percentage works", {
@@ -53,22 +49,53 @@ test_that("compute_project_completion_percentage works", {
   Sys.Date <- NULL
   with_mocked_bindings(
     code = {
-      completion_percentage <- compute_project_completion_percentage(
-        date_project_start = as.Date("2023-01-01"),
-        date_project_end = as.Date("2026-12-31")
-      )
+      completion_percentage_current_date_within_project_span <-
+        compute_project_completion_percentage(
+          date_project_start = as.Date("2023-01-01"),
+          date_project_end = as.Date("2026-12-31")
+        )
     },
     Sys.Date = function() as.Date("2024-03-04")
   )
   expect_equal(
-    completion_percentage,
+    completion_percentage_current_date_within_project_span,
     29
+  )
+
+  with_mocked_bindings(
+    code = {
+      completion_percentage_current_date_before_start_date <-
+        compute_project_completion_percentage(
+          date_project_start = as.Date("2023-01-01"),
+          date_project_end = as.Date("2026-12-31")
+        )
+    },
+    Sys.Date = function() as.Date("2022-03-04")
+  )
+  expect_equal(
+    completion_percentage_current_date_before_start_date,
+    0
+  )
+
+  with_mocked_bindings(
+    code = {
+      completion_percentage_current_date_after_end_date <-
+        compute_project_completion_percentage(
+          date_project_start = as.Date("2023-01-01"),
+          date_project_end = as.Date("2026-12-31")
+        )
+    },
+    Sys.Date = function() as.Date("2027-03-04")
+  )
+  expect_equal(
+    completion_percentage_current_date_after_end_date,
+    100
   )
 })
 
 test_that("project card template in properly filled", {
   html_card <- fill_card_html_template(
-    id_project = "1+1=3",
+    id_project = "1+1=3  PGV03.038",
     data_projects = read_projects_data(language = "de"),
     language = "de"
   )

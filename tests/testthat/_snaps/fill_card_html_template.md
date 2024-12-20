@@ -6,7 +6,7 @@
       <div class = "globalcard">
       
         <div class = "shorttitle">
-            1+1=3
+            1+1=3  PGV03.038
         </div>
       
         <div class = "placestatus">
@@ -70,7 +70,7 @@
         </div>
       
         <div class = "alltext">
-          Im Pilotprojekt wird in interprofessioneller Zusammenarbeit ein Modellkonzept zur kooperativen Versorgung von Menschen mit Abhängigkeit oder Suchtgefährdung entwickelt. Durch die Festigung der Zusammenarbeit zwischen Spitexorganisationen und Sucht-Fachstellen können schwer erreichbare Klientinnen und Klienten besser mit Angeboten der Suchthilfe vernetzt werden. Fachpersonen aus der Suchthilfe und der aufsuchenden Pflege erhalten mehr Sicherheit im professionellen Umgang mit der genannten Klient_innengruppe.
+          <p>Es wird ein Modellkonzept zur Versorgung von Menschen mit Abhängigkeit entwickelt: Durch die Zusammenarbeit zwischen Spitex und Sucht-Fachstellen erhalten schwer erreichbare KlientInnen Zugang zu Früherkennung und Suchtberatung. Fachpersonen aus Suchthilfe und Spitex erhalten mehr Sicherheit im Umgang mit dieser Gruppe. Die Entwicklung umfasst 3 Phasen:</p><p><br></p><p><strong>A)&nbsp;Modellkonzept</strong></p><p>In drei Workshops wird ein Konzept für die Spitex erarbeitet. Es wird mit der Spitex Region Lenzburg entwickelt und für die Regionen Baden und St. Gallen adaptiert.</p><p><br></p><p><strong>B) Spitex-Schulungen </strong></p><p>Für die Mitarbeitenden der Spitex Region Lenzburg, Spitex Limmat-Aare-Reuss und Spitex St. Gallen werden Schulungen konzipiert, umgesetzt und überprüft.</p><p><br></p><p><strong>C) Aufsuchende Suchtberatung</strong></p><p>Das Angebot der aufsuchenden Suchtberatung wird in den Regionen Lenzburg, Baden und St. Gallen pilotweise umgesetzt und evaluiert. Das Modellkonzept ist für die Übertragung in weitere Regionen adaptierbar.</p>
         </div>
       
         <div class = "alltext" style = "margin-top: -20px">
@@ -93,7 +93,7 @@
       
         <div class = "alltext">
           <ul>
-            <li>Alkohol</li><li>Tabak</li><li>Inaktivität</li><li>Psychische Belastungen</li><li>Illegale Drogen</li>
+            <li>Alkohol</li> <li>Tabak</li> <li>Inaktivität</li> <li>Psychische Belastungen</li> <li>Illegale Drogen</li>
           </ul>
         </div>
       
@@ -102,7 +102,7 @@
         </div>
       
         <div class = "budgettext">
-          586 720 CHF
+          182 635 CHF
         </div>
       
         <div class = "alltitle">

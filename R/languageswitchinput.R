@@ -21,5 +21,4 @@ languageSwitchInput <- function(inputId, label, values, selected) {
     ),
     tags$span(class = "switch-label", values[2])
   )
-
 }

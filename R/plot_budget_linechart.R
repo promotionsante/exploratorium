@@ -15,33 +15,20 @@
 #'
 #' @return A Java Script plot
 #'
-#' @export
-#' @examples
-#' toy_data_repart <- tibble::tibble(
-#'   name = c("Item 1", "Item 2"),
-#'   value = c(75, 25),
-#'   value_tooltip = c("75 000 CHF", "25 000 CHF")
-#' )
-#'
-#' # plot_budget_linechart(
-#' #   id = "id-in-the-dom-maybe-with-ns",
-#' #   data_repart = toy_data_repart,
-#' #   session = session
-#' # )
+#' @noRd
 plot_budget_linechart <- function(
-    id,
-    data_repart,
-    x_axis_labels = "true",
-    axis_max = 100,
-    axis_interval = 20,
-    font_size_labels_col = "16px",
-    series_name = "",
-    prefixer = "%",
-    session
-){
-
+  id,
+  data_repart,
+  x_axis_labels = "true",
+  axis_max = 100,
+  axis_interval = 20,
+  font_size_labels_col = "16px",
+  series_name = "",
+  prefixer = "%",
+  session
+) {
   empty_data_provided <- nrow(data_repart) == 0
-  if(
+  if (
     empty_data_provided
   ) {
     session$sendCustomMessage(
@@ -91,5 +78,4 @@ plot_budget_linechart <- function(
       data
     )
   )
-
 }

@@ -5,6 +5,8 @@ dir.v: vignettes
 dir.t: tests
 extra.suggests:
   - rsconnect
+  - dbplyr
+  - here
 pkg_ignore: ~
 document: yes
 normalize: yes

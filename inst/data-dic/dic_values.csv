@@ -1,8 +1,8 @@
-value;de;fr
+id;de;fr
 NA;Unausgefüllte Informationen;Information non renseignée
-Abschluss;Abschluss;Terminé
-Umsetzung;Umsetzung;En cours
-Abbruch;Abbruch;Annulé
+FINISHED;Abschluss;Terminé
+IMPLEMENTATION;Umsetzung;En cours
+CANCELED;Abbruch;Annulé
 Thème;Thème;Thème
 Sucht;Sucht;Dépendances
 Diabetes;Diabetes;Diabètes
