@@ -1,7 +1,7 @@
 Package: exploratorium
 Title: Exploring Investements in Health Promotion and Disease Prevention
     in Switzerland
-Version: 0.12.0
+Version: 1.0.1
 Authors@R: c(
     person("Margot", "Brard", , "margot@thinkr.fr", role = c("aut", "cre")),
     person("Antoine", "Languillaume", , "antoine@thinkr.fr", role = "aut"),
@@ -16,17 +16,18 @@ Depends:
 Imports: 
     cli,
     config (>= 0.3.1),
+    DBI,
     dplyr,
     glue,
     golem (>= 0.3.5),
-    here,
     htmltools,
     jsonlite,
     leaflet,
     lubridate,
+    memoise,
     purrr,
     readr,
-    readxl,
+    RPostgres,
     scales,
     sf,
     shiny (>= 1.7.3),
@@ -36,18 +37,17 @@ Imports:
     tidygeocoder,
     tidyr,
     tidyselect,
-    tools,
-    waiter
+    waiter,
+    withr
 Suggests: 
+    dbplyr,
     DT,
-    fs,
+    here,
     knitr,
     rmarkdown,
     rsconnect,
     rstudioapi,
-    stringr,
-    testthat (>= 3.0.0),
-    writexl
+    testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
 Config/fusen/version: 0.5.2

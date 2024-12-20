@@ -8,7 +8,7 @@
 #'
 #' @importFrom leaflet leafletOutput
 #' @importFrom shiny NS tagList
-mod_map_ui <- function(id){
+mod_map_ui <- function(id) {
   ns <- NS(id)
   tagList(
     div(
@@ -26,8 +26,8 @@ mod_map_ui <- function(id){
 #'
 #' @importFrom leaflet renderLeaflet
 #' @noRd
-mod_map_server <- function(id, r_global){
-  moduleServer( id, function(input, output, session){
+mod_map_server <- function(id, r_global) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     r_local <- reactiveValues()
@@ -35,13 +35,15 @@ mod_map_server <- function(id, r_global){
     # Set initial view: project selection
     observeEvent(
       r_global$zoom_level,
-      once = TRUE, {
+      once = TRUE,
+      {
         req(r_global$zoom_level)
         r_local$map_to_draw <- draw_map_selected_projects(
           projects_data_sf = r_global$selected_projects_sf,
           zoom_level = r_global$zoom_level
         )
-      })
+      }
+    )
 
     # Draw appropriate map
     observeEvent(
@@ -77,8 +79,8 @@ mod_map_server <- function(id, r_global){
 
     # Detect click on map
     observeEvent(
-      input$map_click, {
-
+      input$map_click,
+      {
         if (
           inherits(r_local$map_to_draw, "all-projects")
         ) {
@@ -90,22 +92,21 @@ mod_map_server <- function(id, r_global){
         ) {
           r_global$click_map <- "click-on-map-in-project-view"
         }
-
-      })
+      }
+    )
 
     # Detect project selection
     observeEvent(
       input$map_marker_click$id,
       ignoreNULL = TRUE,
-      ignoreInit = TRUE, {
-
+      ignoreInit = TRUE,
+      {
         print(
           paste("Project selected:", input$map_marker_click$id)
         )
         r_global$id_selected_project <- input$map_marker_click$id
-
-      })
-
+      }
+    )
   })
 }
 

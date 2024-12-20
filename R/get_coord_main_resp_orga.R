@@ -1,7 +1,7 @@
 #' Get the coordinates of the principale organization
 #'
 #' @param data Tibble. Raw data about projects, with the good columns names.
-#' @param cantons_sf Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.
+#' @param cantons_sf Sf data. Cantons geometry.
 #'
 #' @importFrom tidygeocoder geocode
 #' @importFrom dplyr mutate select filter
@@ -12,28 +12,10 @@
 #' @return A tibble with a column with the coordinates of the principale organization.
 #'
 #' @noRd
-#' @examples
-#' # Load the toy datasets
-#' data("toy_data_pgv")
-#' data("toy_dic_variables")
-#' data("toy_cantons_sf")
-#'
-#' toy_data <- toy_data_pgv |>
-#'   add_col_raw_data(
-#'     dic_variables = toy_dic_variables
-#'   ) |>
-#'   clean_raw_data()
-#'
-#' # Geocode the principale organisation of the project
-#' toy_data |>
-#'   get_coord_main_resp_orga(
-#'     cantons_sf = toy_cantons_sf
-#'   )
 get_coord_main_resp_orga <- function(
-    data,
-    cantons_sf = NULL
-){
-
+  data,
+  cantons_sf = read_cantons_sf()
+) {
   # Check if some cities are missing
   nb_missing_cities <- data |>
     filter(is.na(city_code_main_resp_orga)) |>
@@ -60,10 +42,10 @@ get_coord_main_resp_orga <- function(
       postalcode = zip_code_main_resp_orga,
       country = country,
       method = "osm",
-      lat = latitude ,
+      lat = latitude,
       long = longitude
     ) |>
-    select(- country)
+    select(-country)
 
   # Create sf points
   data_with_coord <- data_with_long_lat |>
@@ -73,11 +55,6 @@ get_coord_main_resp_orga <- function(
       remove = FALSE,
       na.fail = FALSE
     )
-
-  # Check if the points are in Switzerland
-  if (is.null(cantons_sf)) {
-    cantons_sf <- read_cantons_sf()
-  }
 
   switzerland_sf <- st_union(
     x = cantons_sf
@@ -104,5 +81,8 @@ get_coord_main_resp_orga <- function(
   }
 
   return(data_with_coord)
-
 }
+
+#' @importFrom memoise memoise
+#' @noRd
+memoised_get_coord_main_resp_orga <- memoise::memoise(get_coord_main_resp_orga)

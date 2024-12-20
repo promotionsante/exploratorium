@@ -1,5 +1,5 @@
 test_that("get_cantons_main_org() yields well-formed vector in FR", {
-  projects_data_sf <- load_projects_data("fr")
+  projects_data_sf <- read_projects_data("fr")
   cantons_main_org <- get_cantons_main_org(projects_data_sf)
   expect_type(
     cantons_main_org,
@@ -22,7 +22,7 @@ test_that("get_cantons_main_org() yields well-formed vector in FR", {
 })
 
 test_that("get_cantons_main_org() yields well-formed vector in DE", {
-  projects_data_sf <- load_projects_data("de")
+  projects_data_sf <- read_projects_data("de")
   cantons_main_org <- get_cantons_main_org(projects_data_sf)
   expect_type(
     cantons_main_org,

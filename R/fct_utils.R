@@ -60,9 +60,7 @@ read_cantons_sf <- function() {
 #'
 #' @noRd
 read_projects_data <- function(
-    language = c("de", "fr")
-    ){
-
+  language = c("de", "fr")) {
   language <- match.arg(language)
 
   readRDS(
@@ -72,5 +70,4 @@ read_projects_data <- function(
       package = "exploratorium"
     )
   )
-
 }

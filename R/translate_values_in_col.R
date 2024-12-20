@@ -2,69 +2,22 @@
 #'
 #' @param data Tibble. Data to be translated.
 #' @param col_to_translate Character. Column to be translated.
-#' @param dic_values Tibble. Values dictionaries. Mainly used for examples and unit testing purpose.
 #' @param language Character. Language. Should be "fr" or "de".
-#' @param sep Character. Regex used in the raw data to separate words in the columns.
+#' @param dictionary name of the dictionary to use. One of the dic_*.csv files
+#' present in inst/data-dic.
 #'
-#' @importFrom readr read_csv2
-#' @importFrom glue glue
-#' @importFrom dplyr rename select group_by mutate
-#' @importFrom tidyr separate_rows
-#' @importFrom sf st_join st_drop_geometry
+#' @importFrom readr read_delim
+#' @importFrom dplyr left_join select
 #'
 #' @return Data with the column translated.
 #'
 #' @noRd
-#' @examples
-#' # Load the toy datasets
-#' data("toy_data_pgv")
-#' data("toy_dic_variables")
-#' data("toy_dic_values")
-#'
-#' # Import the raw data and perform the first preparations
-#' raw_data <- toy_data_pgv |>
-#'   add_col_raw_data(
-#'     dic_variables = toy_dic_variables
-#'   ) |>
-#'   clean_raw_data()
-#'
-#' # Translate the column status
-#' translate_values_in_col(
-#'   data = raw_data,
-#'   col_to_translate = "status",
-#'   dic_values = toy_dic_values,
-#'   language = "fr"
-#' )$status
-#'
-#' translate_values_in_col(
-#'   data = raw_data,
-#'   col_to_translate = "status",
-#'   dic_values = toy_dic_values,
-#'   language = "de"
-#' )$status
-#'
-#' # Translate the column topic
-#' translate_values_in_col(
-#'   data = raw_data,
-#'   col_to_translate = "topic",
-#'   dic_values = toy_dic_values,
-#'   language = "fr"
-#' )$topic
-#'
-#' translate_values_in_col(
-#'   data = raw_data,
-#'   col_to_translate = "topic",
-#'   dic_values = toy_dic_values,
-#'   language = "de"
-#' )$topic
 translate_values_in_col <- function(
-    data,
-    col_to_translate,
-    dic_values = NULL,
-    language = c("de", "fr"),
-    sep = ",*\r\n|, |;"
-    ){
-
+  data,
+  col_to_translate,
+  language = c("de", "fr"),
+  dictionary = "dic_values.csv"
+) {
   language <- match.arg(language)
 
   # Check if the column is present
@@ -76,61 +29,43 @@ translate_values_in_col <- function(
     )
   }
 
-  # Import the values dictionary saved in the package
-  if (is.null(dic_values)) {
-    dic_values <- read_csv2(
-      system.file(
-        "data-dic",
-        "dic_values.csv",
-        package = "exploratorium"
-      ),
-      show_col_types = FALSE
-    )
-  }
+  ## Import the values dictionary saved in the package
+  # use read_delim to have more control and avoid default value verbose
+  # message of read_csv2
+  dic_values <- read_delim(
+    file = system.file(
+      "data-dic",
+      dictionary,
+      package = "exploratorium"
+    ),
+    delim = ";",
+    escape_double = FALSE,
+    trim_ws = TRUE,
+    show_col_types = FALSE
+  )
 
-# Translate the column
-  data_values_translated <- data |>
-    st_drop_geometry() |>
-    rename(
-      "col_to_translate" = all_of(col_to_translate)
-      ) |>
-    select(short_title, col_to_translate) |>
-    separate_rows(
-      col_to_translate,
-      sep = sep
-    ) |>
-    left_join(
-      dic_values |>
-        select(value, all_of(language)) |>
-        rename("language" = all_of(language)),
-      by = c("col_to_translate" = "value")
-    ) |>
-    group_by(
-      short_title
-    ) |>
-    mutate(
-      col_translated = paste(
-        language,
-        collapse = ", "
-      )
-    ) |>
-    select(
-      short_title,
-      col_translated
-      ) |>
-    distinct()
-
-  data_translated <- data |>
-    left_join(
-      data_values_translated,
-      by = "short_title"
-    ) |>
-    select(- all_of(col_to_translate))
-
-  colnames(data_translated)[
-    which(colnames(data_translated) == "col_translated")
-  ] <- col_to_translate
+  join_by <- "id"
+  names(join_by) <- col_to_translate
+  ## Translate the column
+  # Get translated values in corresponding language i.e.
+  # we would have both
+  # fr = c("Termin\u00e9", "En cours")
+  # status = c("FINISHED", "IMPLEMENTATION")
+  data_translated <- left_join(
+    data,
+    dic_values[c("id", language)],
+    by = join_by
+  )
+  # Remove old untranslated column
+  # .i.e status = c("FINISHED", "IMPLEMENTATION")
+  data_translated[[col_to_translate]] <- NULL
+  # Replace translated column name with column original name
+  # .i.e fr -> status
+  names(data_translated) <- sub(
+    pattern = sprintf("^%s$", language),
+    replacement = col_to_translate,
+    x = names(data_translated)
+  )
 
   return(data_translated)
-
 }

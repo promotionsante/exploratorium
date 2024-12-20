@@ -1,4 +1,3 @@
-
 #' Add start-up screen
 #'
 #' Wait until the app is ready to display UI
@@ -66,13 +65,13 @@ golem_add_external_resources <- function() {
       ext = "png"
     ),
     tags$script(
-      src = "https://code.highcharts.com/highcharts.js"
+      src = "https://code.highcharts.com/12.0.0/highcharts.js"
     ),
     tags$script(
-      src = "https://code.highcharts.com/modules/accessibility.js"
+      src = "https://code.highcharts.com/12.0.0/modules/accessibility.js"
     ),
     tags$script(
-      src = "https://code.highcharts.com/modules/exporting.js"
+      src = "https://code.highcharts.com/12.0.0/modules/exporting.js"
     ),
     bundle_resources(
       path = app_sys("app/www"),

@@ -1,5 +1,4 @@
 test_that("Test that the saving of the data in inst works", {
-
   # Create a temp folder with data subfolder
   my_temp_dir <- tempfile("test-export-data")
   dir.create(my_temp_dir)
@@ -35,5 +34,4 @@ test_that("Test that the saving of the data in inst works", {
   )
 
   unlink(my_temp_dir, recursive = TRUE)
-
 })
