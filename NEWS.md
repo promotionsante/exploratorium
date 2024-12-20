@@ -3,6 +3,7 @@
 - Data is now extracted directly from the Promotion Digitale Database before being
   fed to the etl and saved in inst/.
 - Clean {fusen} artifacts: useless examples etc...
+- Remove toy datasets. Those were hard to maintain up to date. Use either app data are inline reprexes.
 
 # exploratorium 0.12.0
 
@@ -17,11 +18,11 @@
 - Update architecture schema to reflect real time project cards rendering
 - Make the ditinction between project and app translation data in data preparation vignette
 
-# exploratoirun 0.10.17
+# exploratoirum 0.10.17
 
 - Only display PSCH share in yearly cumulative budget graph.
 
-# exploratoirun 0.10.16
+# exploratoirum 0.10.16
 
 - Use {pak} instead of {remotes} in CI to avoid silent errors when
   a package fails to install.
