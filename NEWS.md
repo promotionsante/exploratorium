@@ -1,3 +1,8 @@
+# exploratorium 1.0.1
+
+- Freeze highchart.js version number to avoid breaking changes in the library to
+  affect the app.
+
 # exploratorium 1.0.0
 
 - Data is now extracted directly from the Promotion Digitale Database before being
