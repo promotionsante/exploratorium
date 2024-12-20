@@ -1,7 +1,7 @@
 #' @importFrom sf st_union st_centroid st_geometry
 #' @importFrom stats setNames
 #' @noRd
-compute_switzerland_centroid  <- function() {
+compute_switzerland_centroid <- function() {
   read_cantons_sf() |>
     st_union() |>
     st_centroid() |>

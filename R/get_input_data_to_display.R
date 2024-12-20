@@ -3,24 +3,20 @@
 #' @param language A character either "fr" or "de".
 #' @param pattern A character. Pattern for column names to be
 #' extracted from variable dic.
+#' @param path_dic_variables A character. Path to the dictionary of variables.
 #'
 #' @return A named vector
 #'
 #' @importFrom readr read_csv2
 #' @noRd
-#' @examples
-#' get_input_data_to_display(
-#'   language = "fr",
-#'   pattern = "^topic_"
-#' )
 get_input_data_to_display <- function(
-    language,
-    pattern
+  language,
+  pattern,
+  path_dic_variables = app_sys("data-dic/dic_variables.csv")
 ) {
-
   dic_variables <- suppressMessages(
     read_csv2(
-      file = app_sys("data-dic/dic_variables.csv"),
+      file = path_dic_variables,
       show_col_types = FALSE
     )
   )

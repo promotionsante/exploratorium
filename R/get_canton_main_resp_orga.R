@@ -1,7 +1,7 @@
 #' Get the canton of the principale organization
 #'
 #' @param data Tibble. Raw data about projects, with the good columns names.
-#' @param cantons_sf Sf data. Cantons geometry. Mainly used for examples and unit testing purpose.
+#' @param cantons_sf Sf data. Cantons geometry.
 #'
 #' @importFrom dplyr filter mutate select left_join rename distinct
 #' @importFrom glue glue
@@ -15,12 +15,8 @@
 #' @noRd
 get_canton_main_resp_orga <- function(
   data,
-  cantons_sf = NULL
+  cantons_sf = read_cantons_sf()
 ) {
-  if (is.null(cantons_sf)) {
-    cantons_sf <- read_cantons_sf()
-  }
-
   # Check if some GPS points are missing
   nb_missing_gps_points <- data |>
     filter(is.na(longitude) | is.na(latitude)) |>

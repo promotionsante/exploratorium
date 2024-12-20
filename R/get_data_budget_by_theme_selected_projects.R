@@ -3,6 +3,7 @@
 #' @param projects_data_sf Tibble. Data projects.
 #' @param language Character. Language, 'fr' or 'de'.
 #' @param topic Character. A specific topic/theme in the form topic_
+#' @param path_dic_variables Character. Path to the dictionary of variables.
 #'
 #' @return A tibble with three columns: `name`, `value` and `value_tooltip`
 #'
@@ -14,32 +15,11 @@
 #'
 #'
 #' @noRd
-#' @examples
-#' data("toy_projects_data_sf")
-#'
-#' get_data_budget_by_theme_selected_projects(
-#'   projects_data_sf = toy_projects_data_sf,
-#'   language = "fr"
-#' )
-#'
-#' get_data_budget_by_theme_selected_projects(
-#'   projects_data_sf = toy_projects_data_sf,
-#'   language = "fr",
-#'   topic = "topic_diabetes"
-#' )
-#'
-#' get_data_budget_by_theme_selected_projects(
-#'   projects_data_sf = toy_projects_data_sf,
-#'   language = "fr",
-#'   topic = c(
-#'     "topic_diabetes",
-#'     "topic_addictions"
-#'   )
-#' )
 get_data_budget_by_theme_selected_projects <- function(
   projects_data_sf,
   language,
-  topic = NULL
+  topic = NULL,
+  path_dic_variables = app_sys("data-dic/dic_variables.csv")
 ) {
   data_graph_topic <- projects_data_sf |>
     st_drop_geometry() |>
@@ -74,7 +54,7 @@ get_data_budget_by_theme_selected_projects <- function(
 
   dic_variables <- suppressMessages(
     read_csv2(
-      file = app_sys("data-dic/dic_variables.csv"),
+      file = path_dic_variables,
       show_col_types = FALSE
     )
   )

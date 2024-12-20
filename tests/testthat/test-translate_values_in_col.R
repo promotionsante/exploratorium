@@ -1,5 +1,4 @@
 test_that("Test that the translation for column status", {
-
   data_raw <- data.frame(
     status = c(
       "FINISHED",
@@ -7,9 +6,9 @@ test_that("Test that the translation for column status", {
       "CANCELED"
     ),
     geometry = sf::st_sfc(
-      st_point(c(1,1)),
-      st_point(c(1,1)),
-      st_point(c(1,1))
+      st_point(c(1, 1)),
+      st_point(c(1, 1)),
+      st_point(c(1, 1))
     )
   ) |>
     st_as_sf()
@@ -53,11 +52,9 @@ test_that("Test that the translation for column status", {
       "Abbruch"
     )
   )
-
 })
 
 test_that("Test that the translation for topic", {
-
   data_raw <- data.frame(
     topic = c(
       "topic_respiratory_diseases",
@@ -65,9 +62,9 @@ test_that("Test that the translation for topic", {
       "topic_cardio_diseases"
     ),
     geometry = sf::st_sfc(
-      st_point(c(1,1)),
-      st_point(c(1,1)),
-      st_point(c(1,1))
+      st_point(c(1, 1)),
+      st_point(c(1, 1)),
+      st_point(c(1, 1))
     )
   ) |>
     st_as_sf()
@@ -113,5 +110,4 @@ test_that("Test that the translation for topic", {
       "Herz-Kreislauf-Erkrankungen"
     )
   )
-
 })

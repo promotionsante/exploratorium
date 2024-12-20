@@ -1,5 +1,4 @@
 test_that("get_topics_to_display() works in FR", {
-
   topics_to_display <- get_topics_to_display(
     language = "fr"
   )
@@ -22,7 +21,6 @@ test_that("get_topics_to_display() works in FR", {
 })
 
 test_that("get_topics_to_display() works in DE", {
-
   topics_to_display <- get_topics_to_display(
     language = "de"
   )
@@ -43,4 +41,3 @@ test_that("get_topics_to_display() works in DE", {
     )
   )
 })
-

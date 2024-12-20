@@ -13,12 +13,11 @@
 #'
 #' @noRd
 translate_values_in_col <- function(
-    data,
-    col_to_translate,
-    language = c("de", "fr"),
-    dictionary = "dic_values.csv"
-    ){
-
+  data,
+  col_to_translate,
+  language = c("de", "fr"),
+  dictionary = "dic_values.csv"
+) {
   language <- match.arg(language)
 
   # Check if the column is present
@@ -33,41 +32,40 @@ translate_values_in_col <- function(
   ## Import the values dictionary saved in the package
   # use read_delim to have more control and avoid default value verbose
   # message of read_csv2
-    dic_values <- read_delim(
-      file = system.file(
-        "data-dic",
-        dictionary,
-        package = "exploratorium"
-      ),
-      delim = ";",
-      escape_double = FALSE,
-      trim_ws = TRUE,
-      show_col_types = FALSE
-    )
+  dic_values <- read_delim(
+    file = system.file(
+      "data-dic",
+      dictionary,
+      package = "exploratorium"
+    ),
+    delim = ";",
+    escape_double = FALSE,
+    trim_ws = TRUE,
+    show_col_types = FALSE
+  )
 
-    join_by <- "id"
-    names(join_by) <- col_to_translate
-    ## Translate the column
-    # Get translated values in corresponding language i.e.
-    # we would have both
-    # fr = c("Termin\u00e9", "En cours")
-    # status = c("FINISHED", "IMPLEMENTATION")
-    data_translated <- left_join(
-      data,
-      dic_values[c("id", language)],
-      by = join_by
-    )
-    # Remove old untranslated column
-    # .i.e status = c("FINISHED", "IMPLEMENTATION")
-    data_translated[[col_to_translate]] <- NULL
-    # Replace translated column name with column original name
-    # .i.e fr -> status
-    names(data_translated) <- sub(
-      pattern = sprintf("^%s$", language),
-      replacement = col_to_translate,
-      x = names(data_translated)
-    )
+  join_by <- "id"
+  names(join_by) <- col_to_translate
+  ## Translate the column
+  # Get translated values in corresponding language i.e.
+  # we would have both
+  # fr = c("Termin\u00e9", "En cours")
+  # status = c("FINISHED", "IMPLEMENTATION")
+  data_translated <- left_join(
+    data,
+    dic_values[c("id", language)],
+    by = join_by
+  )
+  # Remove old untranslated column
+  # .i.e status = c("FINISHED", "IMPLEMENTATION")
+  data_translated[[col_to_translate]] <- NULL
+  # Replace translated column name with column original name
+  # .i.e fr -> status
+  names(data_translated) <- sub(
+    pattern = sprintf("^%s$", language),
+    replacement = col_to_translate,
+    x = names(data_translated)
+  )
 
   return(data_translated)
-
 }
