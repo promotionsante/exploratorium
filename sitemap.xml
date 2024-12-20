@@ -10,12 +10,6 @@
     <loc>/articles/deploy-the-app.html</loc>
   </url>
   <url>
-    <loc>/articles/draw-the-distribution-of-contributions.html</loc>
-  </url>
-  <url>
-    <loc>/articles/draw-the-switzerland-maps-with-projects.html</loc>
-  </url>
-  <url>
     <loc>/articles/general-overview-of-the-app.html</loc>
   </url>
   <url>
@@ -34,45 +28,12 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/draw_map_focus_one_project.html</loc>
-  </url>
-  <url>
-    <loc>/reference/draw_map_selected_projects.html</loc>
-  </url>
-  <url>
     <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_budget_barchart.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_budget_linechart.html</loc>
   </url>
   <url>
     <loc>/reference/prepare_app_data.html</loc>
   </url>
   <url>
     <loc>/reference/run_app.html</loc>
-  </url>
-  <url>
-    <loc>/reference/toy_cantons_sf.html</loc>
-  </url>
-  <url>
-    <loc>/reference/toy_data_pgv.html</loc>
-  </url>
-  <url>
-    <loc>/reference/toy_dic_cantons.html</loc>
-  </url>
-  <url>
-    <loc>/reference/toy_dic_titles_pages.html</loc>
-  </url>
-  <url>
-    <loc>/reference/toy_dic_values.html</loc>
-  </url>
-  <url>
-    <loc>/reference/toy_dic_variables.html</loc>
-  </url>
-  <url>
-    <loc>/reference/toy_projects_data_sf.html</loc>
   </url>
 </urlset>
