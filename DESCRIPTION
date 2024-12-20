@@ -42,7 +42,6 @@ Imports:
 Suggests: 
     dbplyr,
     DT,
-    fs,
     here,
     knitr,
     rmarkdown,
