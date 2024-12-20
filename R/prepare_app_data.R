@@ -18,6 +18,8 @@ prepare_app_data <- function(
   data_import <- retrieve_project_data_from_promotion_digitale_db()
 
   cli_alert("Clean raw data")
+  # Adhoc correction for project PEPra PGV02.090 (Bern 02 -> Bern)
+  # Otherwise geocododing the city fails
   data_import$city_code_main_resp_orga <- sub(
     pattern = "(Bern) \\d{2}",
     replacement = "\\1",
