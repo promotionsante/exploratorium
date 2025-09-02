@@ -15,7 +15,8 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(exploratorium)
+# library(exploratorium)
+devtools::load_all() # to be sure than the app_sys() used internaly by some function link to ./inst folder instaler of .libPaths()
 ```
 
 
@@ -31,7 +32,7 @@ knitr::opts_chunk$set(
 # Projects data
 
 The data used by the app is extracted from Promotion Digital Database via an ETL (Extract Load Transform) pipeline 
-and then stored in `inst/` as two separated datasets:
+and then stored in `inst/data-projects` as two separated datasets:
 
 * `projects_fr.rds`
 * `projects_de.rds`
