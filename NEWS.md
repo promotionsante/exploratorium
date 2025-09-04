@@ -1,3 +1,6 @@
+# exploratorium 1.0.2
+- Dataset updated to snapshot as of 2025-08-26
+
 # exploratorium 1.0.1
 
 - Freeze highchart.js version number to avoid breaking changes in the library to
